@@ -30,9 +30,9 @@ const NavHead = (Name, Title) => {
 };
 
 const Routes = createStackNavigator({
-    Login: NavHead(LoginScreen,'Login Screen'),
-    Home: NavHead(HomeScreen, 'Eastern Agencies Pvt. Ltd'),
-    ModalCreate: NavHead(ModalSetup, 'Model Create'),
+    // Login: NavHead(LoginScreen,'Login Screen'),
+    // Home: NavHead(HomeScreen, 'Eastern Agencies Pvt. Ltd'),
+    // ModalCreate: NavHead(ModalSetup, 'Model Create'),
     ViewScreen: NavHead(GeneralScreen, 'Search & View'),
 
     //Setup Part

@@ -20,18 +20,23 @@ import {
     parameterDetail,
 } from '../components/utils/config';
 import { get } from '../components/services/api';
-import { CleaveCurrency, NepaliCurrency } from '../components/utils/NepaliCurrency';
+import {
+    CleaveCurrency,
+    NepaliCurrency,
+} from '../components/utils/NepaliCurrency';
 
 class General extends Component {
     state = {
         modalVisible: false,
         detailModal: false,
         busName: '',
-        final: '',
-        original: '',
+        discussedMRP: 0,
+        suitableMRP: 0,
+        Impact:0,
         discount: 0,
         tier1val: 0,
         tier2val: 0,
+        originalValues:{},
         GeneralData: null,
         Burl: 'http://batas.simriksacos.com.np/public/api/vehiclemodel',
     };
@@ -50,39 +55,109 @@ class General extends Component {
         this.setState({ loading: true });
         this.setState({ modalVisible: false });
         const { data: GeneralData } = await get(Url);
-        let tier1val = GeneralData && GeneralData['tier1'];
-        let tier2val = GeneralData && GeneralData['tier2'];
+
+        let tier1val = GeneralData && GeneralData['overhead'];
+        let tier2val = GeneralData && GeneralData['withoutOverhead'];
+        let suitableMRP = GeneralData && GeneralData['suitableMRP'];
+        let discussedMRP = GeneralData && GeneralData['suitableMRP'];
+
         this.setState({
-            GeneralData,
-            busName: val,
-            modalVisible: false,
-            loading: false,
-            original: GeneralData && GeneralData['discussedMRP'],
-            final: GeneralData && GeneralData['discussedMRP'],
-            tier1val,
-            tier2val
+                GeneralData,
+                busName: val,
+                modalVisible: false,
+                loading: false,
+                suitableMRP,
+                discussedMRP,
+                tier1val,
+                tier2val,
+                originalValues: {
+                        tier1val,
+                        tier2val,
+                        suitableMRP,
+                        discussedMRP,
+                },
         });
     };
 
     handleDiscount = val => {
-        const { original, GeneralData } = this.state;
+        const {
+            suitableMRP,
+            discussedMRP,
+            tier1val,
+            tier2val,
+        } = this.state.originalValues;
+
         let newFinal;
-        let tier1val;
-        let tier2val;
+        let Impact;
+        let tier1;
+        let tier2;
+
         if (val) {
-            newFinal = original - Number(val);
-            tier1val = Number(GeneralData['tier1']) + Number(val);
-            tier2val = Number(GeneralData['tier2']) + Number(val);
+            newFinal = Number(suitableMRP) - Number(val);
+            Impact = Number(newFinal) - Number(suitableMRP);
+            tier1 = Number(tier1val) + Number(Impact);
+            tier2 = Number(tier2val) + Number(Impact);
         } else {
-            newFinal = original;
-            tier1val = GeneralData['tier1'];
-            tier2val = GeneralData['tier2'];
+            newFinal = Number(discussedMRP);
+            Impact = 0;
+            tier1 = Number(tier1val);
+            tier2 = Number(tier2val);
         }
-        this.setState({ final: newFinal, discount: val, tier1val,tier2val });
+        this.setState({
+            discussedMRP: newFinal,
+            discount: val,
+            Impact,
+            tier1val: tier1,
+            tier2val:tier2,
+        });
+    };
+
+    handleDiscussed = val => {
+        const {
+            suitableMRP,
+            discussedMRP,
+            tier1val,
+            tier2val,
+        } = this.state.originalValues;
+
+        let newFinal;
+        let Impact;
+        let tier1;
+        let tier2;
+        let discussed ; 
+
+        if (val) {
+            console.log(val)
+            newFinal = Number(suitableMRP) - val;
+            Impact = val - Number(suitableMRP);
+            tier1 = Number(tier1val) + Number(Impact);
+            tier2 = Number(tier2val) + Number(Impact);
+            discussed = val;
+        } else {
+            newFinal = 0;
+            Impact = 0;
+            tier1 = Number(tier1val);
+            tier2 = Number(tier2val);
+            discussed = Number(discussedMRP);
+        }
+        this.setState({
+            discussedMRP: discussed,
+            discount: newFinal,
+            Impact,
+            tier1val: tier1,
+            tier2val:tier2,
+        });
     };
 
     render() {
-        const { GeneralData, final, discount,tier1val,tier2val } = this.state;
+        const {
+            GeneralData,
+            discussedMRP,
+            discount,
+            Impact,
+            tier1val,
+            tier2val,
+        } = this.state;
 
         const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 80;
         return (
@@ -121,34 +196,65 @@ class General extends Component {
                                                     {m.name}
                                                 </Text>
                                                 <Text style={styles.td}>
-                                                    {/* {GeneralData[m.id]} */}
                                                     {m.id == 'tier1'
-                                                        ? NepaliCurrency(tier1val): m.id=='tier2'?NepaliCurrency(tier2val)
-                                                        // : GeneralData[m.id]
-                                                        :NepaliCurrency(GeneralData[m.id])
-                                                    }
-                                                     
+                                                        ? NepaliCurrency(
+                                                              tier1val
+                                                          )
+                                                        : m.id == 'tier2'
+                                                        ? NepaliCurrency(
+                                                              tier2val
+                                                          )
+                                                        : NepaliCurrency(
+                                                              GeneralData[m.id]
+                                                          )}
                                                 </Text>
                                             </View>
                                         ))}
-                                        <View style={styles.tr}>
-                                            <Text style={{...styles.td,fontWeight:'bold'}}>
-                                                Discussed MRP
-                                            </Text>
-                                            <Text style={styles.td}>
-                                                {NepaliCurrency(final)}
-                                            </Text>
-                                        </View>
+                                        
                                         <View style={styles.tr}>
                                             <Text style={styles.td}>
                                                 IMPACT (Positive/Negative)
                                             </Text>
                                             <Text style={styles.td}>
-                                                {`(${NepaliCurrency(discount)})`}
+                                                {`(${NepaliCurrency(
+                                                    Impact
+                                                )})`}
                                             </Text>
                                         </View>
-                                        <View style={styles.tr}>
-                                            <Text style={styles.td}>
+                                            <View style={styles.tr}>
+                                            <Text
+                                                style={{
+                                                    ...styles.td,
+                                                    fontWeight: 'bold',
+                                                }}
+                                            >
+                                                Discussed MRP
+                                            </Text>
+                                            <View
+                                                style={{
+                                                    ...styles.td,
+                                                    paddingBottom: 0,
+                                                    paddingTop: 4,
+                                                }}
+                                            >
+                                                <TextInput
+                                                    name={'final'}
+                                                    style={styles.input}
+                                                    value={discussedMRP}
+                                                    keyboardType="numeric"
+                                                    onChangeText={text => {
+                                                        this.handleDiscussed(
+                                                                text
+                                                        );
+                                                    }}
+                                                />
+                                            </View>
+                                        </View>
+                                            <View style={styles.tr}>
+                                            <Text style={{
+                                                    ...styles.td,
+                                                    fontWeight: 'bold',
+                                                }}>
                                                 Discount
                                             </Text>
                                             <View
@@ -161,6 +267,7 @@ class General extends Component {
                                                 <TextInput
                                                     name={'discount'}
                                                     style={styles.input}
+                                                    value={NepaliCurrency(discount) || 0}
                                                     keyboardType="numeric"
                                                     onChangeText={text => {
                                                         this.handleDiscount(
@@ -354,16 +461,23 @@ class General extends Component {
                                                             {GeneralData[
                                                                 `${m.id}V`
                                                             ]
-                                                                ? NepaliCurrency(GeneralData[
-                                                                      `${m.id}V`
-                                                                  ])
-                                                                : m.id == 'exRate'
-                                                                ? NepaliCurrency(GeneralData[
-                                                                      'npr'
-                                                                  ])
-                                                                : NepaliCurrency(GeneralData[
-                                                                      m.id
-                                                                  ])}
+                                                                ? NepaliCurrency(
+                                                                      GeneralData[
+                                                                          `${m.id}V`
+                                                                      ]
+                                                                  )
+                                                                : m.id ==
+                                                                  'exRate'
+                                                                ? NepaliCurrency(
+                                                                      GeneralData[
+                                                                          'npr'
+                                                                      ]
+                                                                  )
+                                                                : NepaliCurrency(
+                                                                      GeneralData[
+                                                                          m.id
+                                                                      ]
+                                                                  )}
                                                         </Text>
                                                     </View>
                                                 ))}
