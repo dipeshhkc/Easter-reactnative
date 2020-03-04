@@ -82,7 +82,12 @@ export const parameter = [
         row: true,
         default: ' ',
     },
-    { name: 'Exchange Rate', type: 'value', id: 'exRate', default: 1.6015 },
+    {
+        name: 'Exchange Rate',
+        type: 'value',
+        id: 'exRate',
+        default: 1.6015,
+    },
     {
         name: 'Custom Duty',
         type: 'icon',
@@ -137,7 +142,12 @@ export const parameter = [
         row: true,
         default: '3',
     },
-    { name: 'PDI, Driver & Fuel', type: 'value', id: 'pdi', default: ' ' },
+    {
+        name: 'PDI, Driver & Fuel',
+        type: 'value',
+        id: 'pdi',
+        default: ' ',
+    },
     {
         name: 'Transit Insurance (1 Week)',
         type: 'value',
@@ -189,17 +199,17 @@ export const parameter = [
         default: ' ',
     },
     {
-        name: 'Interest',
+        name: 'Interest on Investment',
         type: 'icon',
         icon: 'percent',
         iconType: 'Feather',
-        id: 'interest',
+        id: 'interestInvest',
         default: '15',
     },
     {
-        name: 'Interest on Investment',
+        name: 'Credit Period',
         type: 'value',
-        id: 'interestInvest',
+        id: 'credit',
         default: '3',
     },
     {
@@ -219,7 +229,12 @@ export const parameter = [
         id: 'advProm',
         default: '2',
     },
-    { name: 'Staff Incentives', type: 'value', id: 'staff', default: ' ' },
+    {
+        name: 'Staff Incentives',
+        type: 'value',
+        id: 'staff',
+        default: ' ',
+    },
     {
         name: "Dealer's Margin",
         type: 'icon',

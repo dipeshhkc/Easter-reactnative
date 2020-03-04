@@ -1,5 +1,6 @@
 import { Item, Input, Label, Picker, Icon } from 'native-base';
 import React from 'react';
+import { Text } from 'react-native';
 
 export const generateJSX = (
     type,
@@ -31,7 +32,16 @@ export const generateJSX = (
         case 'icon':
             return (
                 <Item floatingLabel>
-                    <Label>{label}</Label>
+                    <Label>
+                        <Text>{label}</Text>
+                        (
+                        <Icon
+                            style={{ fontSize: 14, marginLeft: 5 }}
+                            name={icon}
+                            type={iconType}
+                        />
+                        )
+                    </Label>
                     <Input
                         name={name}
                         keyboardType="numeric"
@@ -39,11 +49,6 @@ export const generateJSX = (
                         onChangeText={text => {
                             setFieldValue(name, text);
                         }}
-                    />
-                    <Icon
-                        style={{ fontSize: 18 }}
-                        name={icon}
-                        type={iconType}
                     />
                 </Item>
             );
