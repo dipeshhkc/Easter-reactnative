@@ -30,7 +30,7 @@ class ModelTable extends Component {
 						</TouchableHighlight>
 					))}
 
-					<DataTable.Pagination
+					{/* <DataTable.Pagination
 						page={this.state.currentPage}
 						rows={10}
 						numberOfPages={this.props.data.length / 10}
@@ -38,7 +38,7 @@ class ModelTable extends Component {
 							this.onPageChange(page);
 						}}
 						label={`${this.state.currentPage} of 3`}
-					/>
+					/> */}
 				</DataTable>
 			</View>
 		);
