@@ -19,6 +19,7 @@ class ModalSetup extends Component {
 			ModelData: null,
 			MainData: null,
 			errors: {},
+			Mainloading: false,
 			loading: true,
 		};
 	}
@@ -54,16 +55,17 @@ class ModalSetup extends Component {
 
 	valueSelected = async val => {
 		try {
-			this.setState({ optionVal: val, loading: true });
+			this.setState({ optionVal: val, Mainloading: true });
 			const { data: MainData } = await getModel(val);
-			this.setState({ MainData: MainData.data, loading: false });
+			this.setState({ MainData: MainData.data, Mainloading: false });
 		} catch (err) {
 			this.setState({ errors: err });
 		}
 	};
 
 	render() {
-		const { MainData, optionVal, ModelData, loading } = this.state;
+		const { MainData, optionVal, ModelData, loading, Mainloading } = this.state;
+		console.log(MainData);
 		let ModelSetupFormComponent = props => {
 			const { handleChange, values, errors, touched, handleSubmit, setFieldValue, isSubmitting } = props.props;
 			return (
@@ -87,17 +89,26 @@ class ModalSetup extends Component {
 							<View style={styles.mainscreen}>
 								<ActivityIndicator size={40} color={'#0c4ca3'} />
 							</View>
-						) : ModelData ? (
-							<>
-								<ModelDropdown options={ModelData} default={optionVal} handleChange={val => this.valueSelected(val)} />
-								<Text>{'\n'}</Text>
-							</>
-						) : MainData ? (
-							<MyFormik history={this.props.history} navigation={this.props.navigation} Furl={this.Furl} Burl={this.Burl} process={true} initial={MainData}>
-								{props => <ModelSetupFormComponent props={props} />}
-							</MyFormik>
 						) : (
-							<Text style={styles.not_available_text}>Data Not Available</Text>
+							<>
+								{ModelData && (
+									<>
+										<ModelDropdown options={ModelData} default={optionVal} handleChange={val => this.valueSelected(val)} />
+										<Text>{'\n'}</Text>
+									</>
+								)}
+								{Mainloading ? (
+									<View style={styles.mainscreen}>
+										<ActivityIndicator size={40} color={'#0c4ca3'} />
+									</View>
+								) : MainData ? (
+									<MyFormik history={this.props.history} navigation={this.props.navigation} Furl={this.Furl} Burl={this.Burl} process={true} initial={MainData && MainData}>
+										{props => <ModelSetupFormComponent props={props} />}
+									</MyFormik>
+								) : (
+									<Text style={styles.not_available_text}>Data Not Available! Please Select Another Model</Text>
+								)}
+							</>
 						)}
 					</View>
 				</ScrollView>
@@ -132,6 +143,9 @@ const styles = StyleSheet.create({
 	not_available_text: {
 		justifyContent: 'center',
 		alignItems: 'center',
+		margin: 20,
+		fontSize: 16,
+		fontWeight: '700',
 	},
 });
 
