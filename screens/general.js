@@ -182,7 +182,7 @@ class General extends Component {
             ModelData,
             loading
         } = this.state;
-        
+
 
         const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 80;
         return (
@@ -397,9 +397,8 @@ class General extends Component {
                                         </Text>
                                             </TouchableNativeFeedback>
                                         </View>
-                                        <View style={styles.modalDetail}>
-
                                             <ScrollView>
+                                        <View style={styles.modalDetail}>
                                                 {ModelData &&
                                                     ModelData.map((m, index) => (
                                                         <TouchableNativeFeedback
@@ -424,8 +423,8 @@ class General extends Component {
                                                             </View>
                                                         </TouchableNativeFeedback>
                                                     ))}
+                                            </View>
                                             </ScrollView>
-                                        </View>
                                     </View>
                                 </Modal>
 
@@ -642,15 +641,13 @@ const styles = StyleSheet.create({
 	},
     modalDetail: {
         paddingTop: 10,
-		paddingBottom: 30,
+		paddingBottom: 70,
 	},
 	modalDetailWrap: {
 		paddingVertical: 25,
 		paddingHorizontal: 2,
 		borderBottomWidth: 1,
 		borderBottomColor: '#ECECEC',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
 	},
 	input: {
 		margin: 0,
