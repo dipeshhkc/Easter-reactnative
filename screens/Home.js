@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
                 alignItems: 'center',
         },
         IconWrap: {
-                backgroundColor: '#0c4ca3',
+                backgroundColor: '#b80f0a',
                 height: 60,
                 width: 60,
                 borderRadius: 50,

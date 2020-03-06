@@ -9,12 +9,12 @@ export const get = async url => {
 	} catch (err) {}
 };
 
-export const post = async (url, body, Furl = null, history = null, successLogin = null, reload = null, navigation = null, actions = null, onSuccess = null) => {
+export const post = async (url, body, Furl = null, history = null, successLogin = null, reload = null, navigation = null, actions = null, onSuccess = null, onError = null) => {
 	try {
 		let received = await axios.post(url, body);
 
 		if (!received.data.error) {
-			alert('Successfull');
+			alert('Success');
 			actions && actions.setSubmitting(false);
 			navigation && navigation.navigate('ViewScreen');
 			successLogin && (await successLogin(received.data.data));
@@ -23,11 +23,13 @@ export const post = async (url, body, Furl = null, history = null, successLogin 
 			history && Furl && history.push(Furl);
 			reload && reload();
 		} else {
-			alert('Error');
+			alert(received.data.error);
 			actions && actions.setSubmitting(false);
+			onError(true);
 		}
 	} catch (err) {
-		alert('Error');
+		alert('Error', err);
+		onError(true);
 	}
 };
 

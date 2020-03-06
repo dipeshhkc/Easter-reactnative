@@ -105,7 +105,7 @@ export class MyFormik extends Component {
 						let values = { ...process2 };
 					}
 
-					post(this.props.Burl, values, this.props.Furl, this.props.history, this.successLogin, this.props.reload, this.props.navigation, actions, this.props.onSuccess);
+					post(this.props.Burl, values, this.props.Furl, this.props.history, this.successLogin, this.props.reload, this.props.navigation, actions, this.props.onSuccess, this.props.onError);
 				}}
 			>
 				{props => <View onSubmit={props.handleSubmit}>{this.props.children({ ...props, ...this.state })}</View>}

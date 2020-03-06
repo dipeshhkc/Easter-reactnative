@@ -22,7 +22,7 @@ const NavHead = (Name, Title) => {
 		navigationOptions: {
 			headerTitleAlign: 'center',
 			headerStyle: {
-				backgroundColor: '#0c4ca3',
+				backgroundColor: '#a72331',
 			},
 			headerTintColor: '#fff',
 			headerTitleStyle: {

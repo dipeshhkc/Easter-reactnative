@@ -29,12 +29,16 @@ class LoginScreen extends Component {
 		this.setState({ loading: false });
 		this.props.navigation.navigate('Home');
 	};
+
+	Error = () => {
+		this.setState({ loading: false });
+	};
 	Burl = 'http://batas.simriksacos.com.np/public/api/login';
 
 	render() {
 		return (
 			<KeyboardAvoidingView behavior={'padding'} style={styles.container}>
-				<MyFormik onSuccess={this.success} Burl={this.Burl}>
+				<MyFormik onSuccess={this.success} Burl={this.Burl} onError={this.Error}>
 					{props => (
 						<Form>
 							<View style={{ alignItems: 'center', padding: 20 }}>
