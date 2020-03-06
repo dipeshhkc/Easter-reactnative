@@ -8,17 +8,18 @@ import { modelCollection, parameter } from '../components/utils/config';
 import MyFormik from '../components/myFormik';
 import ModelDropdown from './Setup/modelDropdown';
 import { getModel } from '../components/services/addModelService';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import { bURL } from '../components/app-config';
 
 class ModalSetup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			optionVal: '10.90 L 3X2 SCL BUS',
+			optionVal: '',
 			ModelData: null,
+			MainData: null,
 			errors: {},
-			loading: false,
+			loading: true,
 		};
 	}
 
@@ -26,37 +27,43 @@ class ModalSetup extends Component {
 		this.setState({ [option]: value });
 	};
 
-	componentDidMount = () => {
-		dropdownFormat(modelCollection, 'modelOption', this.setStateFromOtherFile);
+	componentDidMount = async () => {
+		try {
+			const { data: ModelData } = await getModel();
+			let optionVal = ModelData.data[0];
+			this.setState({ optionVal, ModelData: ModelData.data, loading: false });
+		} catch (err) {
+			this.setState({ errors: err });
+		}
 	};
 
-	Burl = `${bURL}api/vehiclemodel`
+	Burl = `${bURL}api/vehiclemodel`;
 
 	default = {};
 
 	generateForm = (values, handleChange, setFieldValue) => {
 		let FormGroup = [];
-		return parameter.map((each,ind) => {
+		return parameter.map((each, ind) => {
 			if (each.default != '') {
 				this.default[each.id] = each.default;
 			}
 
-			return generateJSX(each.type, each.name, each.name, each.id, values, handleChange, each.icon, each.iconType, setFieldValue, each.id,ind);
+			return generateJSX(each.type, each.name, each.name, each.id, values, handleChange, each.icon, each.iconType, setFieldValue, each.id, ind);
 		});
 	};
 
 	valueSelected = async val => {
 		try {
-			this.setState(prevState => ({ optionVal: val, loading: !prevState.loading }));
-			const { data: ModelData } = await getModel(val);
-			this.setState(prevState => ({ ModelData: ModelData.data, loading: !prevState.loading }));
+			this.setState({ optionVal: val, loading: true });
+			const { data: MainData } = await getModel(val);
+			this.setState({ MainData: MainData.data, loading: false });
 		} catch (err) {
 			this.setState({ errors: err });
 		}
 	};
 
 	render() {
-		const { modelOption, optionVal, ModelData, loading } = this.state;
+		const { MainData, optionVal, ModelData, loading } = this.state;
 		let ModelSetupFormComponent = props => {
 			const { handleChange, values, errors, touched, handleSubmit, setFieldValue, isSubmitting } = props.props;
 			return (
@@ -76,28 +83,32 @@ class ModalSetup extends Component {
 			<KeyboardAwareScrollView>
 				<ScrollView>
 					<View style={styles.screen}>
-						<ModelDropdown options={modelOption} default={optionVal} handleChange={val => this.valueSelected(val)} />
-						<Text>{'\n'}</Text>
 						{loading ? (
 							<View style={styles.mainscreen}>
 								<ActivityIndicator size={40} color={'#0c4ca3'} />
 							</View>
+						) : ModelData ? (
+							<>
+								<ModelDropdown options={ModelData} default={optionVal} handleChange={val => this.valueSelected(val)} />
+								<Text>{'\n'}</Text>
+							</>
+						) : MainData ? (
+							<MyFormik history={this.props.history} navigation={this.props.navigation} Furl={this.Furl} Burl={this.Burl} process={true} initial={MainData}>
+								{props => <ModelSetupFormComponent props={props} />}
+							</MyFormik>
 						) : (
-							ModelData && (
-								<MyFormik history={this.props.history} navigation={this.props.navigation} Furl={this.Furl} Burl={this.Burl} process={true} initial={ModelData}>
-									{props => <ModelSetupFormComponent props={props} />}
-								</MyFormik>
-							)
+							<Text style={styles.not_available_text}>Data Not Available</Text>
 						)}
 					</View>
 				</ScrollView>
 			</KeyboardAwareScrollView>
-		)
+		);
 	}
 }
 
 const styles = StyleSheet.create({
 	screen: {
+		flex: 1,
 		margin: 10,
 		padding: 5,
 		backgroundColor: '#fff',
@@ -117,6 +128,10 @@ const styles = StyleSheet.create({
 		fontWeight: '700',
 		letterSpacing: 0.5,
 		color: '#0c4ca3',
+	},
+	not_available_text: {
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 });
 

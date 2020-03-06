@@ -10,6 +10,7 @@ import {
     TextInput,
     ScrollView,
     KeyboardAvoidingView,
+    ActivityIndicator
 } from 'react-native';
 import { Input, Spinner } from 'native-base';
 import { Platform, AsyncStorage } from 'react-native';
@@ -25,12 +26,15 @@ import {
     NepaliCurrency,
 } from '../components/utils/NepaliCurrency';
 import { bURL } from '../components/app-config';
+import { getModel } from '../components/services/addModelService';
 
 class General extends Component {
     state = {
         modalVisible: false,
         detailModal: false,
         busName: '',
+        ModelData: null,
+        errors: {},
         discussedMRP: 0,
         suitableMRP: 0,
         Impact:0,
@@ -39,14 +43,22 @@ class General extends Component {
         tier2val: 0,
         originalValues:{},
         GeneralData: null,
+        loading: true,
         Role: '',
         Burl: `${bURL}api/vehiclemodel`,
     };
 
     async componentDidMount() {
-        const value = await AsyncStorage.getItem('user');
-        if (value != null) {
-            this.setState({ Role: JSON.parse(value).role });
+        try {
+            const { data: ModelData } = await getModel();
+            const value = await AsyncStorage.getItem('user');
+            if (value != null) {
+                this.setState({ Role: JSON.parse(value).role, ModelData: ModelData.data, loading: false });
+            }
+        }
+        catch (err) {
+            this.setState({errors: err});
+            alert('Errors')
         }
     }
 
@@ -167,7 +179,9 @@ class General extends Component {
             Impact,
             tier1val,
             tier2val,
-            Role
+            Role, 
+            ModelData,
+            loading
         } = this.state;
         
 
@@ -177,72 +191,79 @@ class General extends Component {
                 behavior="position"
                 keyboardVerticalOffset={keyboardVerticalOffset}
             >
-                <ScrollView>
-                    <View style={styles.container}>
-                        <TouchableHighlight
-                            style={styles.th1}
-                            onPress={() => {
-                                this.onModalClick();
-                            }}
-                        >
-                            <Text style={styles.modalButton}>Select Model</Text>
-                        </TouchableHighlight>
-                        {GeneralData ? (
-                            <View>
-                                <View style={styles.table}>
-                                    <View style={styles.thead}>
-                                        <View style={styles.tr}>
-                                            <Text style={styles.th}>
-                                                Details
+                
+                        {loading ? (
+                    <View style={styles.mainscreen}>
+                        <ActivityIndicator size={40} color={'#0c4ca3'} />
+                    </View>
+                        ) : (
+                        <ScrollView>
+                        <View style={styles.container}>
+                                <TouchableHighlight
+                                    style={styles.th1}
+                                    onPress={() => {
+                                        this.onModalClick();
+                                    }}
+                                >
+                                    <Text style={styles.modalButton}>Select Model</Text>
+                                </TouchableHighlight>
+                                {GeneralData ? (
+                                    <View>
+                                        <View style={styles.table}>
+                                            <View style={styles.thead}>
+                                                <View style={styles.tr}>
+                                                    <Text style={styles.th}>
+                                                        Details
                                             </Text>
-                                            <Text style={styles.th}>
-                                                {this.state.busName ||
-                                                    'Bus Name'}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                    {Role === 'admin' ?(
-                                        <View style={styles.tbody}>
-                                            {tablePatameter.map(m => (
-                                                <View style={styles.tr} key={m.id}>
-                                                    <Text style={styles.td}>
-                                                        {m.name}
-                                                    </Text>
-                                                    <Text style={styles.td}>
-                                                        {m.id == 'tier1'
-                                                            ? NepaliCurrency(
-                                                                tier1val
-                                                            )
-                                                            : m.id == 'tier2'
-                                                                ? NepaliCurrency(
-                                                                    tier2val
-                                                                )
-                                                                : NepaliCurrency(
-                                                                    GeneralData[m.id]
-                                                                )}
+                                                    <Text style={styles.th}>
+                                                        {this.state.busName ||
+                                                            'Model Name'}
                                                     </Text>
                                                 </View>
-                                            ))}
-                                        
-                                            <View style={styles.tr}>
-                                                <Text style={styles.td}>
-                                                    IMPACT (+ve/-ve)
-                                            </Text>
-                                                <Text style={styles.td}>
-                                                    
-                                                       { Math.sign(Impact)==1?Impact:`(${Math.abs(Impact)})`}
-                                                         </Text>
                                             </View>
-                                            <View style={styles.tr}>
-                                                <Text
-                                                    style={{
-                                                        ...styles.td,
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Discussed MRP
+                                            {Role === 'admin' ? (
+                                                <View style={styles.tbody}>
+                                                    {tablePatameter.map(m => (
+                                                        <View style={styles.tr} key={m.id}>
+                                                            <Text style={styles.td}>
+                                                                {m.name}
+                                                            </Text>
+                                                            <Text style={styles.td}>
+                                                                {m.id == 'tier1'
+                                                                    ? NepaliCurrency(
+                                                                        tier1val
+                                                                    )
+                                                                    : m.id == 'tier2'
+                                                                        ? NepaliCurrency(
+                                                                            tier2val
+                                                                        )
+                                                                        : NepaliCurrency(
+                                                                            GeneralData[m.id]
+                                                                        )}
+                                                            </Text>
+                                                        </View>
+                                                    ))}
+                                        
+                                                    <View style={styles.tr}>
+                                                        <Text style={styles.td}>
+                                                            IMPACT (Positive/Negative)
                                             </Text>
-                                                <View
+                                            <Text style={styles.td}>
+                                                    
+                                                    { Math.sign(Impact)==1?Impact:`(${Math.abs(Impact)})`}
+                                                      </Text>
+                                                    </View>
+                                                    <View style={styles.tr}>
+                                                        <Text
+                                                            style={{
+                                                                ...styles.td,
+                                                                fontWeight: 'bold',
+                                                            }}
+                                                        >
+                                                            Discussed MRP
+                                            </Text>
+                                                        
+                                            <View
                                                     style={{
                                                         ...styles.td,
                                                         paddingBottom: 0,
@@ -291,344 +312,352 @@ class General extends Component {
                                                 </View>
                                             </View>
                                         </View>)
-                                    : (
-                                        <View style={styles.tbody}>
-                                                <View style={styles.tr}>
-                                                    <Text style={styles.td}>
-                                                        Invoice value in INR
+                                                : (
+                                                    <View style={styles.tbody}>
+                                                        <View style={styles.tr}>
+                                                            <Text style={styles.td}>
+                                                                Invoice value in INR
                                                     </Text>
-                                                    <Text style={styles.td}>
-                                                        {GeneralData['inr']}
-                                                    </Text>
-                                                </View>
-                                                <View style={styles.tr}>
-                                                    <Text style={styles.td}>
-                                                        Value in NPR
-                                                    </Text>
-                                                    <Text style={styles.td}>
-                                                        {GeneralData['exRate']}
-                                                    </Text>
-                                                </View>
-                                                <View style={styles.tr}>
-                                                    <Text style={styles.td}>
-                                                        TIER 2 (NP)
-                                                    </Text>
-                                                    <Text style={styles.td}>
-                                                        {GeneralData['tier2']}
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                    )}
-                                </View>
-                                {Role === 'admin' && 
-                                <TouchableHighlight
-                                    style={styles.th1}
-                                    onPress={() => {
-                                        this.onDetailModal();
-                                    }}
-                                >
-                                    <Text style={styles.modalButton}>
-                                        More Details
-                                    </Text>
-                                </TouchableHighlight>
-                                }
-                            </View>
-                        ) : (
-                            <View>
-                                {!this.state.loading && (
-                                    <Text style={styles.notAvailableText}>
-                                        Data Not Available.Please Select Another
-                                        Model
-                                    </Text>
-                                )}
-                                {this.state.loading && (
-                                    <Spinner color="green" />
-                                )}
-                            </View>
-                        )}
-                        <Modal
-                            animationType="slide"
-                            transparent={false}
-                            visible={this.state.modalVisible}
-                            onRequestClose={() => {
-                                this.onModalClick();
-                            }}
-                        >
-                            <View style={styles.modalWrapper}>
-                                <View style={styles.modalContainer}>
-                                    <TouchableNativeFeedback
-                                        onPress={() => {
-                                            this.onModalClick();
-                                        }}
-                                    >
-                                        <Text
-                                            style={{
-                                                ...styles.modalButton,
-                                                backgroundColor: 'red',
-                                                width: '20%',
-                                                marginBottom: 10,
-                                            }}
-                                        >
-                                            Close
-                                        </Text>
-                                    </TouchableNativeFeedback>
-                                </View>
-                                <View style={styles.modalDetail}>
-                                    <ScrollView>
-                                        {modelCollection &&
-                                            modelCollection.map((m, index) => (
-                                                <TouchableNativeFeedback
-                                                    onPress={() => {
-                                                        this.onSelected(m);
-                                                    }}
-                                                    key={index}
-                                                >
-                                                    <View
-                                                        style={
-                                                            styles.modalDetailWrap
-                                                        }
-                                                    >
-                                                        <Text
-                                                            style={{
-                                                                fontWeight:
-                                                                    'bold',
-                                                            }}
-                                                        >
-                                                            {m}
-                                                        </Text>
-                                                    </View>
-                                                </TouchableNativeFeedback>
-                                            ))}
-                                    </ScrollView>
-                                </View>
-                            </View>
-                        </Modal>
-
-                        {Role === 'admin' &&
-                            <Modal
-                                animationType="slide"
-                                transparent={false}
-                                visible={this.state.detailModal}
-                                onRequestClose={() => {
-                                    this.onDetailModal();
-                                }}
-                            >
-                                <View style={styles.detailmodalWrapper}>
-                                    <ScrollView>
-                                        <TouchableNativeFeedback
-                                            onPress={() => {
-                                                this.onDetailModal();
-                                            }}
-                                        >
-                                            <Text
-                                                style={{
-                                                    ...styles.modalButton,
-                                                    backgroundColor: 'red',
-                                                    width: '20%',
-                                                    marginBottom: 10,
-                                                    marginLeft: 10,
-                                                }}
-                                            >
-                                                Close
-                                        </Text>
-                                        </TouchableNativeFeedback>
-                                        {GeneralData && (
-                                            <View style={styles.table}>
-                                                <View style={styles.thead}>
-                                                    <View style={styles.tr}>
-                                                        <Text
-                                                            style={{
-                                                                ...styles.th,
-                                                                width: '33.33%',
-                                                            }}
-                                                        >
-                                                            Details
-                                                    </Text>
-                                                        <Text
-                                                            style={{
-                                                                ...styles.th,
-                                                                width: '33.33%',
-                                                            }}
-                                                        >
-                                                            CUR / %
-                                                    </Text>
-                                                        <Text
-                                                            style={{
-                                                                ...styles.th,
-                                                                width: '33.33%',
-                                                            }}
-                                                        >
-                                                            {this.state.busName ||
-                                                                'Model Name'}
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                                <View style={styles.tbody}>
-                                                    {parameterDetail.map(m => (
-                                                        <View
-                                                            style={styles.tr}
-                                                            key={m.id}
-                                                        >
-                                                            <Text
-                                                                style={{
-                                                                    ...styles.td,
-                                                                    width: '33.33%',
-                                                                }}
-                                                            >
-                                                                {m.name}
-                                                            </Text>
-                                                            <Text
-                                                                style={{
-                                                                    ...styles.td,
-                                                                    width: '33.33%',
-                                                                }}
-                                                            >
-                                                                {GeneralData[
-                                                                    `${m.id}V`
-                                                                ]
-                                                                    ? GeneralData[
-                                                                    m.id
-                                                                    ]
-                                                                    : m.id ==
-                                                                        'exRate'
-                                                                        ? GeneralData[
-                                                                        'exRate'
-                                                                        ]
-                                                                        : ' '}
-                                                            </Text>
-                                                            <Text
-                                                                style={{
-                                                                    ...styles.td,
-                                                                    width: '33.33%',
-                                                                }}
-                                                            >
-                                                                {GeneralData[
-                                                                    `${m.id}V`
-                                                                ]
-                                                                    ? NepaliCurrency(
-                                                                        GeneralData[
-                                                                        `${m.id}V`
-                                                                        ]
-                                                                    )
-                                                                    : m.id ==
-                                                                        'exRate'
-                                                                        ? NepaliCurrency(
-                                                                            GeneralData[
-                                                                            'npr'
-                                                                            ]
-                                                                        )
-                                                                        : NepaliCurrency(
-                                                                            GeneralData[
-                                                                            m.id
-                                                                            ]
-                                                                        )}
+                                                            <Text style={styles.td}>
+                                                                {GeneralData['inr']}
                                                             </Text>
                                                         </View>
+                                                        <View style={styles.tr}>
+                                                            <Text style={styles.td}>
+                                                                Value in NPR
+                                                    </Text>
+                                                            <Text style={styles.td}>
+                                                                {GeneralData['exRate']}
+                                                            </Text>
+                                                        </View>
+                                                        <View style={styles.tr}>
+                                                            <Text style={styles.td}>
+                                                                TIER 2 (NP)
+                                                    </Text>
+                                                            <Text style={styles.td}>
+                                                                {GeneralData['tier2']}
+                                                            </Text>
+                                                        </View>
+                                                    </View>
+                                                )}
+                                        </View>
+                                        {Role === 'admin' &&
+                                            <TouchableHighlight
+                                                style={styles.th1}
+                                                onPress={() => {
+                                                    this.onDetailModal();
+                                                }}
+                                            >
+                                                <Text style={styles.modalButton}>
+                                                    More Details
+                                    </Text>
+                                            </TouchableHighlight>
+                                        }
+                                    </View>
+                                ) : (
+                                        <View>
+                                            {!this.state.loading && (
+                                                <Text style={styles.notAvailableText}>
+                                                    Data Not Available.Please Select Another
+                                                    Model
+                                    </Text>
+                                            )}
+                                            {this.state.loading && (
+                                                <Spinner color="green" />
+                                            )}
+                                        </View>
+                                    )}
+                                <Modal
+                                    animationType="slide"
+                                    transparent={false}
+                                    visible={this.state.modalVisible}
+                                    onRequestClose={() => {
+                                        this.onModalClick();
+                                    }}
+                                >
+                                    <View style={styles.modalWrapper}>
+                                        <View style={styles.modalContainer}>
+                                            <TouchableNativeFeedback
+                                                onPress={() => {
+                                                    this.onModalClick();
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        ...styles.modalButton,
+                                                        backgroundColor: 'red',
+                                                        width: '20%',
+                                                        marginBottom: 10,
+                                                    }}
+                                                >
+                                                    Close
+                                        </Text>
+                                            </TouchableNativeFeedback>
+                                        </View>
+                                        <View style={styles.modalDetail}>
+
+                                            <ScrollView>
+                                                {ModelData &&
+                                                    ModelData.map((m, index) => (
+                                                        <TouchableNativeFeedback
+                                                            onPress={() => {
+                                                                this.onSelected(m.model);
+                                                            }}
+                                                            key={m.id}
+                                                        >
+                                                            <View
+                                                                style={
+                                                                    styles.modalDetailWrap
+                                                                }
+                                                            >
+                                                                <Text
+                                                                    style={{
+                                                                        fontWeight:
+                                                                            'bold',
+                                                                    }}
+                                                                >
+                                                                    {m.model}
+                                                                </Text>
+                                                            </View>
+                                                        </TouchableNativeFeedback>
                                                     ))}
-                                                </View>
-                                            </View>
-                                        )}
-                                    </ScrollView>
-                                </View>
-                            </Modal>
-                        }
-                    </View>
-                </ScrollView>
+                                            </ScrollView>
+                                        </View>
+                                    </View>
+                                </Modal>
+
+                                {Role === 'admin' &&
+                                    <Modal
+                                        animationType="slide"
+                                        transparent={false}
+                                        visible={this.state.detailModal}
+                                        onRequestClose={() => {
+                                            this.onDetailModal();
+                                        }}
+                                    >
+                                        <View style={styles.detailmodalWrapper}>
+                                            <ScrollView>
+                                                <TouchableNativeFeedback
+                                                    onPress={() => {
+                                                        this.onDetailModal();
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={{
+                                                            ...styles.modalButton,
+                                                            backgroundColor: 'red',
+                                                            width: '20%',
+                                                            marginBottom: 10,
+                                                            marginLeft: 10,
+                                                        }}
+                                                    >
+                                                        Close
+                                        </Text>
+                                                </TouchableNativeFeedback>
+                                                {GeneralData && (
+                                                    <View style={styles.table}>
+                                                        <View style={styles.thead}>
+                                                            <View style={styles.tr}>
+                                                                <Text
+                                                                    style={{
+                                                                        ...styles.th,
+                                                                        width: '33.33%',
+                                                                    }}
+                                                                >
+                                                                    Details
+                                                    </Text>
+                                                                <Text
+                                                                    style={{
+                                                                        ...styles.th,
+                                                                        width: '33.33%',
+                                                                    }}
+                                                                >
+                                                                    CUR / %
+                                                    </Text>
+                                                                <Text
+                                                                    style={{
+                                                                        ...styles.th,
+                                                                        width: '33.33%',
+                                                                    }}
+                                                                >
+                                                                    {this.state.busName ||
+                                                                        'Model Name'}
+                                                                </Text>
+                                                            </View>
+                                                        </View>
+                                                        <View style={styles.tbody}>
+                                                            {parameterDetail.map(m => (
+                                                                <View
+                                                                    style={styles.tr}
+                                                                    key={m.id}
+                                                                >
+                                                                    <Text
+                                                                        style={{
+                                                                            ...styles.td,
+                                                                            width: '33.33%',
+                                                                        }}
+                                                                    >
+                                                                        {m.name}
+                                                                    </Text>
+                                                                    <Text
+                                                                        style={{
+                                                                            ...styles.td,
+                                                                            width: '33.33%',
+                                                                        }}
+                                                                    >
+                                                                        {GeneralData[
+                                                                            `${m.id}V`
+                                                                        ]
+                                                                            ? GeneralData[
+                                                                            m.id
+                                                                            ]
+                                                                            : m.id ==
+                                                                                'exRate'
+                                                                                ? GeneralData[
+                                                                                'exRate'
+                                                                                ]
+                                                                                : ' '}
+                                                                    </Text>
+                                                                    <Text
+                                                                        style={{
+                                                                            ...styles.td,
+                                                                            width: '33.33%',
+                                                                        }}
+                                                                    >
+                                                                        {GeneralData[
+                                                                            `${m.id}V`
+                                                                        ]
+                                                                            ? NepaliCurrency(
+                                                                                GeneralData[
+                                                                                `${m.id}V`
+                                                                                ]
+                                                                            )
+                                                                            : m.id ==
+                                                                                'exRate'
+                                                                                ? NepaliCurrency(
+                                                                                    GeneralData[
+                                                                                    'npr'
+                                                                                    ]
+                                                                                )
+                                                                                : NepaliCurrency(
+                                                                                    GeneralData[
+                                                                                    m.id
+                                                                                    ]
+                                                                                )}
+                                                                    </Text>
+                                                                </View>
+                                                            ))}
+                                                        </View>
+                                                    </View>
+                                                )}
+                                            </ScrollView>
+                                        </View>
+                                    </Modal>
+                                    }
+                            </View>
+                        </ScrollView>
+                    )}
             </KeyboardAvoidingView>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    table: {
-        marginHorizontal: 10,
-        marginBottom: 10,
-        borderLeftWidth: 1,
-        borderLeftColor: '#ECECEC',
-        borderTopWidth: 1,
-        borderTopColor: '#ECECEC',
-        borderRadius: 2,
-    },
-    thead: {
-        textAlign: 'left',
-    },
-    tr: {
-        flexDirection: 'row',
-    },
-    th: {
-        fontWeight: 'bold',
-        width: '50%',
-        paddingVertical: 10,
-        paddingHorizontal: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ECECEC',
-        borderRightWidth: 1,
-        borderRightColor: '#ECECEC',
-    },
-    th1: {
-        width: Dimensions.get('window').width - 20,
-        margin: 10,
-        // borderBottomWidth: 1,
-        // borderBottomColor: '#ECECEC',
-        // borderRightWidth: 1,
-        // borderRightColor: '#ECECEC',
-    },
-    td: {
-        textAlign: 'left',
-        width: '50%',
-        padding: 10,
-        fontSize: 14,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ECECEC',
-        borderRightWidth: 1,
-        borderRightColor: '#ECECEC',
-    },
-    modalButton: {
-        backgroundColor: '#0c4ca3',
-        color: '#fff',
-        textAlign: 'center',
-        borderRadius: 5,
-        padding: 11,
-        justifyContent: 'center',
-        alignItems: 'center',
-        letterSpacing: 1,
-        fontWeight: 'bold',
-    },
-    modalWrapper: {
-        paddingHorizontal: 20,
-        marginTop: 20,
-    },
-    detailmodalWrapper: {
-        marginTop: 20,
-    },
-    modalContainer: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#000',
-    },
+	mainscreen: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	container: {
+		flex: 1,
+		backgroundColor: '#fff',
+	},
+	table: {
+		marginHorizontal: 10,
+		marginBottom: 10,
+		borderLeftWidth: 1,
+		borderLeftColor: '#ECECEC',
+		borderTopWidth: 1,
+		borderTopColor: '#ECECEC',
+		borderRadius: 2,
+	},
+	thead: {
+		textAlign: 'left',
+	},
+	tr: {
+		flexDirection: 'row',
+	},
+	th: {
+		fontWeight: 'bold',
+		width: '50%',
+		paddingVertical: 10,
+		paddingHorizontal: 10,
+		borderBottomWidth: 1,
+		borderBottomColor: '#ECECEC',
+		borderRightWidth: 1,
+		borderRightColor: '#ECECEC',
+	},
+	th1: {
+		width: Dimensions.get('window').width - 20,
+		margin: 10,
+		// borderBottomWidth: 1,
+		// borderBottomColor: '#ECECEC',
+		// borderRightWidth: 1,
+		// borderRightColor: '#ECECEC',
+	},
+	td: {
+		textAlign: 'left',
+		width: '50%',
+		padding: 10,
+		fontSize: 14,
+		borderBottomWidth: 1,
+		borderBottomColor: '#ECECEC',
+		borderRightWidth: 1,
+		borderRightColor: '#ECECEC',
+	},
+	modalButton: {
+		backgroundColor: '#0c4ca3',
+		color: '#fff',
+		textAlign: 'center',
+		borderRadius: 5,
+		padding: 11,
+		justifyContent: 'center',
+		alignItems: 'center',
+		letterSpacing: 1,
+		fontWeight: 'bold',
+	},
+	modalWrapper: {
+		paddingHorizontal: 20,
+		marginTop: 20,
+	},
+	detailmodalWrapper: {
+		marginTop: 20,
+	},
+	modalContainer: {
+		borderBottomWidth: 1,
+		borderBottomColor: '#000',
+	},
     modalDetail: {
-        paddingVertical: 10,
-    },
-    modalDetailWrap: {
-        paddingVertical: 25,
-        paddingHorizontal: 2,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ECECEC',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    input: {
-        margin: 0,
-    },
-    notAvailableText: {
-        paddingVertical: 40,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 15,
-    },
+        paddingTop: 10,
+		paddingBottom: 30,
+	},
+	modalDetailWrap: {
+		paddingVertical: 25,
+		paddingHorizontal: 2,
+		borderBottomWidth: 1,
+		borderBottomColor: '#ECECEC',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+	},
+	input: {
+		margin: 0,
+	},
+	notAvailableText: {
+		paddingVertical: 40,
+		textAlign: 'center',
+		fontWeight: 'bold',
+		fontSize: 15,
+	},
 });
 
 export default General;
