@@ -5,91 +5,125 @@ import {
         StyleSheet,
         Dimensions,
         TouchableNativeFeedback,
+        AsyncStorage
 } from 'react-native';
-import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Feather, AntDesign, Entypo } from '@expo/vector-icons';
+import { logout } from '../components/services/api';
 
 class Home extends Component {
-        state = {};
+        constructor(props) {
+                super(props);
+                
+                this.state = {
+                      Role: ''  
+                };
+        }
+
+        static navigationOptions = (navigation) => {
+                return {
+                        headerRight: () => (
+                                <TouchableNativeFeedback onPress={() => logout(navigation.navigation)}>
+                                        <View style={styles.iconContainer}>
+                                                <Entypo name="log-out" size={25} color={'#fff'} style={styles.Icons} />
+                                        </View>
+                                </TouchableNativeFeedback>
+                        )
+                }
+        }
+
+        async componentDidMount() {
+                const value = await AsyncStorage.getItem('user');
+                console.log('value',value)
+                if (value != null) {
+                        console.log('now', JSON.parse(value))
+                this.setState({ Role: JSON.parse(value).role });        
+                }      
+        }
 
         navigationMain = name => {
                 this.props.navigation.navigate(name);
         };
 
         render() {
+                const { Role } = this.state;
+                console.log('Role',Role);
+                
                 return (
                         <View style={styles.screen}>
-                                <View style={styles.homewrap}>
-                                        <TouchableNativeFeedback
-                                                onPress={() =>
-                                                        this.navigationMain(
-                                                                'SetupModal'
-                                                        )
-                                                }
-                                        >
-                                                <View style={styles.homeMain}>
-                                                        <View
-                                                                style={
-                                                                        styles.IconWrap
-                                                                }
-                                                        >
-                                                                <Feather
-                                                                        name="settings"
-                                                                        size={
-                                                                                25
-                                                                        }
-                                                                        color={
-                                                                                '#fff'
-                                                                        }
+                                {Role === 'admin' &&
+                                        <View style={styles.homewrap}>
+                                                <TouchableNativeFeedback
+                                                        onPress={() =>
+                                                                this.navigationMain(
+                                                                        'SetupModal'
+                                                                )
+                                                        }
+                                                >
+                                                        <View style={styles.homeMain}>
+                                                                <View
                                                                         style={
-                                                                                styles.Icons
+                                                                                styles.IconWrap
                                                                         }
-                                                                />
-                                                        </View>
-                                                        <Text
-                                                                style={
-                                                                        styles.TextWrap
-                                                                }
-                                                        >
-                                                                CIF Price Center
-                                                        </Text>
-                                                </View>
-                                        </TouchableNativeFeedback>
-                                        <TouchableNativeFeedback
-                                                onPress={() =>
-                                                        this.navigationMain(
-                                                                'ModalCreate'
-                                                        )
-                                                }
-                                        >
-                                                <View style={styles.homeMain}>
-                                                        <View
-                                                                style={
-                                                                        styles.IconWrap
-                                                                }
-                                                        >
-                                                                <MaterialCommunityIcons
-                                                                        name="table-edit"
-                                                                        size={
-                                                                                25
-                                                                        }
-                                                                        color={
-                                                                                '#fff'
-                                                                        }
+                                                                >
+                                                                        <Feather
+                                                                                name="settings"
+                                                                                size={
+                                                                                        25
+                                                                                }
+                                                                                color={
+                                                                                        '#fff'
+                                                                                }
+                                                                                style={
+                                                                                        styles.Icons
+                                                                                }
+                                                                        />
+                                                                </View>
+                                                                <Text
                                                                         style={
-                                                                                styles.Icons
+                                                                                styles.TextWrap
                                                                         }
-                                                                />
-                                                        </View>
-                                                        <Text
-                                                                style={
-                                                                        styles.TextWrap
-                                                                }
-                                                        >
-                                                                Model Parameter
+                                                                >
+                                                                        CIF Price Center
                                                         </Text>
-                                                </View>
-                                        </TouchableNativeFeedback>
-                                </View>
+                                                        </View>
+                                                </TouchableNativeFeedback>
+                                                <TouchableNativeFeedback
+                                                        onPress={() =>
+                                                                this.navigationMain(
+                                                                        'ModalCreate'
+                                                                )
+                                                        }
+                                                >
+                                                        <View style={styles.homeMain}>
+                                                                <View
+                                                                        style={
+                                                                                styles.IconWrap
+                                                                        }
+                                                                >
+                                                                        <MaterialCommunityIcons
+                                                                                name="table-edit"
+                                                                                size={
+                                                                                        25
+                                                                                }
+                                                                                color={
+                                                                                        '#fff'
+                                                                                }
+                                                                                style={
+                                                                                        styles.Icons
+                                                                                }
+                                                                        />
+                                                                </View>
+                                                                <Text
+                                                                        style={
+                                                                                styles.TextWrap
+                                                                        }
+                                                                >
+                                                                        Model Parameter
+                                                        </Text>
+                                                        </View>
+                                                </TouchableNativeFeedback>
+                                        </View>
+                                }
                                 <View style={styles.homewrap}>
                                         <TouchableNativeFeedback
                                                 onPress={() =>
@@ -128,41 +162,43 @@ class Home extends Component {
                                                         </Text>
                                                 </View>
                                         </TouchableNativeFeedback>
-                                        <TouchableNativeFeedback
-                                                onPress={() =>
-                                                        this.navigationMain(
-                                                                'SetupModal'
-                                                        )
-                                                }
-                                        >
-                                                <View style={styles.homeMain}>
-                                                        <View
-                                                                style={
-                                                                        styles.IconWrap
-                                                                }
-                                                        >
-                                                                <AntDesign
-                                                                        name="adduser"
-                                                                        size={
-                                                                                25
-                                                                        }
-                                                                        color={
-                                                                                '#fff'
-                                                                        }
+                                        {Role === 'admin' &&
+                                                <TouchableNativeFeedback
+                                                        onPress={() =>
+                                                                this.navigationMain(
+                                                                        'AddUser'
+                                                                )
+                                                        }
+                                                >
+                                                        <View style={styles.homeMain}>
+                                                                <View
                                                                         style={
-                                                                                styles.Icons
+                                                                                styles.IconWrap
                                                                         }
-                                                                />
-                                                        </View>
-                                                        <Text
-                                                                style={
-                                                                        styles.TextWrap
-                                                                }
-                                                        >
-                                                                Create User
+                                                                >
+                                                                        <AntDesign
+                                                                                name="adduser"
+                                                                                size={
+                                                                                        25
+                                                                                }
+                                                                                color={
+                                                                                        '#fff'
+                                                                                }
+                                                                                style={
+                                                                                        styles.Icons
+                                                                                }
+                                                                        />
+                                                                </View>
+                                                                <Text
+                                                                        style={
+                                                                                styles.TextWrap
+                                                                        }
+                                                                >
+                                                                        Create User
                                                         </Text>
-                                                </View>
-                                        </TouchableNativeFeedback>
+                                                        </View>
+                                                </TouchableNativeFeedback>
+                                        }
                                 </View>
                         </View>
                 );
@@ -211,6 +247,11 @@ const styles = StyleSheet.create({
                 letterSpacing: 1,
                 color: '#666',
         },
+        iconContainer: {
+                marginRight: 15
+        }
 });
+
+
 
 export default Home;

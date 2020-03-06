@@ -6,7 +6,10 @@ export function AddModel(value) {
 	return axios.post(`${apiEndpoint}`, value);
 }
 
-export function getModel() {
+export function getModel(val) {
+	if (val) {
+		return axios.get(`${apiEndpoint}/${val}`);
+	}
 	return axios.get(`${apiEndpoint}`);
 }
 

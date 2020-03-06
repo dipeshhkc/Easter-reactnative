@@ -43,7 +43,7 @@ class ModelSetup extends Component {
 				inr: '',
 			},
 			isEdit: false,
-			dataResponse: !prevState.modalVisible,
+			dataResponse: !prevState.dataResponse,
 		}));
 	};
 

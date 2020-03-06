@@ -12,7 +12,7 @@ import {
     KeyboardAvoidingView,
 } from 'react-native';
 import { Input, Spinner } from 'native-base';
-import { Platform } from 'react-native';
+import { Platform, AsyncStorage } from 'react-native';
 import {
     parameter,
     modelCollection,
@@ -38,8 +38,16 @@ class General extends Component {
         tier2val: 0,
         originalValues:{},
         GeneralData: null,
+        Role: '',
         Burl: 'http://batas.simriksacos.com.np/public/api/vehiclemodel',
     };
+
+    async componentDidMount() {
+        const value = await AsyncStorage.getItem('user');
+        if (value != null) {
+            this.setState({ Role: JSON.parse(value).role });
+        }
+    }
 
     onModalClick = () => {
         this.setState(prevState => ({ modalVisible: !prevState.modalVisible }));
@@ -157,7 +165,9 @@ class General extends Component {
             Impact,
             tier1val,
             tier2val,
+            Role
         } = this.state;
+        
 
         const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 80;
         return (
@@ -189,96 +199,126 @@ class General extends Component {
                                             </Text>
                                         </View>
                                     </View>
-                                    <View style={styles.tbody}>
-                                        {tablePatameter.map(m => (
-                                            <View style={styles.tr} key={m.id}>
-                                                <Text style={styles.td}>
-                                                    {m.name}
-                                                </Text>
-                                                <Text style={styles.td}>
-                                                    {m.id == 'tier1'
-                                                        ? NepaliCurrency(
-                                                              tier1val
-                                                          )
-                                                        : m.id == 'tier2'
-                                                        ? NepaliCurrency(
-                                                              tier2val
-                                                          )
-                                                        : NepaliCurrency(
-                                                              GeneralData[m.id]
-                                                          )}
-                                                </Text>
-                                            </View>
-                                        ))}
+                                    {Role === 'admin' ?(
+                                        <View style={styles.tbody}>
+                                            {tablePatameter.map(m => (
+                                                <View style={styles.tr} key={m.id}>
+                                                    <Text style={styles.td}>
+                                                        {m.name}
+                                                    </Text>
+                                                    <Text style={styles.td}>
+                                                        {m.id == 'tier1'
+                                                            ? NepaliCurrency(
+                                                                tier1val
+                                                            )
+                                                            : m.id == 'tier2'
+                                                                ? NepaliCurrency(
+                                                                    tier2val
+                                                                )
+                                                                : NepaliCurrency(
+                                                                    GeneralData[m.id]
+                                                                )}
+                                                    </Text>
+                                                </View>
+                                            ))}
                                         
-                                        <View style={styles.tr}>
-                                            <Text style={styles.td}>
-                                                IMPACT (Positive/Negative)
-                                            </Text>
-                                            <Text style={styles.td}>
-                                                {`(${NepaliCurrency(
-                                                    Impact
-                                                )})`}
-                                            </Text>
-                                        </View>
                                             <View style={styles.tr}>
-                                            <Text
-                                                style={{
-                                                    ...styles.td,
-                                                    fontWeight: 'bold',
-                                                }}
-                                            >
-                                                Discussed MRP
+                                                <Text style={styles.td}>
+                                                    IMPACT (Positive/Negative)
                                             </Text>
-                                            <View
-                                                style={{
-                                                    ...styles.td,
-                                                    paddingBottom: 0,
-                                                    paddingTop: 4,
-                                                }}
-                                            >
-                                                <TextInput
-                                                    name={'final'}
-                                                    style={styles.input}
-                                                    value={discussedMRP}
-                                                    keyboardType="numeric"
-                                                    onChangeText={text => {
-                                                        this.handleDiscussed(
-                                                                text
-                                                        );
-                                                    }}
-                                                />
+                                                <Text style={styles.td}>
+                                                    {`(${NepaliCurrency(
+                                                        Impact
+                                                    )})`}
+                                                </Text>
                                             </View>
-                                        </View>
                                             <View style={styles.tr}>
-                                            <Text style={{
+                                                <Text
+                                                    style={{
+                                                        ...styles.td,
+                                                        fontWeight: 'bold',
+                                                    }}
+                                                >
+                                                    Discussed MRP
+                                            </Text>
+                                                <View
+                                                    style={{
+                                                        ...styles.td,
+                                                        paddingBottom: 0,
+                                                        paddingTop: 4,
+                                                    }}
+                                                >
+                                                    <TextInput
+                                                        name={'final'}
+                                                        style={styles.input}
+                                                        value={discussedMRP}
+                                                        keyboardType="numeric"
+                                                        onChangeText={text => {
+                                                            this.handleDiscussed(
+                                                                text
+                                                            );
+                                                        }}
+                                                    />
+                                                </View>
+                                            </View>
+                                            <View style={styles.tr}>
+                                                <Text style={{
                                                     ...styles.td,
                                                     fontWeight: 'bold',
                                                 }}>
-                                                Discount
+                                                    Discount
                                             </Text>
-                                            <View
-                                                style={{
-                                                    ...styles.td,
-                                                    paddingBottom: 0,
-                                                    paddingTop: 4,
-                                                }}
-                                            >
-                                                <TextInput
-                                                    name={'discount'}
-                                                    style={styles.input}
-                                                    value={NepaliCurrency(discount) || 0}
-                                                    keyboardType="numeric"
-                                                    onChangeText={text => {
-                                                        this.handleDiscount(
-                                                            text
-                                                        );
+                                                <View
+                                                    style={{
+                                                        ...styles.td,
+                                                        paddingBottom: 0,
+                                                        paddingTop: 4,
                                                     }}
-                                                />
+                                                >
+                                                    <TextInput
+                                                        name={'discount'}
+                                                        style={styles.input}
+                                                        value={NepaliCurrency(discount) || 0}
+                                                        keyboardType="numeric"
+                                                        onChangeText={text => {
+                                                            this.handleDiscount(
+                                                                text
+                                                            );
+                                                        }}
+                                                    />
+                                                </View>
                                             </View>
-                                        </View>
-                                    </View>
+                                        </View>)
+                                    : (
+                                        <View style={styles.tbody}>
+                                                <View style={styles.tr}>
+                                                    <Text style={styles.td}>
+                                                        Invoice value in INR
+                                                    </Text>
+                                                    <Text style={styles.td}>
+                                                        {GeneralData['inr']}
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.tr}>
+                                                    <Text style={styles.td}>
+                                                        Value in NPR
+                                                    </Text>
+                                                    <Text style={styles.td}>
+                                                        {GeneralData['exRate']}
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.tr}>
+                                                    <Text style={styles.td}>
+                                                        TIER 2 (NP)
+                                                    </Text>
+                                                    <Text style={styles.td}>
+                                                        {GeneralData['tier2']}
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                    )}
                                 </View>
+                                {Role === 'admin' && 
                                 <TouchableHighlight
                                     style={styles.th1}
                                     onPress={() => {
@@ -289,6 +329,7 @@ class General extends Component {
                                         More Details
                                     </Text>
                                 </TouchableHighlight>
+                                }
                             </View>
                         ) : (
                             <View>
@@ -361,132 +402,134 @@ class General extends Component {
                             </View>
                         </Modal>
 
-                        <Modal
-                            animationType="slide"
-                            transparent={false}
-                            visible={this.state.detailModal}
-                            onRequestClose={() => {
-                                this.onDetailModal();
-                            }}
-                        >
-                            <View style={styles.detailmodalWrapper}>
-                                <ScrollView>
-                                    <TouchableNativeFeedback
-                                        onPress={() => {
-                                            this.onDetailModal();
-                                        }}
-                                    >
-                                        <Text
-                                            style={{
-                                                ...styles.modalButton,
-                                                backgroundColor: 'red',
-                                                width: '20%',
-                                                marginBottom: 10,
-                                                marginLeft: 10,
+                        {Role === 'admin' &&
+                            <Modal
+                                animationType="slide"
+                                transparent={false}
+                                visible={this.state.detailModal}
+                                onRequestClose={() => {
+                                    this.onDetailModal();
+                                }}
+                            >
+                                <View style={styles.detailmodalWrapper}>
+                                    <ScrollView>
+                                        <TouchableNativeFeedback
+                                            onPress={() => {
+                                                this.onDetailModal();
                                             }}
                                         >
-                                            Close
+                                            <Text
+                                                style={{
+                                                    ...styles.modalButton,
+                                                    backgroundColor: 'red',
+                                                    width: '20%',
+                                                    marginBottom: 10,
+                                                    marginLeft: 10,
+                                                }}
+                                            >
+                                                Close
                                         </Text>
-                                    </TouchableNativeFeedback>
-                                    {GeneralData && (
-                                        <View style={styles.table}>
-                                            <View style={styles.thead}>
-                                                <View style={styles.tr}>
-                                                    <Text
-                                                        style={{
-                                                            ...styles.th,
-                                                            width: '33.33%',
-                                                        }}
-                                                    >
-                                                        Details
-                                                    </Text>
-                                                    <Text
-                                                        style={{
-                                                            ...styles.th,
-                                                            width: '33.33%',
-                                                        }}
-                                                    >
-                                                        CUR / %
-                                                    </Text>
-                                                    <Text
-                                                        style={{
-                                                            ...styles.th,
-                                                            width: '33.33%',
-                                                        }}
-                                                    >
-                                                        {this.state.busName ||
-                                                            'Model Name'}
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                            <View style={styles.tbody}>
-                                                {parameterDetail.map(m => (
-                                                    <View
-                                                        style={styles.tr}
-                                                        key={m.id}
-                                                    >
+                                        </TouchableNativeFeedback>
+                                        {GeneralData && (
+                                            <View style={styles.table}>
+                                                <View style={styles.thead}>
+                                                    <View style={styles.tr}>
                                                         <Text
                                                             style={{
-                                                                ...styles.td,
+                                                                ...styles.th,
                                                                 width: '33.33%',
                                                             }}
                                                         >
-                                                            {m.name}
-                                                        </Text>
+                                                            Details
+                                                    </Text>
                                                         <Text
                                                             style={{
-                                                                ...styles.td,
+                                                                ...styles.th,
                                                                 width: '33.33%',
                                                             }}
                                                         >
-                                                            {GeneralData[
-                                                                `${m.id}V`
-                                                            ]
-                                                                ? GeneralData[
-                                                                      m.id
-                                                                  ]
-                                                                : m.id ==
-                                                                  'exRate'
-                                                                ? GeneralData[
-                                                                      'exRate'
-                                                                  ]
-                                                                : ' '}
-                                                        </Text>
+                                                            CUR / %
+                                                    </Text>
                                                         <Text
                                                             style={{
-                                                                ...styles.td,
+                                                                ...styles.th,
                                                                 width: '33.33%',
                                                             }}
                                                         >
-                                                            {GeneralData[
-                                                                `${m.id}V`
-                                                            ]
-                                                                ? NepaliCurrency(
-                                                                      GeneralData[
-                                                                          `${m.id}V`
-                                                                      ]
-                                                                  )
-                                                                : m.id ==
-                                                                  'exRate'
-                                                                ? NepaliCurrency(
-                                                                      GeneralData[
-                                                                          'npr'
-                                                                      ]
-                                                                  )
-                                                                : NepaliCurrency(
-                                                                      GeneralData[
-                                                                          m.id
-                                                                      ]
-                                                                  )}
+                                                            {this.state.busName ||
+                                                                'Model Name'}
                                                         </Text>
                                                     </View>
-                                                ))}
+                                                </View>
+                                                <View style={styles.tbody}>
+                                                    {parameterDetail.map(m => (
+                                                        <View
+                                                            style={styles.tr}
+                                                            key={m.id}
+                                                        >
+                                                            <Text
+                                                                style={{
+                                                                    ...styles.td,
+                                                                    width: '33.33%',
+                                                                }}
+                                                            >
+                                                                {m.name}
+                                                            </Text>
+                                                            <Text
+                                                                style={{
+                                                                    ...styles.td,
+                                                                    width: '33.33%',
+                                                                }}
+                                                            >
+                                                                {GeneralData[
+                                                                    `${m.id}V`
+                                                                ]
+                                                                    ? GeneralData[
+                                                                    m.id
+                                                                    ]
+                                                                    : m.id ==
+                                                                        'exRate'
+                                                                        ? GeneralData[
+                                                                        'exRate'
+                                                                        ]
+                                                                        : ' '}
+                                                            </Text>
+                                                            <Text
+                                                                style={{
+                                                                    ...styles.td,
+                                                                    width: '33.33%',
+                                                                }}
+                                                            >
+                                                                {GeneralData[
+                                                                    `${m.id}V`
+                                                                ]
+                                                                    ? NepaliCurrency(
+                                                                        GeneralData[
+                                                                        `${m.id}V`
+                                                                        ]
+                                                                    )
+                                                                    : m.id ==
+                                                                        'exRate'
+                                                                        ? NepaliCurrency(
+                                                                            GeneralData[
+                                                                            'npr'
+                                                                            ]
+                                                                        )
+                                                                        : NepaliCurrency(
+                                                                            GeneralData[
+                                                                            m.id
+                                                                            ]
+                                                                        )}
+                                                            </Text>
+                                                        </View>
+                                                    ))}
+                                                </View>
                                             </View>
-                                        </View>
-                                    )}
-                                </ScrollView>
-                            </View>
-                        </Modal>
+                                        )}
+                                    </ScrollView>
+                                </View>
+                            </Modal>
+                        }
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>
