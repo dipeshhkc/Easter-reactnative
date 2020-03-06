@@ -65,8 +65,6 @@ export class MyFormik extends Component {
 							stockTrans,
 							stockYard,
 							financeCom,
-							financeCom,
-							financeCom,
 							staff,
 						} = process1;
 
