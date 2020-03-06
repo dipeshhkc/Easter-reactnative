@@ -8,6 +8,7 @@ import { addModel, getModel, deleteModel } from '../../components/services/addMo
 class ModelSetup extends Component {
 	state = {
 		data: {
+			id: '',
 			model: '',
 			inr: '',
 		},
@@ -39,6 +40,7 @@ class ModelSetup extends Component {
 		this.setState(prevState => ({
 			modalVisible: !prevState.modalVisible,
 			data: {
+				id: '',
 				model: '',
 				inr: '',
 			},
@@ -57,6 +59,7 @@ class ModelSetup extends Component {
 
 	mapToViewModal(adv) {
 		return {
+			id: adv.id,
 			model: adv.model,
 			inr: adv.inr,
 		};
@@ -145,19 +148,16 @@ class ModelSetup extends Component {
 									enableReinitialize={true}
 									onSubmit={async (values, actions) => {
 										actions.setSubmitting(true);
-										console.log('valuesss', values);
 										try {
-											console.log('valuesss11', values);
 											const response = await addModel(values, isEdit);
-											console.log('valuesss11111', values);
 											if (response.data.error) throw new Error(response.data.error);
 											else {
-											if (isEdit) {
-												alert('Edited successfully!');
-											} else {
-												alert('Added successfully!');
-											}
-											this.onModalClick();
+												if (isEdit) {
+													alert('Edited successfully!');
+												} else {
+													alert('Added successfully!');
+												}
+												this.onModalClick();
 											}
 											actions.resetForm();
 											actions.setSubmitting(false);
