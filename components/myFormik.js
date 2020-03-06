@@ -25,15 +25,15 @@ export class MyFormik extends Component {
 				validationSchema={this.props.validation}
 				onSubmit={(values, actions) => {
 					console.log('top', this.props.model, values);
-					// let values = values;
+					let newVal = values;
 					if (this.props.process) {
 						//level1
-						console.log('eta', this.props.model, values);
+						console.log('eta', this.props.model, newVal);
 						let process1 = { model: this.props.model };
-						values = Object.keys(values)
+						newVal = Object.keys(newVal)
 							.filter(each => each != 'model')
-							.map(each => ({ [each]: Number(values[each]) }));
-						values.forEach(each => {
+							.map(each => ({ [each]: Number(newVal[each]) }));
+						newVal.forEach(each => {
 							Object.assign(process1, each);
 						});
 
@@ -64,6 +64,8 @@ export class MyFormik extends Component {
 							IndcustomC,
 							stockTrans,
 							stockYard,
+							financeCom,
+							financeCom,
 							financeCom,
 							staff,
 						} = process1;
@@ -96,15 +98,16 @@ export class MyFormik extends Component {
 						process1.final = process1.tier2 * 53;
 
 						let process2 = { model: process1.model };
-						values = Object.keys(process1)
+						newVal = Object.keys(process1)
 							.filter(each => each != 'model')
 							.map(each => ({ [each]: process1[each].toFixed(2) }));
-						values.forEach(each => {
+						newVal.forEach(each => {
 							Object.assign(process2, each);
 						});
 
-						let values = { ...process2 };
+						values = { ...process2 };
 					}
+					console.log('finalval',values)
 
 					post(this.props.Burl, values, this.props.Furl, this.props.history, this.successLogin, this.props.reload, this.props.navigation, actions, this.props.onSuccess, this.props.onError);
 				}}
