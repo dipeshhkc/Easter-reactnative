@@ -18,8 +18,10 @@
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
-			"supportsTablet": true
-		},
+			"supportsTablet": true,
+			"bundleIdentifier": "com.eastern.motors",
+			"buildNumber": "1"
+		  },
 		"android": {
 			"package": "com.eastern.motors",
 			"versionCode": 1

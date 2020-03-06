@@ -4,7 +4,7 @@ import {
         Text,
         StyleSheet,
         Dimensions,
-        TouchableNativeFeedback,
+        TouchableHighlight,
         AsyncStorage
 } from 'react-native';
 import { MaterialCommunityIcons, Feather, AntDesign, Entypo } from '@expo/vector-icons';
@@ -22,11 +22,11 @@ class Home extends Component {
         static navigationOptions = (navigation) => {
                 return {
                         headerRight: () => (
-                                <TouchableNativeFeedback onPress={() => logout(navigation.navigation)}>
+                                <TouchableHighlight onPress={() => logout(navigation.navigation)}>
                                         <View style={styles.iconContainer}>
                                                 <Entypo name="log-out" size={25} color={'#fff'} style={styles.Icons} />
                                         </View>
-                                </TouchableNativeFeedback>
+                                </TouchableHighlight>
                         )
                 }
         }
@@ -48,7 +48,7 @@ class Home extends Component {
                         <View style={styles.screen}>
                                 {Role === 'admin' &&
                                         <View style={styles.homewrap}>
-                                                <TouchableNativeFeedback
+                                                <TouchableHighlight
                                                         onPress={() =>
                                                                 this.navigationMain(
                                                                         'SetupModal'
@@ -82,8 +82,8 @@ class Home extends Component {
                                                                         CIF Price Center
                                                         </Text>
                                                         </View>
-                                                </TouchableNativeFeedback>
-                                                <TouchableNativeFeedback
+                                                </TouchableHighlight>
+                                                <TouchableHighlight
                                                         onPress={() =>
                                                                 this.navigationMain(
                                                                         'ModalCreate'
@@ -117,11 +117,11 @@ class Home extends Component {
                                                                         Model Parameter
                                                         </Text>
                                                         </View>
-                                                </TouchableNativeFeedback>
+                                                </TouchableHighlight>
                                         </View>
                                 }
                                 <View style={styles.homewrap}>
-                                        <TouchableNativeFeedback
+                                        <TouchableHighlight
                                                 onPress={() =>
                                                         this.navigationMain(
                                                                 'ViewScreen'
@@ -157,9 +157,9 @@ class Home extends Component {
                                                                 }
                                                         </Text>
                                                 </View>
-                                        </TouchableNativeFeedback>
+                                        </TouchableHighlight>
                                         {Role === 'admin' &&
-                                                <TouchableNativeFeedback
+                                                <TouchableHighlight
                                                         onPress={() =>
                                                                 this.navigationMain(
                                                                         'AddUser'
@@ -193,7 +193,7 @@ class Home extends Component {
                                                                         Create User
                                                         </Text>
                                                         </View>
-                                                </TouchableNativeFeedback>
+                                                </TouchableHighlight>
                                         }
                                 </View>
                         </View>

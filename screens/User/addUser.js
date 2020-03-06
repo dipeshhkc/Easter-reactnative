@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlight, TouchableNativeFeedback, Dimensions, Modal, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlight, Dimensions, Modal, Button } from 'react-native';
 import { Formik } from 'formik';
 import { Input, Label, Form, Item, Spinner, Picker, Icon } from 'native-base';
 import UserTable from './userTable';
@@ -114,7 +114,7 @@ class UserSetup extends Component {
                             >
                                 <View style={styles.modalWrapper}>
                                     <View style={styles.modalContainer}>
-                                        <TouchableNativeFeedback
+                                        <TouchableHighlight
                                             onPress={() => {
                                                 this.onModalClick();
                                             }}
@@ -123,15 +123,15 @@ class UserSetup extends Component {
                                                 style={{
                                                     ...styles.modalButton,
                                                     backgroundColor: 'red',
-                                                    width: '20%',
+                                                    width: '100%',
                                                     marginBottom: 10,
                                                 }}
                                             >
                                                 Close
 										</Text>
-                                        </TouchableNativeFeedback>
+                                        </TouchableHighlight>
                                         {isEdit && (
-                                            <TouchableNativeFeedback
+                                            <TouchableHighlight
                                                 onPress={() => {
                                                     this.handleDelete(this.state.data);
                                                 }}
@@ -140,13 +140,13 @@ class UserSetup extends Component {
                                                     style={{
                                                         ...styles.modalButton,
                                                         backgroundColor: 'red',
-                                                        width: '25%',
+                                                        width: '100%',
                                                         marginBottom: 10,
                                                     }}
                                                 >
                                                     Delete
 											</Text>
-                                            </TouchableNativeFeedback>
+                                            </TouchableHighlight>
                                         )}
                                     </View>
                                     <Formik

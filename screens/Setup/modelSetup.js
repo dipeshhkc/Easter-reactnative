@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlight, TouchableNativeFeedback, Dimensions, Modal, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlight,TouchableOpacity, Dimensions, Modal, Button } from 'react-native';
 import { Formik } from 'formik';
 import { Input, Label, Form, Item, Spinner } from 'native-base';
 import ModelTable from './modelTable';
@@ -108,7 +108,7 @@ class ModelSetup extends Component {
 						>
 							<View style={styles.modalWrapper}>
 								<View style={styles.modalContainer}>
-									<TouchableNativeFeedback
+									<TouchableOpacity
 										onPress={() => {
 											this.onModalClick();
 										}}
@@ -117,15 +117,15 @@ class ModelSetup extends Component {
 											style={{
 												...styles.modalButton,
 												backgroundColor: 'red',
-												width: '20%',
+												width: '100%',
 												marginBottom: 10,
 											}}
 										>
 											Close
 										</Text>
-									</TouchableNativeFeedback>
+									</TouchableOpacity>
 									{isEdit && (
-										<TouchableNativeFeedback
+										<TouchableOpacity
 											onPress={() => {
 												this.handleDelete(this.state.data);
 											}}
@@ -134,13 +134,13 @@ class ModelSetup extends Component {
 												style={{
 													...styles.modalButton,
 													backgroundColor: 'red',
-													width: '25%',
+													width: '100%',
 													marginBottom: 10,
 												}}
 											>
 												Delete
 											</Text>
-										</TouchableNativeFeedback>
+										</TouchableOpacity>
 									)}
 								</View>
 								<Formik
