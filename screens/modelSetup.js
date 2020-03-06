@@ -31,8 +31,7 @@ class ModalSetup extends Component {
 	componentDidMount = async () => {
 		try {
 			const { data: ModelData } = await getModel();
-			let optionVal = ModelData.data[0];
-			this.setState({ optionVal, ModelData: ModelData.data, loading: false });
+			this.setState({ ModelData: ModelData.data, loading: false });
 		} catch (err) {
 			this.setState({ errors: err });
 		}
