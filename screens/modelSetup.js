@@ -101,7 +101,7 @@ class ModalSetup extends Component {
 										<ActivityIndicator size={40} color={'#0c4ca3'} />
 									</View>
 								) : MainData ? (
-									<MyFormik history={this.props.history} navigation={this.props.navigation} Furl={this.Furl} Burl={this.Burl} process={true} initial={MainData && MainData}>
+									<MyFormik history={this.props.history} model={optionVal} navigation={this.props.navigation} Furl={this.Furl} Burl={this.Burl} process={true} initial={MainData}>
 										{props => <ModelSetupFormComponent props={props} />}
 									</MyFormik>
 								) : (
