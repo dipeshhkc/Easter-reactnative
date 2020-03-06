@@ -102,6 +102,7 @@ class General extends Component {
         let tier2;
 
         if (val) {
+           
             newFinal = Number(suitableMRP) - Number(val);
             Impact = Number(newFinal) - Number(suitableMRP);
             tier1 = Number(tier1val) + Number(Impact);
@@ -113,9 +114,9 @@ class General extends Component {
             tier2 = Number(tier2val);
         }
         this.setState({
-            discussedMRP: newFinal,
-            discount: val,
-            Impact,
+            discussedMRP: newFinal.toString(),
+            discount: val.toString(),
+            Impact:Impact,
             tier1val: tier1,
             tier2val:tier2,
         });
@@ -150,9 +151,9 @@ class General extends Component {
             discussed = Number(discussedMRP);
         }
         this.setState({
-            discussedMRP: discussed,
-            discount: newFinal,
-            Impact,
+            discussedMRP: newFinal.toString(),
+            discount: val.toString(),
+            Impact:Impact,
             tier1val: tier1,
             tier2val:tier2,
         });
@@ -225,13 +226,12 @@ class General extends Component {
                                         
                                             <View style={styles.tr}>
                                                 <Text style={styles.td}>
-                                                    IMPACT (Positive/Negative)
+                                                    IMPACT (+ve/-ve)
                                             </Text>
                                                 <Text style={styles.td}>
-                                                    {`(${NepaliCurrency(
-                                                        Impact
-                                                    )})`}
-                                                </Text>
+                                                    
+                                                       { Math.sign(Impact)==1?Impact:`(${Math.abs(Impact)})`}
+                                                         </Text>
                                             </View>
                                             <View style={styles.tr}>
                                                 <Text
@@ -252,7 +252,7 @@ class General extends Component {
                                                     <TextInput
                                                         name={'final'}
                                                         style={styles.input}
-                                                        value={discussedMRP}
+                                                        value={discussedMRP||''}
                                                         keyboardType="numeric"
                                                         onChangeText={text => {
                                                             this.handleDiscussed(
@@ -279,7 +279,8 @@ class General extends Component {
                                                     <TextInput
                                                         name={'discount'}
                                                         style={styles.input}
-                                                        value={NepaliCurrency(discount) || 0}
+                                                        // value={NepaliCurrency(discount) || 0}
+                                                        value={(discount) || ''}
                                                         keyboardType="numeric"
                                                         onChangeText={text => {
                                                             this.handleDiscount(
