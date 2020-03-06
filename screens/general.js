@@ -568,7 +568,8 @@ const styles = StyleSheet.create({
 	mainscreen: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center',
+        alignItems: 'center',
+        marginTop:35
 	},
 	container: {
 		flex: 1,
