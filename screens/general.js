@@ -149,7 +149,6 @@ class General extends Component {
         let discussed ; 
 
         if (val) {
-            console.log(val)
             newFinal = Number(suitableMRP) - val;
             Impact = val - Number(suitableMRP);
             tier1 = Number(tier1val) + Number(Impact);
@@ -163,8 +162,8 @@ class General extends Component {
             discussed = Number(discussedMRP);
         }
         this.setState({
-            discussedMRP: newFinal.toString(),
-            discount: val.toString(),
+            discussedMRP: val.toString(),
+            discount: newFinal.toString(),
             Impact:Impact,
             tier1val: tier1,
             tier2val:tier2,
@@ -230,13 +229,17 @@ class General extends Component {
                                                             </Text>
                                                             <Text style={styles.td}>
                                                                 {m.id == 'tier1'
-                                                                    ? NepaliCurrency(
-                                                                        tier1val
-                                                                    )
+                                                                    ? 
+                                                                    // NepaliCurrency(
+                                                                    //   tier1val
+                                                                        Math.sign(tier1val)==1?tier1val:`(${Math.abs(tier1val)})`
+                                                                    // )
                                                                     : m.id == 'tier2'
-                                                                        ? NepaliCurrency(
-                                                                            tier2val
-                                                                        )
+                                                                        ? 
+                                                                        // NepaliCurrency(
+                                                                            //   tier2val
+                                                                              Math.sign(tier2val)==1?tier2val:`(${Math.abs(tier2val)})` 
+                                                                        // )
                                                                         : NepaliCurrency(
                                                                             GeneralData[m.id]
                                                                         )}
@@ -250,7 +253,7 @@ class General extends Component {
                                             </Text>
                                             <Text style={styles.td}>
                                                     
-                                                    { Math.sign(Impact)==1?Impact:`(${Math.abs(Impact)})`}
+                                                    { Math.sign(Impact)==1?Impact:`(${Math.abs(Impact)})`||Impact}
                                                       </Text>
                                                     </View>
                                                     <View style={styles.tr}>

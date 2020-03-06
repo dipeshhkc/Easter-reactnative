@@ -321,6 +321,7 @@ export const tablePatameter = [
 	// { name: 'With Overhead', id: 'overhead' },
 	// { name: 'Without Overhead (NET)', id: 'withoutOverhead' },
 	// { name: 'Interest Months', id: 'interestMonth' },
-	{ name: 'TIER 1 (GP)', id: 'tier1' },
-	{ name: 'TIER 2 (NP)', id: 'tier2' },
+	// { name: 'TIER 1 (GP)', id: 'tier1' },
+	{ name: 'GGP', id: 'tier1' },
+	{ name: 'GP', id: 'tier2' },
 ];
