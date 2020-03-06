@@ -147,7 +147,7 @@ class ModelSetup extends Component {
 										actions.setSubmitting(true);
 
 										try {
-											const response = await AddModel(values);
+											const response = await AddModel(values, isEdit);
 											if (response.data.error) throw new Error(response.data.error);
 											else {
 												if (isEdit) {

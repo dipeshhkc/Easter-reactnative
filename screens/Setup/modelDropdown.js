@@ -19,7 +19,7 @@ const ModelDropdown = props => {
 							props.handleChange(e);
 						}}
 					>
-						{props.options && props.options.map(m => <Picker.Item label={m.text} value={m.value} key={m.id} />)}
+						{props.options && props.options.map(m => <Picker.Item label={m.model} value={m.id} key={m.id} />)}
 					</Picker>
 				</Item>
 			</Form>
