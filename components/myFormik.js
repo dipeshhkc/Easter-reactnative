@@ -48,7 +48,7 @@ export class MyFormik extends Component {
 							roadTax,
 							insurance,
 							credit,
-							interestInvest,
+							credit,
 							adminSales,
 							advProm,
 							dealer,
@@ -78,8 +78,8 @@ export class MyFormik extends Component {
 						process1.roadTaxV = process1.boarderInPrice * this.per(roadTax);
 						process1.insuranceV = (process1.boarderInPrice + process1.roadTaxV) * this.per(insurance);
 						let cal = process1.boarderInPrice + process1.roadTaxV + process1.insuranceV + register + pdi + transit + lc + service + warrenty + IndcustomC + stockTrans + stockYard + financeCom;
-						process1.interestInvestV = ((cal * this.per(credit)) / 12) * interestInvest;
-						process1.costTillDealer = cal + process1.interestInvestV;
+						process1.interestInvest = ((cal * this.per(credit)) / 12) * credit;
+						process1.costTillDealer = cal + process1.interestInvest;
 						process1.adminSalesV = process1.costTillDealer * this.per(adminSales);
 						process1.advPromV = process1.costTillDealer * this.per(advProm);
 						process1.totalLandingCost = process1.costTillDealer + process1.adminSalesV + process1.advPromV + staff;
@@ -90,7 +90,7 @@ export class MyFormik extends Component {
 						process1.suitableMRP = process1.vat2V + process1.priceBeforeVat;
 						process1.overhead = process1.adminSalesV + process1.advPromV + process1.distributorV + process1.dealerV;
 						process1.withoutOverhead = process1.distributorV + process1.dealerV;
-						process1.interestMonth = process1.interestInvest;
+						process1.interestMonth = process1.credit;
 						process1.discussedMRP = process1.suitableMRP;
 						process1.tier1 = process1.overhead;
 						process1.tier2 = process1.withoutOverhead;

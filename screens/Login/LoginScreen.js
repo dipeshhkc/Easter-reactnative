@@ -41,6 +41,7 @@ class LoginScreen extends Component {
 		return (
 			<KeyboardAvoidingView behavior={'padding'} style={styles.container}>
 				<MyFormik onSuccess={this.success} Burl={this.Burl} onError={this.Error}>
+					
 					{props =>{
 						console.log('props',props)
 						return (

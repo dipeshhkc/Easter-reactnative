@@ -146,7 +146,6 @@ class ModelSetup extends Component {
 									onSubmit={async (values, actions) => {
 										actions.setSubmitting(true);
 										console.log('valuesss', values);
-
 										try {
 											console.log('valuesss11', values);
 											const response = await addModel(values, isEdit);
