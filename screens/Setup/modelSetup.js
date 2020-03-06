@@ -145,6 +145,7 @@ class ModelSetup extends Component {
 									enableReinitialize={true}
 									onSubmit={async (values, actions) => {
 										actions.setSubmitting(true);
+										console.log('valuesss', values);
 
 										try {
 											const response = await AddModel(values, isEdit);
@@ -164,7 +165,7 @@ class ModelSetup extends Component {
 												alert('Something went wrong.');
 											} else {
 												this.setState({
-													AddModelErrors: ex,
+													AddUserErrors: ex,
 												});
 											}
 											actions.setSubmitting(false);

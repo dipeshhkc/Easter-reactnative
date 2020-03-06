@@ -20,15 +20,16 @@ export class MyFormik extends Component {
 
 		return (
 			<Formik
-				initialValues={{ ...initial, ...this.props.initial }}
+				initialValues={this.props.initial}
 				enableReinitialize={true}
 				validationSchema={this.props.validation}
 				onSubmit={(values, actions) => {
-					console.log('submit', values);
-
+					console.log('top', this.props.model, values);
+					// let values = values;
 					if (this.props.process) {
 						//level1
-						let process1 = { model: values.model };
+						console.log('eta', this.props.model, values);
+						let process1 = { model: this.props.model };
 						values = Object.keys(values)
 							.filter(each => each != 'model')
 							.map(each => ({ [each]: Number(values[each]) }));
