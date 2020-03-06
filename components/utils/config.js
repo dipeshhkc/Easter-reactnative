@@ -284,7 +284,7 @@ export const parameterDetail = [
 	{ name: 'Stock Yard cost', id: 'stockYard' },
 	{ name: 'Stock Transfer & Local Logistic', id: 'stockTrans' },
 	{ name: 'Financing Commission', id: 'financeCom' },
-	{ name: 'Interest on Investment', id: 'interestInvest' },
+	{ name: 'Interest on Investment', id: 'interestInvestV' },
 	{ name: 'Cost till Dealers Location', id: 'costTillDealer' },
 	{ name: 'Admin and Sales Overhead', id: 'adminSales' },
 	{
@@ -315,7 +315,7 @@ export const tablePatameter = [
 	// { name: 'Indian Custom Clearence', id: 'IndcustomC' },
 	// { name: 'Stock Yard cost', id: 'stockYard' },
 	// { name: 'Stock Transfer & Local Logistic', id: 'stockTrans' },
-	{ name: 'Interest on Investment', id: 'interestInvest' },
+	{ name: 'Interest on Investment', id: 'interestInvestV' },
 	{ name: 'Price Before VAT (less VAT paid)', id: 'vat2V' },
 	{ name: 'Suitable MRP', id: 'suitableMRP' },
 	// { name: 'With Overhead', id: 'overhead' },
