@@ -45,7 +45,7 @@ export class MyFormik extends Component {
 							vat,
 							roadTax,
 							insurance,
-							interest,
+							credit,
 							interestInvest,
 							adminSales,
 							advProm,
@@ -76,7 +76,7 @@ export class MyFormik extends Component {
 						process1.roadTaxV = process1.boarderInPrice * this.per(roadTax);
 						process1.insuranceV = (process1.boarderInPrice + process1.roadTaxV) * this.per(insurance);
 						let cal = process1.boarderInPrice + process1.roadTaxV + process1.insuranceV + register + pdi + transit + lc + service + warrenty + IndcustomC + stockTrans + stockYard + financeCom;
-						process1.interestInvestV = ((cal * this.per(interest)) / 12) * interestInvest;
+						process1.interestInvestV = ((cal * this.per(credit)) / 12) * interestInvest;
 						process1.costTillDealer = cal + process1.interestInvestV;
 						process1.adminSalesV = process1.costTillDealer * this.per(adminSales);
 						process1.advPromV = process1.costTillDealer * this.per(advProm);

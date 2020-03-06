@@ -81,8 +81,8 @@ class ModalSetup extends Component {
 			);
 		};
 		return (
-			// <KeyboardAvoidingView behavior="padding">
-			<KeyboardAwareScrollView>
+			<KeyboardAvoidingView behavior="position">
+			{/* <KeyboardAwareScrollView> */}
 				<ScrollView>
 					<View style={styles.screen}>
 						{loading ? (
@@ -112,7 +112,8 @@ class ModalSetup extends Component {
 						)}
 					</View>
 				</ScrollView>
-			</KeyboardAwareScrollView>
+			{/* </KeyboardAwareScrollView> */}
+			</KeyboardAvoidingView>
 		);
 	}
 }
