@@ -140,7 +140,7 @@ class UserSetup extends Component {
                                                     style={{
                                                         ...styles.modalButton,
                                                         backgroundColor: 'red',
-                                                        width: '20%',
+                                                        width: '25%',
                                                         marginBottom: 10,
                                                     }}
                                                 >
