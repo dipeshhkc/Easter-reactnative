@@ -24,6 +24,7 @@ import {
     CleaveCurrency,
     NepaliCurrency,
 } from '../components/utils/NepaliCurrency';
+import { bURL } from '../components/app-config';
 
 class General extends Component {
     state = {
@@ -39,7 +40,7 @@ class General extends Component {
         originalValues:{},
         GeneralData: null,
         Role: '',
-        Burl: 'http://batas.simriksacos.com.np/public/api/vehiclemodel',
+        Burl: `${bURL}api/vehiclemodel`,
     };
 
     async componentDidMount() {

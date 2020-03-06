@@ -8,6 +8,8 @@ import { modelCollection, parameter } from '../components/utils/config';
 import MyFormik from '../components/myFormik';
 import ModelDropdown from './Setup/modelDropdown';
 import { getModel } from '../components/services/addModelService';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
+import { bURL } from '../components/app-config';
 
 class ModalSetup extends Component {
 	constructor(props) {
@@ -28,17 +30,18 @@ class ModalSetup extends Component {
 		dropdownFormat(modelCollection, 'modelOption', this.setStateFromOtherFile);
 	};
 
-	Burl = 'http://batas.simriksacos.com.np/public/api/vehiclemodel';
+	Burl = `${bURL}api/vehiclemodel`
+
 	default = {};
 
 	generateForm = (values, handleChange, setFieldValue) => {
 		let FormGroup = [];
-		return parameter.map(each => {
+		return parameter.map((each,ind) => {
 			if (each.default != '') {
 				this.default[each.id] = each.default;
 			}
 
-			return generateJSX(each.type, each.name, each.name, each.id, values, handleChange, each.icon, each.iconType, setFieldValue, each.id);
+			return generateJSX(each.type, each.name, each.name, each.id, values, handleChange, each.icon, each.iconType, setFieldValue, each.id,ind);
 		});
 	};
 
@@ -69,7 +72,8 @@ class ModalSetup extends Component {
 			);
 		};
 		return (
-			<KeyboardAvoidingView behavior="padding">
+			// <KeyboardAvoidingView behavior="padding">
+			<KeyboardAwareScrollView>
 				<ScrollView>
 					<View style={styles.screen}>
 						<ModelDropdown options={modelOption} default={optionVal} handleChange={val => this.valueSelected(val)} />
@@ -87,8 +91,8 @@ class ModalSetup extends Component {
 						)}
 					</View>
 				</ScrollView>
-			</KeyboardAvoidingView>
-		);
+			</KeyboardAwareScrollView>
+		)
 	}
 }
 

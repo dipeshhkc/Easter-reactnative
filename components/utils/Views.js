@@ -2,11 +2,11 @@ import { Item, Input, Label, Picker, Icon } from 'native-base';
 import React from 'react';
 import { Text } from 'react-native';
 
-export const generateJSX = (type, label, placeholder, name, values, handleChange, icon = null, iconType = null, setFieldValue = null, options = null) => {
+export const generateJSX = (type, label, placeholder, name, values, handleChange, icon = null, iconType = null, setFieldValue = null, options = null,ind) => {
 	switch (type) {
 		case 'value':
 			return (
-				<Item floatingLabel>
+				<Item floatingLabel key={ind}>
 					<Label>{label}</Label>
 					<Input
 						name={name}
@@ -20,7 +20,7 @@ export const generateJSX = (type, label, placeholder, name, values, handleChange
 			);
 		case 'icon':
 			return (
-				<Item floatingLabel>
+				<Item floatingLabel key={ind}>
 					<Label>
 						<Text>{label}</Text>
 						(

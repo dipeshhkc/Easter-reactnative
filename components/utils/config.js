@@ -222,7 +222,7 @@ export const parameter = [
 		default: '4',
 	},
 	{
-		name: 'Adv, Promotion, Travelling, Demo & Field',
+		name: 'Adv, Promotion,Travelling,Demo&Field',
 		type: 'icon',
 		icon: 'percent',
 		iconType: 'Feather',

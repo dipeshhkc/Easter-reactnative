@@ -5,6 +5,7 @@ import { StyleSheet, KeyboardAvoidingView, Image, Platform, AsyncStorage } from 
 import MyFormik from '../../components/myFormik';
 import { inputView } from '../../components/utils/ViewConfig';
 import { getCurrentUser } from '../../components/services/api';
+import { bURL } from '../../components/app-config';
 const logo = require('../../assets/easter.png');
 
 class LoginScreen extends Component {
@@ -25,7 +26,9 @@ class LoginScreen extends Component {
 	success = () => {
 		this.props.navigation.navigate('Home');
 	};
-	Burl = 'http://batas.simriksacos.com.np/public/api/login';
+	
+	Burl=  `${bURL}api/login`
+
 
 	render() {
 		return (
