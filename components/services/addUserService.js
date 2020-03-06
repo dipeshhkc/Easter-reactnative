@@ -1,6 +1,8 @@
 import axios from 'axios';
+import { bURL } from '../app-config';
 
-const apiEndpoint = 'http://batas.simriksacos.com.np/public/api/user';
+
+const apiEndpoint = `${bURL}api/user`;
 
 export function AddUser(value, isEdit) {
 	if (isEdit) {

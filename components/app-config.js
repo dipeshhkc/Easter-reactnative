@@ -1,1 +1,1 @@
-export const bURL="http://batas.phoenixsolutions.com.np/public/"
+export const bURL="http://batas.phoenixsolutions.com.np/"

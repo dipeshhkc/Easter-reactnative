@@ -1,6 +1,8 @@
 import axios from 'axios';
+import { bURL } from '../app-config';
 
-const apiEndpoint = 'http://batas.simriksacos.com.np/public/api/vehiclemodel';
+
+const apiEndpoint = `${bURL}api/vehiclemodel`;
 
 export function AddModel(value) {
 	return axios.post(`${apiEndpoint}`, value);
