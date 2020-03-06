@@ -3,9 +3,9 @@ import { bURL } from '../app-config';
 
 const apiEndpoint = `${bURL}api/vehiclemodel`;
 
-export function AddModel(value) {
-	console.log(values);
-	if (val) {
+export function addModel(value, isEdit) {
+	console.log('values');
+	if (isEdit) {
 		return axios.put(`${apiEndpoint}/${val}`, value);
 	}
 	return axios.post(`${apiEndpoint}`, value);

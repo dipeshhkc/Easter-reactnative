@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlig
 import { Formik } from 'formik';
 import { Input, Label, Form, Item, Spinner } from 'native-base';
 import ModelTable from './modelTable';
-import { AddModel, getModel, deleteModel } from '../../components/services/addModelService';
+import { addModel, getModel, deleteModel } from '../../components/services/addModelService';
 
 class ModelSetup extends Component {
 	state = {
@@ -148,15 +148,17 @@ class ModelSetup extends Component {
 										console.log('valuesss', values);
 
 										try {
-											const response = await AddModel(values, isEdit);
+											console.log('valuesss11', values);
+											const response = await addModel(values, isEdit);
+											console.log('valuesss11111', values);
 											if (response.data.error) throw new Error(response.data.error);
 											else {
-												if (isEdit) {
-													alert('Edited successfully!');
-												} else {
-													alert('Added successfully!');
-												}
-												this.onModalClick();
+											if (isEdit) {
+												alert('Edited successfully!');
+											} else {
+												alert('Added successfully!');
+											}
+											this.onModalClick();
 											}
 											actions.resetForm();
 											actions.setSubmitting(false);
