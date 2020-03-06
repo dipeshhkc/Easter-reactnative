@@ -3,6 +3,8 @@ import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
+import CheckUser from '../components/utils/checkUser';
+
 import HomeScreen from '../screens/Home';
 import GeneralScreen from '../screens/general';
 import ModalSetup from '../screens/modelSetup';
@@ -43,6 +45,7 @@ const Routes = createStackNavigator({
 });
 
 const loginSwitch = createSwitchNavigator({
+	CheckUser: CheckUser,
 	Login: NavHead(LoginScreen, 'Login Screen'),
 	Home: Routes,
 });

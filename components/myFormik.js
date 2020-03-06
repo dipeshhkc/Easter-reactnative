@@ -7,12 +7,8 @@ const axios = require('axios');
 
 export class MyFormik extends Component {
 	successLogin = async user => {
-		console.log('loginn pachi', user);
 		if (user) {
-			// this.props.setLogin &&
 			await AsyncStorage.setItem('user', JSON.stringify(user));
-			// axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
-			// this.props.setLogin && this.props.setLogin(true);
 		}
 	};
 
@@ -22,9 +18,6 @@ export class MyFormik extends Component {
 	render() {
 		let initial = {};
 
-		// if(this.props.intialFormat){
-		//   initial = { ...initial, ...this.props.intialFormat };
-		// }
 		return (
 			<Formik
 				initialValues={{ ...initial, ...this.props.initial }}
@@ -100,7 +93,6 @@ export class MyFormik extends Component {
 						process1.tier1 = process1.overhead;
 						process1.tier2 = process1.withoutOverhead;
 						process1.final = process1.tier2 * 53;
-						// console.log('process1', process1);
 
 						let process2 = { model: process1.model };
 						values = Object.keys(process1)
@@ -113,21 +105,7 @@ export class MyFormik extends Component {
 						let values = { ...process2 };
 					}
 
-					// actions.resetForm();
-
 					post(this.props.Burl, values, this.props.Furl, this.props.history, this.successLogin, this.props.reload, this.props.navigation, actions, this.props.onSuccess);
-					// }
-					// //inital cha ra method post chaina
-					// else {
-					//     console.log('put');
-					//     put(
-					//         this.props.Burl,
-					//         values,
-					//         this.props.Furl,
-					//         this.props.history,
-					//         this.props.reload
-					//     );
-					// }
 				}}
 			>
 				{props => <View onSubmit={props.handleSubmit}>{this.props.children({ ...props, ...this.state })}</View>}

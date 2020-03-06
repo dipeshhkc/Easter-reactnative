@@ -33,9 +33,7 @@ class Home extends Component {
 
         async componentDidMount() {
                 const value = await AsyncStorage.getItem('user');
-                console.log('value',value)
                 if (value != null) {
-                        console.log('now', JSON.parse(value))
                 this.setState({ Role: JSON.parse(value).role });        
                 }      
         }
@@ -46,8 +44,6 @@ class Home extends Component {
 
         render() {
                 const { Role } = this.state;
-                console.log('Role',Role);
-                
                 return (
                         <View style={styles.screen}>
                                 {Role === 'admin' &&

@@ -14,15 +14,19 @@ class LoginScreen extends Component {
 
 	constructor(props) {
 		super(props);
-		getCurrentUser(props.navigation);
 		this.state = {
 			loading: false,
 			notlogged: true,
 		};
 	}
 
+	handleClick = () => {
+		this.setState({ loading: true });
+	};
+
 	// whhen success
 	success = () => {
+		this.setState({ loading: false });
 		this.props.navigation.navigate('Home');
 	};
 	Burl = 'http://batas.simriksacos.com.np/public/api/login';
@@ -55,7 +59,16 @@ class LoginScreen extends Component {
 								},
 							])}
 							<View>
-								<Button onPress={props.handleSubmit} primary iconLeft style={{ paddingLeft: 10, marginTop: 20, justifyContent: 'center' }} disabled={this.state.loading}>
+								<Button
+									onPress={() => {
+										this.handleClick();
+										props.handleSubmit();
+									}}
+									primary
+									iconLeft
+									style={{ paddingLeft: 10, marginTop: 20, justifyContent: 'center' }}
+									disabled={this.state.loading}
+								>
 									{this.state.loading && <Spinner color="white" size="small" />}
 									<Text style={{ textAlign: 'center' }}>Login</Text>
 								</Button>
