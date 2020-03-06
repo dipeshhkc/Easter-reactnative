@@ -33,9 +33,7 @@ class Home extends Component {
 
         async componentDidMount() {
                 const value = await AsyncStorage.getItem('user');
-                console.log('value',value)
                 if (value != null) {
-                        console.log('now', JSON.parse(value))
                 this.setState({ Role: JSON.parse(value).role });        
                 }      
         }
@@ -46,8 +44,6 @@ class Home extends Component {
 
         render() {
                 const { Role } = this.state;
-                console.log('Role',Role);
-                
                 return (
                         <View style={styles.screen}>
                                 {Role === 'admin' &&
@@ -232,7 +228,7 @@ const styles = StyleSheet.create({
                 alignItems: 'center',
         },
         IconWrap: {
-                backgroundColor: '#0c4ca3',
+                backgroundColor: '#b80f0a',
                 height: 60,
                 width: 60,
                 borderRadius: 50,

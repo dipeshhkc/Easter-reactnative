@@ -15,25 +15,31 @@ class LoginScreen extends Component {
 
 	constructor(props) {
 		super(props);
-		getCurrentUser(props.navigation);
 		this.state = {
 			loading: false,
 			notlogged: true,
 		};
 	}
 
+	handleClick = () => {
+		this.setState({ loading: true });
+	};
+
 	// whhen success
 	success = () => {
+		this.setState({ loading: false });
 		this.props.navigation.navigate('Home');
 	};
-	
-	Burl=  `${bURL}api/login`
 
+	Error = () => {
+		this.setState({ loading: false });
+	};
+	Burl=  `${bURL}api/login`
 
 	render() {
 		return (
 			<KeyboardAvoidingView behavior={'padding'} style={styles.container}>
-				<MyFormik onSuccess={this.success} Burl={this.Burl}>
+				<MyFormik onSuccess={this.success} Burl={this.Burl} onError={this.Error}>
 					{props => (
 						<Form>
 							<View style={{ alignItems: 'center', padding: 20 }}>
@@ -58,7 +64,16 @@ class LoginScreen extends Component {
 								},
 							])}
 							<View>
-								<Button onPress={props.handleSubmit} primary iconLeft style={{ paddingLeft: 10, marginTop: 20, justifyContent: 'center' }} disabled={this.state.loading}>
+								<Button
+									onPress={() => {
+										this.handleClick();
+										props.handleSubmit();
+									}}
+									primary
+									iconLeft
+									style={{ paddingLeft: 10, marginTop: 20, justifyContent: 'center' }}
+									disabled={this.state.loading}
+								>
 									{this.state.loading && <Spinner color="white" size="small" />}
 									<Text style={{ textAlign: 'center' }}>Login</Text>
 								</Button>
