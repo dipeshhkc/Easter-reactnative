@@ -17,23 +17,24 @@ export class MyFormik extends Component {
 	};
 	render() {
 		let initial = {};
-
 		return (
 			<Formik
-				initialValues={this.props.initial}
+				initialValues={{...this.props.initial,...initial}}
 				enableReinitialize={true}
 				validationSchema={this.props.validation}
 				onSubmit={(values, actions) => {
-					console.log('top', this.props.model, values);
-					let newVal = values;
+					
+					console.log('called')
+					
+
 					if (this.props.process) {
 						//level1
-						console.log('eta', this.props.model, newVal);
+						console.log('eta', this.props.model, values);
 						let process1 = { model: this.props.model };
-						newVal = Object.keys(newVal)
+						values = Object.keys(values)
 							.filter(each => each != 'model')
-							.map(each => ({ [each]: Number(newVal[each]) }));
-						newVal.forEach(each => {
+							.map(each => ({ [each]: Number(values[each]) }));
+						values.forEach(each => {
 							Object.assign(process1, each);
 						});
 
@@ -96,16 +97,16 @@ export class MyFormik extends Component {
 						process1.final = process1.tier2 * 53;
 
 						let process2 = { model: process1.model };
-						newVal = Object.keys(process1)
+						values = Object.keys(process1)
 							.filter(each => each != 'model')
 							.map(each => ({ [each]: process1[each].toFixed(2) }));
-						newVal.forEach(each => {
+						values.forEach(each => {
 							Object.assign(process2, each);
 						});
 
 						values = { ...process2 };
 					}
-					console.log('finalval',values)
+					
 
 					post(this.props.Burl, values, this.props.Furl, this.props.history, this.successLogin, this.props.reload, this.props.navigation, actions, this.props.onSuccess, this.props.onError);
 				}}

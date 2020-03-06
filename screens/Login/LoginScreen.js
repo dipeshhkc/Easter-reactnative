@@ -37,10 +37,13 @@ class LoginScreen extends Component {
 	Burl=  `${bURL}api/login`
 
 	render() {
+		
 		return (
 			<KeyboardAvoidingView behavior={'padding'} style={styles.container}>
 				<MyFormik onSuccess={this.success} Burl={this.Burl} onError={this.Error}>
-					{props => (
+					{props =>{
+						console.log('props',props)
+						return (
 						<Form>
 							<View style={{ alignItems: 'center', padding: 20 }}>
 								<Image source={logo} resizeMode={'contain'} />
@@ -49,6 +52,7 @@ class LoginScreen extends Component {
 							<Text style={{ textAlign: 'center', fontSize: 25, fontWeight: 'bold', fontFamily: 'NotoSerif', textDecorationLine: 'underline', marginBottom: 100 }}> Eastern Motor</Text>
 
 							<Text style={styles.app_header}>LOGIN</Text>
+
 							{inputView([
 								{
 									name: 'email',
@@ -63,6 +67,7 @@ class LoginScreen extends Component {
 									secureTextEntry: true,
 								},
 							])}
+
 							<View>
 								<Button
 									onPress={() => {
@@ -79,7 +84,7 @@ class LoginScreen extends Component {
 								</Button>
 							</View>
 						</Form>
-					)}
+					)}}
 				</MyFormik>
 			</KeyboardAvoidingView>
 		);
