@@ -9,13 +9,21 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons, Feather, AntDesign, Entypo } from '@expo/vector-icons';
 import { logout } from '../components/services/api';
+import { Caraousel } from '../components/caraousel';
+import { Images } from '../components/utils/config';
 
 class Home extends Component {
         constructor(props) {
                 super(props);
                 
                 this.state = {
-                      Role: ''  
+                        Role: '',
+                //         Images: [
+                //                 '../assets/bus/skyline-pro-staff-bus.png',
+                //                 '../assets/bus/indian-truck.png',
+                //                 '../assets/bus/eicher-school-buses.png',
+                //                 '../assets/bus/ambulance.png'
+                //       ]  
                 };
         }
 
@@ -45,6 +53,7 @@ class Home extends Component {
         render() {
                 const { Role } = this.state;
                 return (
+                        <>
                         <View style={styles.screen}>
                                 {Role === 'admin' &&
                                         <View style={styles.homewrap}>
@@ -196,7 +205,9 @@ class Home extends Component {
                                                 </TouchableHighlight>
                                         }
                                 </View>
-                        </View>
+                                </View>
+                                <Caraousel images={Images}/>
+                                </>
                 );
         }
 }
@@ -206,6 +217,7 @@ const styles = StyleSheet.create({
                 flex: 1,
                 backgroundColor: '#efefef',
                 padding: 20,
+                paddingBottom: 0
         },
         title: {
                 fontSize: 18,
