@@ -5,7 +5,6 @@ import {
     StyleSheet,
     Modal,
     TouchableHighlight,
-    TouchableNativeFeedback,
     Dimensions,
     TextInput,
     ScrollView,
@@ -380,7 +379,7 @@ class General extends Component {
                                 >
                                     <View style={styles.modalWrapper}>
                                         <View style={styles.modalContainer}>
-                                            <TouchableNativeFeedback
+                                            <TouchableHighlight
                                                 onPress={() => {
                                                     this.onModalClick();
                                                 }}
@@ -395,13 +394,13 @@ class General extends Component {
                                                 >
                                                     Close
                                         </Text>
-                                            </TouchableNativeFeedback>
+                                            </TouchableHighlight>
                                         </View>
                                             <ScrollView>
                                         <View style={styles.modalDetail}>
                                                 {ModelData &&
                                                     ModelData.map((m, index) => (
-                                                        <TouchableNativeFeedback
+                                                        <TouchableHighlight
                                                             onPress={() => {
                                                                 this.onSelected(m.model);
                                                             }}
@@ -421,7 +420,7 @@ class General extends Component {
                                                                     {m.model}
                                                                 </Text>
                                                             </View>
-                                                        </TouchableNativeFeedback>
+                                                        </TouchableHighlight>
                                                     ))}
                                             </View>
                                             </ScrollView>
@@ -439,7 +438,7 @@ class General extends Component {
                                     >
                                         <View style={styles.detailmodalWrapper}>
                                             <ScrollView>
-                                                <TouchableNativeFeedback
+                                                <TouchableHighlight
                                                     onPress={() => {
                                                         this.onDetailModal();
                                                     }}
@@ -455,7 +454,7 @@ class General extends Component {
                                                     >
                                                         Close
                                         </Text>
-                                                </TouchableNativeFeedback>
+                                                </TouchableHighlight>
                                                 {GeneralData && (
                                                     <View style={styles.table}>
                                                         <View style={styles.thead}>
@@ -568,7 +567,8 @@ const styles = StyleSheet.create({
 	mainscreen: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center',
+        alignItems: 'center',
+        marginTop:35
 	},
 	container: {
 		flex: 1,

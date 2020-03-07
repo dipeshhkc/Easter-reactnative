@@ -99,7 +99,7 @@ export class MyFormik extends Component {
 						let process2 = { model: process1.model };
 						values = Object.keys(process1)
 							.filter(each => each != 'model')
-							.map(each => ({ [each]: process1[each].toFixed(2) }));
+							.map(each => ({ [each]: process1[each].toFixed(5) }));
 						values.forEach(each => {
 							Object.assign(process2, each);
 						});
