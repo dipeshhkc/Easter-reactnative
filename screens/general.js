@@ -164,7 +164,7 @@ class General extends Component {
 						{generalData ? (
 							<KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={170}>
 								<ScrollView>
-									<View style={{ flex: 1, paddingTop: 5 }}>
+									<View style={{ flex: 1, marginBottom: 80}}>
 										<Text style={{ textAlign: 'center', fontWeight: 'bold', color: '#1D4CBC', fontSize: 16, paddingVertical: 20 }}>{this.state.busName || 'Model Name'}</Text>
 										<View style={styles.table}>
 											<View style={styles.thead}>
@@ -284,7 +284,7 @@ class General extends Component {
 									</View>
 								</ScrollView>
 								{role === 'admin' && (
-									<View style={{ backgroundColor: 'green', justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: -20, left: 10, height: 70, width: 70, borderRadius: 70 }}>
+									<View style={{ backgroundColor: 'green', justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: 90, left: 10, height: 70, width: 70, borderRadius: 70 }}>
 										{/* <Icon type="Octicons" onPress={this.onDetailModal} name="file-code" style={{ color: 'white' }} /> */}
 										<MaterialCommunityIcons name="file-document-box-multiple" color="white" onPress={this.onDetailModal} size={35} />
 									</View>
