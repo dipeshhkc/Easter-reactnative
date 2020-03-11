@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableHighlight, TouchableOpacity, Dimensions, TextInput, ScrollView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
-import { Input, Spinner, Icon, Item, Label } from 'native-base';
+import { Input, Spinner, Icon, Toast, Label } from 'native-base';
 import { Platform, AsyncStorage } from 'react-native';
 import { parameter, modelCollection, tablePatameter, parameterDetail } from '../components/utils/config';
 import { get } from '../components/services/api';
@@ -8,6 +8,7 @@ import { CleaveCurrency, NepaliCurrency } from '../components/utils/NepaliCurren
 import { bURL } from '../components/app-config';
 import { getModel } from '../components/services/addModelService';
 import MyModel from '../components/utils/MyModel';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 class General extends Component {
 	static navigationOptions = () => ({
@@ -41,7 +42,13 @@ class General extends Component {
 			}
 		} catch (err) {
 			this.setState({ errors: err });
-			alert('Errors');
+			Toast.show({
+				text: 'Error',
+				buttonText: 'Okay',
+				position: 'bottom',
+				duration: 3000,
+				type: 'danger',
+			});
 		}
 	}
 
@@ -154,130 +161,134 @@ class General extends Component {
 				) : (
 					<>
 						{generalData ? (
-							<View style={{ flex: 1, paddingTop: 30 }}>
-								<Text style={{ textAlign: 'center', fontWeight: 'bold', color: '#1D4CBC', fontSize: 16, paddingVertical: 20 }}>{this.state.busName || 'Model Name'}</Text>
-								<View style={styles.table}>
-									<View style={styles.thead}>
-										<View style={styles.tr}>
-											<Text style={styles.th}>Details</Text>
-											<Text style={styles.th}>Amount</Text>
+							<KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={170}>
+								<ScrollView>
+									<View style={{ flex: 1, paddingTop: 30 }}>
+										<Text style={{ textAlign: 'center', fontWeight: 'bold', color: '#1D4CBC', fontSize: 16, paddingVertical: 20 }}>{this.state.busName || 'Model Name'}</Text>
+										<View style={styles.table}>
+											<View style={styles.thead}>
+												<View style={styles.tr}>
+													<Text style={styles.th}>Details</Text>
+													<Text style={styles.th}>Amount</Text>
+												</View>
+											</View>
+											{role === 'admin' ? (
+												<View style={styles.tbody}>
+													{tablePatameter.map(m => (
+														<View style={styles.tr} key={m.id}>
+															<Text style={styles.td}>{m.name}</Text>
+															<Text style={styles.td}>
+																{m.id == 'tier1'
+																	? // NepaliCurrency(
+																	  //   tier1val
+																	  Math.sign(tier1val) == 1
+																		? tier1val
+																		: `(${Math.abs(tier1val)})`
+																	: // )
+																	m.id == 'tier2'
+																	? // NepaliCurrency(
+																	  //   tier2val
+																	  Math.sign(tier2val) == 1
+																		? tier2val
+																		: `(${Math.abs(tier2val)})`
+																	: // )
+																	  NepaliCurrency(generalData[m.id])}
+															</Text>
+														</View>
+													))}
+
+													<View style={styles.tr}>
+														<Text style={styles.td}>IMPACT (Positive/Negative)</Text>
+														<Text style={styles.td}>{Math.sign(Impact) == 1 ? Impact : `(${Math.abs(Impact)})` || Impact}</Text>
+													</View>
+													<View style={styles.tr}>
+														<Text
+															style={{
+																...styles.td,
+																fontWeight: 'bold',
+																textAlign: 'right',
+															}}
+														>
+															Discussed MRP :
+														</Text>
+														<View
+															style={{
+																...styles.td,
+																paddingBottom: 0,
+																borderBottomWidth: 2,
+																borderBottomColor: '#000',
+																paddingTop: 4,
+															}}
+														>
+															<TextInput
+																name={'final'}
+																style={styles.input}
+																value={discussedMRP || ''}
+																keyboardType="numeric"
+																onChangeText={text => {
+																	this.handleDiscussed(text);
+																}}
+															/>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<Text
+															style={{
+																...styles.td,
+																fontWeight: 'bold',
+																textAlign: 'right',
+															}}
+														>
+															Discount :
+														</Text>
+														<View
+															style={{
+																...styles.td,
+																paddingBottom: 0,
+																paddingTop: 4,
+																borderBottomWidth: 2,
+																borderBottomColor: '#000',
+															}}
+														>
+															<TextInput
+																name={'discount'}
+																style={styles.input}
+																// value={NepaliCurrency(discount) || 0}
+																value={discount || ''}
+																keyboardType="numeric"
+																onChangeText={text => {
+																	this.handleDiscount(text);
+																}}
+															/>
+														</View>
+													</View>
+												</View>
+											) : (
+												<View style={styles.tbody}>
+													<View style={styles.tr}>
+														<Text style={styles.td}>Invoice value in INR</Text>
+														<Text style={styles.td}>{generalData['inr']}</Text>
+													</View>
+													<View style={styles.tr}>
+														<Text style={styles.td}>Value in NPR</Text>
+														<Text style={styles.td}>{generalData['exRate']}</Text>
+													</View>
+													<View style={styles.tr}>
+														<Text style={styles.td}>TIER 2 (NP)</Text>
+														<Text style={styles.td}>{generalData['tier2']}</Text>
+													</View>
+												</View>
+											)}
 										</View>
 									</View>
-									{role === 'admin' ? (
-										<View style={styles.tbody}>
-											{tablePatameter.map(m => (
-												<View style={styles.tr} key={m.id}>
-													<Text style={styles.td}>{m.name}</Text>
-													<Text style={styles.td}>
-														{m.id == 'tier1'
-															? // NepaliCurrency(
-															  //   tier1val
-															  Math.sign(tier1val) == 1
-																? tier1val
-																: `(${Math.abs(tier1val)})`
-															: // )
-															m.id == 'tier2'
-															? // NepaliCurrency(
-															  //   tier2val
-															  Math.sign(tier2val) == 1
-																? tier2val
-																: `(${Math.abs(tier2val)})`
-															: // )
-															  NepaliCurrency(generalData[m.id])}
-													</Text>
-												</View>
-											))}
-
-											<View style={styles.tr}>
-												<Text style={styles.td}>IMPACT (Positive/Negative)</Text>
-												<Text style={styles.td}>{Math.sign(Impact) == 1 ? Impact : `(${Math.abs(Impact)})` || Impact}</Text>
-											</View>
-											<View style={styles.tr}>
-												<Text
-													style={{
-														...styles.td,
-														fontWeight: 'bold',
-														textAlign: 'right',
-													}}
-												>
-													Discussed MRP :
-												</Text>
-												<View
-													style={{
-														...styles.td,
-														paddingBottom: 0,
-														borderBottomWidth: 2,
-														borderBottomColor: '#000',
-														paddingTop: 4,
-													}}
-												>
-													<TextInput
-														name={'final'}
-														style={styles.input}
-														value={discussedMRP || ''}
-														keyboardType="numeric"
-														onChangeText={text => {
-															this.handleDiscussed(text);
-														}}
-													/>
-												</View>
-											</View>
-											<View style={styles.tr}>
-												<Text
-													style={{
-														...styles.td,
-														fontWeight: 'bold',
-														textAlign: 'right',
-													}}
-												>
-													Discount :
-												</Text>
-												<View
-													style={{
-														...styles.td,
-														paddingBottom: 0,
-														paddingTop: 4,
-														borderBottomWidth: 2,
-														borderBottomColor: '#000',
-													}}
-												>
-													<TextInput
-														name={'discount'}
-														style={styles.input}
-														// value={NepaliCurrency(discount) || 0}
-														value={discount || ''}
-														keyboardType="numeric"
-														onChangeText={text => {
-															this.handleDiscount(text);
-														}}
-													/>
-												</View>
-											</View>
-										</View>
-									) : (
-										<View style={styles.tbody}>
-											<View style={styles.tr}>
-												<Text style={styles.td}>Invoice value in INR</Text>
-												<Text style={styles.td}>{generalData['inr']}</Text>
-											</View>
-											<View style={styles.tr}>
-												<Text style={styles.td}>Value in NPR</Text>
-												<Text style={styles.td}>{generalData['exRate']}</Text>
-											</View>
-											<View style={styles.tr}>
-												<Text style={styles.td}>TIER 2 (NP)</Text>
-												<Text style={styles.td}>{generalData['tier2']}</Text>
-											</View>
-										</View>
-									)}
-								</View>
-
+								</ScrollView>
 								{role === 'admin' && (
-									<View style={{ backgroundColor: 'green', justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: 80, right: 10, height: 70, width: 70, borderRadius: 70 }}>
-										<Icon type="MaterialIcons" onPress={this.onDetailModal} name="description" style={{ color: 'white' }} />
+									<View style={{ backgroundColor: 'green', justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: -20, right: 10, height: 70, width: 70, borderRadius: 70 }}>
+										{/* <Icon type="Octicons" onPress={this.onDetailModal} name="file-code" style={{ color: 'white' }} /> */}
+										<MaterialCommunityIcons name="file-document-box-multiple" color="white" onPress={this.onDetailModal} size={35} />
 									</View>
 								)}
-							</View>
+							</KeyboardAvoidingView>
 						) : (
 							<View style={styles.NoDataStyle}>
 								<Icon style={{ fontSize: 100 }} name="gauge-empty" type="MaterialCommunityIcons" />
@@ -576,10 +587,10 @@ const styles = StyleSheet.create({
 	table: {
 		marginHorizontal: 10,
 		marginBottom: 10,
-		borderLeftWidth: 1,
-		borderLeftColor: '#ECECEC',
-		borderTopWidth: 1,
-		borderTopColor: '#ECECEC',
+		borderLeftWidth: 0.5,
+		borderLeftColor: '#666',
+		borderTopWidth: 0.5,
+		borderTopColor: '#666',
 		borderRadius: 2,
 	},
 	thead: {
@@ -593,10 +604,10 @@ const styles = StyleSheet.create({
 		width: '50%',
 		paddingVertical: 10,
 		paddingHorizontal: 10,
-		borderBottomWidth: 1,
-		borderBottomColor: '#ECECEC',
-		borderRightWidth: 1,
-		borderRightColor: '#ECECEC',
+		borderBottomWidth: 0.5,
+		borderBottomColor: '#666',
+		borderRightWidth: 0.5,
+		borderRightColor: '#666',
 	},
 	th1: {
 		width: Dimensions.get('window').width - 20,
@@ -607,10 +618,10 @@ const styles = StyleSheet.create({
 		width: '50%',
 		padding: 10,
 		fontSize: 14,
-		borderBottomWidth: 1,
-		borderBottomColor: '#ECECEC',
-		borderRightWidth: 1,
-		borderRightColor: '#ECECEC',
+		borderBottomWidth: 0.5,
+		borderBottomColor: '#666',
+		borderRightWidth: 0.5,
+		borderRightColor: '#666',
 	},
 	modalButton: {
 		backgroundColor: '#1D4CBC',
@@ -642,8 +653,8 @@ const styles = StyleSheet.create({
 	modalDetailWrap: {
 		paddingVertical: 25,
 		paddingHorizontal: 2,
-		borderBottomWidth: 1,
-		borderBottomColor: '#ECECEC',
+		borderBottomWidth: 0.5,
+		borderBottomColor: '#666',
 	},
 	input: {
 		margin: 0,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlight,TouchableOpacity, Dimensions, Modal, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlight, TouchableOpacity, Dimensions, Modal, Button } from 'react-native';
 import { Formik } from 'formik';
-import { Input, Label, Form, Item, Spinner } from 'native-base';
+import { Input, Label, Form, Item, Spinner, Toast } from 'native-base';
 import ModelTable from './modelTable';
 import { addModel, getModel, deleteModel } from '../../components/services/addModelService';
 
@@ -73,9 +73,22 @@ class ModelSetup extends Component {
 		try {
 			await deleteModel(model.model);
 			this.setState(prevState => ({ modalVisible: false, dataResponse: !prevState.dataResponse, loading: !prevState.loading }));
-			alert('This Model deleted successfully.');
+			Toast.show({
+				text: 'This Model deleted successfully.',
+				buttonText: 'Okay',
+				position: 'bottom',
+				duration: 3000,
+				type: 'success',
+			});
 		} catch (ex) {
-			if (ex.response && ex.response.status === 404) alert('This Model has already been deleted.');
+			if (ex.response && ex.response.status === 404)
+				Toast.show({
+					text: 'This Model has already been deleted..',
+					buttonText: 'Okay',
+					position: 'bottom',
+					duration: 3000,
+					type: 'danger',
+				});
 			this.setState({ ModelData: originalModelData });
 		}
 	};
@@ -153,9 +166,21 @@ class ModelSetup extends Component {
 											if (response.data.error) throw new Error(response.data.error);
 											else {
 												if (isEdit) {
-													alert('Edited successfully!');
+													Toast.show({
+														text: 'Edited successfully!',
+														buttonText: 'Okay',
+														position: 'bottom',
+														duration: 3000,
+														type: 'success',
+													});
 												} else {
-													alert('Added successfully!');
+													Toast.show({
+														text: 'Added successfully!',
+														buttonText: 'Okay',
+														position: 'bottom',
+														duration: 3000,
+														type: 'success',
+													});
 												}
 												this.onModalClick();
 											}
@@ -163,7 +188,13 @@ class ModelSetup extends Component {
 											actions.setSubmitting(false);
 										} catch (ex) {
 											if (ex.response && ex.response.status === 404) {
-												alert('Something went wrong.');
+												Toast.show({
+													text: 'Something went wrong.',
+													buttonText: 'Okay',
+													position: 'bottom',
+													duration: 3000,
+													type: 'danger',
+												});
 											} else {
 												this.setState({
 													AddUserErrors: ex,

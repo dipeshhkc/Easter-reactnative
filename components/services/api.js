@@ -2,6 +2,8 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 const qs = require('qs');
 
+import { Toast } from 'native-base';
+
 export const get = async url => {
 	try {
 		let response = await axios.get(url);
@@ -14,7 +16,13 @@ export const post = async (url, body, Furl = null, history = null, successLogin 
 		let received = await axios.post(url, body);
 
 		if (!received.data.error) {
-			alert('Success');
+			Toast.show({
+				text: 'Success',
+				buttonText: 'Okay',
+				position: 'bottom',
+				duration: 3000,
+				type: 'success',
+			});
 			actions && actions.setSubmitting(false);
 			navigation && navigation.navigate('ViewScreen');
 			successLogin && (await successLogin(received.data.data));
@@ -23,12 +31,24 @@ export const post = async (url, body, Furl = null, history = null, successLogin 
 			history && Furl && history.push(Furl);
 			reload && reload();
 		} else {
-			alert(received.data.error);
+			Toast.show({
+				text: 'Error',
+				buttonText: 'Okay',
+				position: 'bottom',
+				duration: 3000,
+				type: 'danger',
+			});
 			actions && actions.setSubmitting(false);
 			onError(true);
 		}
 	} catch (err) {
-		alert('Error', err);
+		Toast.show({
+			text: 'Error',
+			buttonText: 'Okay',
+			position: 'bottom',
+			duration: 3000,
+			type: 'danger',
+		});
 		onError(true);
 	}
 };
@@ -40,10 +60,22 @@ export const put = async (url, body, Furl = null, history = null, reload = null)
 			history && Furl && history.push(Furl);
 			reload && reload();
 		} else {
-			alert(received.data.error.message);
+			Toast.show({
+				text: 'Error',
+				buttonText: 'Okay',
+				position: 'bottom',
+				duration: 3000,
+				type: 'danger',
+			});
 		}
 	} catch (err) {
-		alert('Error while submitting');
+		Toast.show({
+			text: 'Error while submitting',
+			buttonText: 'Okay',
+			position: 'bottom',
+			duration: 3000,
+			type: 'danger',
+		});
 	}
 };
 
@@ -56,12 +88,30 @@ export const deletee = async (url, showConfirm = true) => {
 			try {
 				let received = await axios.delete(url);
 				if (!received.data.error) {
-					alert('success');
+					Toast.show({
+						text: 'Success',
+						buttonText: 'Okay',
+						position: 'bottom',
+						duration: 3000,
+						type: 'success',
+					});
 				} else {
-					alert(received.data.error.message);
+					Toast.show({
+						text: 'Error while submitting',
+						buttonText: 'Okay',
+						position: 'bottom',
+						duration: 3000,
+						type: 'danger',
+					});
 				}
 			} catch (err) {
-				alert('Error while submitting');
+				Toast.show({
+					text: 'Error while submitting',
+					buttonText: 'Okay',
+					position: 'bottom',
+					duration: 3000,
+					type: 'danger',
+				});
 			}
 		}
 	}

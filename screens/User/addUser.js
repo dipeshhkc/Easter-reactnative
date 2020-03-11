@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlight, Dimensions, Modal, Button } from 'react-native';
 import { Formik } from 'formik';
-import { Input, Label, Form, Item, Spinner, Picker, Icon } from 'native-base';
+import { Input, Label, Form, Item, Spinner, Picker, Icon, Toast } from 'native-base';
 import UserTable from './userTable';
 import { getUser, AddUser, deleteUser } from '../../components/services/addUserService';
 
@@ -79,9 +79,22 @@ class UserSetup extends Component {
         try {
             await deleteUser(user.id);
             this.setState(prevState => ({ modalVisible: false, dataResponse: !prevState.dataResponse, loading: !prevState.loading }));
-            alert('This User is deleted successfully.');
+            Toast.show({
+							text: 'This User is deleted successfully.',
+							buttonText: 'Okay',
+							position: 'bottom',
+							duration: 3000,
+							type: 'success',
+						});
         } catch (ex) {
-            if (ex.response && ex.response.status === 404) alert('This User has already been deleted.');
+            if (ex.response && ex.response.status === 404)
+                Toast.show({
+									text: 'This User has already been deleted.',
+									buttonText: 'Okay',
+									position: 'bottom',
+									duration: 3000,
+									type: 'danger',
+								});
             this.setState({ UserData: originalUserData });
         }
     };
@@ -160,9 +173,21 @@ class UserSetup extends Component {
                                                 if (response.data.error) throw new Error(response.data.error);
                                                 else {
                                                     if (isEdit) {
-                                                        alert('Edited successfully!');
+                                                         Toast.show({
+																														text: 'Edited successfully!',
+																														buttonText: 'Okay',
+																														position: 'bottom',
+																														duration: 3000,
+																														type: 'success',
+																													});
                                                     } else {
-                                                        alert('Added successfully!');
+                                                         Toast.show({
+																														text: 'Added successfully!',
+																														buttonText: 'Okay',
+																														position: 'bottom',
+																														duration: 3000,
+																														type: 'success',
+																													});
                                                     }
                                                     this.onModalClick();
                                                 }
@@ -170,7 +195,13 @@ class UserSetup extends Component {
                                                 actions.setSubmitting(false);
                                             } catch (ex) {
                                                 if (ex.response && ex.response.status === 404) {
-                                                    alert('Something went wrong.');
+                                                    Toast.show({
+																											text: 'Something went wrong.',
+																											buttonText: 'Okay',
+																											position: 'bottom',
+																											duration: 3000,
+																											type: 'danger',
+																										});
                                                 } else {
                                                     this.setState({
                                                         AddUserErrors: ex,
