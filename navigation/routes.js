@@ -42,7 +42,7 @@ const Routes = createStackNavigator({
 
 	//Setup Part
 	SetupModal: SetupModalScreen,
-	AddUser: UserSetup
+	AddUser: UserSetup,
 });
 
 const loginSwitch = createSwitchNavigator({

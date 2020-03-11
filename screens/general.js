@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableHighlight, TouchableOpacity, Dimensions, TextInput, ScrollView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
-import { Input, Spinner, Icon } from 'native-base';
+import { Input, Spinner, Icon, Item, Label } from 'native-base';
 import { Platform, AsyncStorage } from 'react-native';
 import { parameter, modelCollection, tablePatameter, parameterDetail } from '../components/utils/config';
 import { get } from '../components/services/api';
@@ -154,12 +154,13 @@ class General extends Component {
 				) : (
 					<>
 						{generalData ? (
-							<View style={{ flex: 1 }}>
+							<View style={{ flex: 1, paddingTop: 30 }}>
+								<Text style={{ textAlign: 'center', fontWeight: 'bold', color: '#1D4CBC', fontSize: 16, paddingVertical: 20 }}>{this.state.busName || 'Model Name'}</Text>
 								<View style={styles.table}>
 									<View style={styles.thead}>
 										<View style={styles.tr}>
 											<Text style={styles.th}>Details</Text>
-											<Text style={styles.th}>{this.state.busName || 'Model Name'}</Text>
+											<Text style={styles.th}>Amount</Text>
 										</View>
 									</View>
 									{role === 'admin' ? (
@@ -196,15 +197,17 @@ class General extends Component {
 													style={{
 														...styles.td,
 														fontWeight: 'bold',
+														textAlign: 'right',
 													}}
 												>
-													Discussed MRP
+													Discussed MRP :
 												</Text>
-
 												<View
 													style={{
 														...styles.td,
 														paddingBottom: 0,
+														borderBottomWidth: 2,
+														borderBottomColor: '#000',
 														paddingTop: 4,
 													}}
 												>
@@ -224,15 +227,18 @@ class General extends Component {
 													style={{
 														...styles.td,
 														fontWeight: 'bold',
+														textAlign: 'right',
 													}}
 												>
-													Discount
+													Discount :
 												</Text>
 												<View
 													style={{
 														...styles.td,
 														paddingBottom: 0,
 														paddingTop: 4,
+														borderBottomWidth: 2,
+														borderBottomColor: '#000',
 													}}
 												>
 													<TextInput
@@ -324,6 +330,8 @@ class General extends Component {
 															style={{
 																...styles.th,
 																width: '33.33%',
+																color: '#fff',
+																backgroundColor: '#ffc000',
 															}}
 														>
 															Details
@@ -332,6 +340,8 @@ class General extends Component {
 															style={{
 																...styles.th,
 																width: '33.33%',
+																color: '#fff',
+																backgroundColor: '#ffc000',
 															}}
 														>
 															CUR / %
@@ -340,6 +350,8 @@ class General extends Component {
 															style={{
 																...styles.th,
 																width: '33.33%',
+																color: '#fff',
+																backgroundColor: '#00b0f0',
 															}}
 														>
 															{this.state.busName || 'Model Name'}
@@ -353,6 +365,58 @@ class General extends Component {
 																style={{
 																	...styles.td,
 																	width: '33.33%',
+																	backgroundColor:
+																		m.id == 'service'
+																			? '#ffff00'
+																			: m.id == 'exRate'
+																			? '#f2f2f2'
+																			: m.id == 'boarderInPrice'
+																			? '#f2f2f2'
+																			: m.id == 'warrenty'
+																			? '#ffff00'
+																			: m.id == 'IndcustomC'
+																			? '#ffff00'
+																			: m.id == 'stockYard'
+																			? '#ffff00'
+																			: m.id == 'stockTrans'
+																			? '#ffff00'
+																			: m.id == 'interestInvestV'
+																			? '#f7caac'
+																			: m.id == 'priceBeforeVat'
+																			? '#ffff00'
+																			: m.id == 'suitableMRP'
+																			? '#c5e0b3'
+																			: m.id == 'overhead'
+																			? '#ffc000'
+																			: m.id == 'withoutOverhead'
+																			? '#ffc000'
+																			: m.id == 'credit'
+																			? '#ffc000'
+																			: m.id == 'costTillDealer'
+																			? '#f2f2f2'
+																			: m.id == 'totalLandingCost'
+																			? '#f2f2f2'
+																			: '',
+																	fontWeight:
+																		m.id == 'inr'
+																			? '700'
+																			: m.id == 'exRate'
+																			? '700'
+																			: m.id == 'boarderInPrice'
+																			? '700'
+																			: m.id == 'costTillDealer'
+																			? '700'
+																			: m.id == 'totalLandingCost'
+																			? '700'
+																			: m.id == 'priceBeforeVat'
+																			? '700'
+																			: m.id == 'overhead'
+																			? '700'
+																			: m.id == 'withoutOverhead'
+																			? '700'
+																			: m.id == 'credit'
+																			? '700'
+																			: '400',
 																}}
 															>
 																{m.name}
@@ -361,6 +425,60 @@ class General extends Component {
 																style={{
 																	...styles.td,
 																	width: '33.33%',
+																	backgroundColor:
+																		m.id == 'service'
+																			? '#ffff00'
+																			: m.id == 'exRate'
+																			? '#f2f2f2'
+																			: m.id == 'boarderInPrice'
+																			? '#f2f2f2'
+																			: m.id == 'warrenty'
+																			? '#ffff00'
+																			: m.id == 'IndcustomC'
+																			? '#ffff00'
+																			: m.id == 'stockYard'
+																			? '#ffff00'
+																			: m.id == 'stockTrans'
+																			? '#ffff00'
+																			: m.id == 'interestInvestV'
+																			? '#00b0f0'
+																			: m.id == 'priceBeforeVat'
+																			? '#ffff00'
+																			: m.id == 'suitableMRP'
+																			? '#c5e0b3'
+																			: m.id == 'overhead'
+																			? '#ffc000'
+																			: m.id == 'withoutOverhead'
+																			? '#ffc000'
+																			: m.id == 'credit'
+																			? '#ffc000'
+																			: m.id == 'costTillDealer'
+																			? '#f2f2f2'
+																			: m.id == 'totalLandingCost'
+																			? '#f2f2f2'
+																			: '',
+																	fontWeight:
+																		m.id == 'inr'
+																			? '700'
+																			: m.id == 'exRate'
+																			? '700'
+																			: m.id == 'boarderInPrice'
+																			? '700'
+																			: m.id == 'costTillDealer'
+																			? '700'
+																			: m.id == 'totalLandingCost'
+																			? '700'
+																			: m.id == 'priceBeforeVat'
+																			? '700'
+																			: m.id == 'suitableMRP'
+																			? '700'
+																			: m.id == 'overhead'
+																			? '700'
+																			: m.id == 'withoutOverhead'
+																			? '700'
+																			: m.id == 'credit'
+																			? '700'
+																			: '400',
 																}}
 															>
 																{generalData[`${m.id}V`] ? generalData[m.id] : m.id == 'exRate' ? generalData['exRate'] : ' '}
@@ -369,6 +487,63 @@ class General extends Component {
 																style={{
 																	...styles.td,
 																	width: '33.33%',
+																	backgroundColor:
+																		m.id == 'inr'
+																			? '#00b0f0'
+																			: m.id == 'exRate'
+																			? '#f2f2f2'
+																			: m.id == 'boarderInPrice'
+																			? '#f2f2f2'
+																			: m.id == 'service'
+																			? '#ffff00'
+																			: m.id == 'warrenty'
+																			? '#ffff00'
+																			: m.id == 'IndcustomC'
+																			? '#ffff00'
+																			: m.id == 'stockYard'
+																			? '#ffff00'
+																			: m.id == 'stockTrans'
+																			? '#ffff00'
+																			: m.id == 'interestInvestV'
+																			? '#f7caac'
+																			: m.id == 'priceBeforeVat'
+																			? '#ffff00'
+																			: m.id == 'suitableMRP'
+																			? '#00b0f0'
+																			: m.id == 'overhead'
+																			? '#ffc000'
+																			: m.id == 'withoutOverhead'
+																			? '#ffc000'
+																			: m.id == 'credit'
+																			? '#ffc000'
+																			: m.id == 'costTillDealer'
+																			? '#f2f2f2'
+																			: m.id == 'totalLandingCost'
+																			? '#f2f2f2'
+																			: '',
+																	fontWeight:
+																		m.id == 'inr'
+																			? '700'
+																			: m.id == 'exRate'
+																			? '700'
+																			: m.id == 'boarderInPrice'
+																			? '700'
+																			: m.id == 'costTillDealer'
+																			? '700'
+																			: m.id == 'totalLandingCost'
+																			? '700'
+																			: m.id == 'priceBeforeVat'
+																			? '700'
+																			: m.id == 'suitableMRP'
+																			? '700'
+																			: m.id == 'overhead'
+																			? '700'
+																			: m.id == 'withoutOverhead'
+																			? '700'
+																			: m.id == 'credit'
+																			? '700'
+																			: '400',
+																	color: m.id == 'totalLandingCost' ? 'red' : m.id == 'priceBeforeVat' ? 'red' : '#000',
 																}}
 															>
 																{generalData[`${m.id}V`] ? NepaliCurrency(generalData[`${m.id}V`]) : m.id == 'exRate' ? NepaliCurrency(generalData['npr']) : NepaliCurrency(generalData[m.id])}

@@ -17,14 +17,12 @@ class UserTable extends Component {
 				<DataTable>
 					<DataTable.Header>
 						<DataTable.Title>Username</DataTable.Title>
-						<DataTable.Title numeric>Email</DataTable.Title>
 					</DataTable.Header>
 
 					{this.props.data.map((row, index) => (
 						<TouchableHighlight key={index} onPress={() => this.props.clicked(row)}>
 							<DataTable.Row>
 								<DataTable.Cell>{row.name}</DataTable.Cell>
-								<DataTable.Cell numeric>{row.email}</DataTable.Cell>
 							</DataTable.Row>
 						</TouchableHighlight>
 					))}
