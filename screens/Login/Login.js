@@ -79,8 +79,12 @@ class LoginScreen extends Component {
 												type: 'danger',
 											});
 										} else {
-											this.setState({
-												LoginErrors: ex,
+											Toast.show({
+												text: `${ex.response.data.error}`,
+												buttonText: 'Okay',
+												position: 'bottom',
+												duration: 3000,
+												type: 'danger',
 											});
 										}
 										actions.setSubmitting(false);

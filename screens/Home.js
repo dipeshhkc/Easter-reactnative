@@ -18,7 +18,6 @@ class Home extends Component {
 		};
 	}
 
-
 	month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 	async componentDidMount() {
@@ -35,26 +34,40 @@ class Home extends Component {
 	render() {
 		const { Role } = this.state;
 		return (
-			
-			<LinearGradient style={styles.main} colors={['rgba(227,216,241,1)', 'rgba(215,226,255,1)', ' rgba(175,200,242,1)']}>
-				
+			<View style={styles.main} colors={'#cdcdcd'}>
 				<View style={styles.upperPart}>
 					<View style={styles.upperPartOne}>
-						<Text style={{color:'#fff',fontWeight:'bold',fontFamily:'NotoSerif',alignSelf:'flex-start',letterSpacing:2,fontSize:25,justifyContent:'center',marginTop:10}}> EASTERN </Text>
-						{/* <Text style={{color:'#F24639',fontWeight:'bold',fontFamily:'NotoSerif',alignSelf:'flex-start',letterSpacing:2,fontSize:25,justifyContent:'center',marginTop:10}}> EASTERN </Text> */}
-						<TouchableOpacity style={styles.iconContainer} onPress={() => logout(this.props.navigation)}>
+						<View>
+							<Text style={{ color: '#fff', fontWeight: 'bold', fontFamily: 'NotoSerif', alignSelf: 'flex-start', letterSpacing: 2, fontSize: 25, justifyContent: 'center', marginTop: 10 }}>
+								EASTERN
+							</Text>
+						</View>
+						<View>
+							<TouchableOpacity style={styles.iconContainer} onPress={() => logout(this.props.navigation)}>
 								<Entypo name="log-out" size={25} color={'#fff'} style={styles.Icons} />
-						</TouchableOpacity>
+							</TouchableOpacity>
+						</View>
 					</View>
 					<View style={styles.upperPartTwo}>
 						<Image style={styles.upperPartTwoImg} source={logo} resizeMode={'contain'} />
-						<View style={styles.upperPartTwoText} >
-							<Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold', fontFamily: 'NotoSerif', marginBottom: 30, color: '#1D4CBC' }}>
+						<View style={styles.upperPartTwoText}>
+							<Text style={{ textAlign: 'center', fontSize: 17, fontWeight: 'bold', fontFamily: 'NotoSerif', marginBottom: 30, color: '#1D4CBC' }}>
 								एक एक रुपैया को अर्थ छ,मेरो कम्पनी र मेरो परिवारको लागि।{' '}
 							</Text>
-							<Text style={{ textAlign: 'right', paddingRight: 10,fontStyle:'italic', fontSize: 15, fontWeight: 'bold', fontFamily: 'NotoSerif',position:'absolute',bottom:10,right:5,color:'#F24639' }}>{`${
-								this.month[new Date().getMonth() + 1]
-							} ${new Date().getDate()}, ${new Date().getFullYear()}`}</Text>
+							<Text
+								style={{
+									textAlign: 'right',
+									paddingRight: 10,
+									// fontStyle: 'italic',
+									fontSize: 15,
+									fontWeight: 'bold',
+									fontFamily: 'NotoSerif',
+									position: 'absolute',
+									bottom: 10,
+									right: 5,
+									color: '#F24639',
+								}}
+							>{`${this.month[new Date().getMonth() + 1]} ${new Date().getDate()}, ${new Date().getFullYear()}`}</Text>
 						</View>
 					</View>
 				</View>
@@ -102,15 +115,14 @@ class Home extends Component {
 						)}
 					</View>
 				</View>
-				
-			</LinearGradient>
+			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
 	main: {
-		paddingBottom: 50,
+		// paddingBottom: 50,
 		flex: 1,
 	},
 	upperPart: {
@@ -125,8 +137,11 @@ const styles = StyleSheet.create({
 		borderBottomLeftRadius: 20,
 		borderBottomRightRadius: 20,
 		flex: 2,
-		justifyContent: 'center',
-		alignItems: 'flex-end',	
+		justifyContent: 'space-between',
+		flexDirection: 'row',
+		paddingTop: 30,
+		paddingHorizontal: 10,
+		// alignItems: 'flex-end',
 	},
 	upperPartTwo: {
 		flex: 3,
@@ -134,28 +149,32 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		justifyContent: 'space-around',
 		alignSelf: 'center',
-		marginTop: -40,
+		marginTop: -80,
 		marginBottom: 20,
-		shadowColor: '#999',
-		
-		shadowOffset: {
-			width: 0,
-			height: 12,
-		},
-		shadowOpacity: 0.9,
-		shadowRadius: 16.0,
-		elevation: 8,
-		borderRadius: 20,
+		borderRadius: 10,
+		padding: 10,
+		// shadowColor: '#999',
+
+		// shadowOffset: {
+		// 	width: 0,
+		// 	height: 12,
+		// },
+		// shadowOpacity: 0.9,
+		// shadowRadius: 16.0,
+		// elevation: 2,
+		// borderRadius: 20,
 	},
 
 	upperPartTwoImg: {
 		// justifyContent:'flex-start',
 		alignSelf: 'center',
+		height: 70,
 		flex: 1,
 	},
 	upperPartTwoText: {
+		padding: 10,
 		flex: 1,
-		position:'relative'
+		position: 'relative',
 	},
 
 	title: {
@@ -168,22 +187,23 @@ const styles = StyleSheet.create({
 	homewrap: {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
+		marginBottom: 10,
 	},
 	homeMain: {
 		width: Dimensions.get('window').width / 2 - 30,
 		height: Dimensions.get('window').height / 5,
 		backgroundColor: '#fff',
-		borderRadius: 20,
+		borderRadius: 10,
 		justifyContent: 'center',
 		alignItems: 'center',
-		shadowColor: '#999',
-		shadowOffset: {
-			width: 0,
-			height: 12,
-		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
-		elevation: 8,
+		// shadowColor: '#999',
+		// shadowOffset: {
+		// 	width: 0,
+		// 	height: 12,
+		// },
+		// shadowOpacity: 0.58,
+		// shadowRadius: 16.0,
+		// elevation: 2,
 
 		// backgroundColor:'#1D4CBC'
 	},
@@ -209,11 +229,11 @@ const styles = StyleSheet.create({
 	},
 	iconContainer: {
 		color: '#fff',
+		paddingTop: 15,
 		width: 50,
 		height: 50,
-		marginBottom:10,
-		justifyContent:'flex-start'
-		
+		marginBottom: 10,
+		justifyContent: 'flex-start',
 	},
 	cardHighlight: {
 		borderRadius: 20,

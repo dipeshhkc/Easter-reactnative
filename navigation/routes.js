@@ -17,23 +17,23 @@ import LoginScreen from '../screens/Login/Login';
 //Create Screen
 import UserSetup from '../screens/User/addUser';
 
-const NavHead = Name => {
+const NavHead = (Name, title) => {
 	return {
 		screen: Name,
 		navigationOptions: {
-			headerTitle: '',
+			headerTitle: title,
 		},
 	};
 };
 
 const Routes = createStackNavigator({
 	Home: HomeScreen,
-	ModalCreate: ModalSetup,
-	ViewScreen: GeneralScreen,
+	ModalCreate: NavHead(ModalSetup, 'Model Create'),
+	ViewScreen: NavHead(GeneralScreen, 'Search View'),
 
 	//Setup Part
-	SetupModal: NavHead(SetupModalScreen),
-	AddUser: NavHead(UserSetup),
+	SetupModal: NavHead(SetupModalScreen, 'Model Setup'),
+	AddUser: NavHead(UserSetup, 'User Setup'),
 });
 
 const loginSwitch = createSwitchNavigator({
