@@ -300,7 +300,7 @@ export const parameterDetail = [
 	{ name: 'Suitable MRP', id: 'suitableMRP' },
 	{ name: 'With Overhead', id: 'overhead' },
 	{ name: 'Without Overhead (NET)', id: 'withoutOverhead' },
-	{ name: 'Interest Months', id: 'interestMonth' },
+	{ name: 'Interest Months', id: 'credit' },
 	// { name: 'Discussed MRP', id: 'discussedMRP' },
 	// // { name: 'IMPACT (Positive/Negative)', id: 'impact' },
 	// { name: 'TIER 1 (GP)', id: 'tier1' },
@@ -320,15 +320,19 @@ export const tablePatameter = [
 	{ name: 'Suitable MRP', id: 'suitableMRP' },
 	// { name: 'With Overhead', id: 'overhead' },
 	// { name: 'Without Overhead (NET)', id: 'withoutOverhead' },
-	// { name: 'Interest Months', id: 'interestMonth' },
+	// { name: 'Interest Months', id: 'credit' },
 	// { name: 'TIER 1 (GP)', id: 'tier1' },
 	{ name: 'GGP', id: 'tier1' },
 	{ name: 'GP', id: 'tier2' },
 ];
 
 export const Images = [
-	'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1498&q=80',
-	'https://images.unsplash.com/photo-1546955870-9fc9e5534349?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
-	'https://images.unsplash.com/photo-1464219789935-c2d9d9aba644?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
-	'https://images.unsplash.com/photo-1551650820-b84b0461e53f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+	require('../../assets/bus/skyline-pro-staff-bus.png'),
+	require('../../assets/bus/indian-truck.png'),
+	require('../../assets/bus/eicher-school-buses.png'),
+	require('../../assets/bus/ambulance.png'),
+	// 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1498&q=80',
+	// 'https://images.unsplash.com/photo-1546955870-9fc9e5534349?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+	// 'https://images.unsplash.com/photo-1464219789935-c2d9d9aba644?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+	// 'https://images.unsplash.com/photo-1551650820-b84b0461e53f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
 ];

@@ -90,11 +90,10 @@ export class MyFormik extends Component {
 						process1.suitableMRP = process1.vat2V + process1.priceBeforeVat;
 						process1.overhead = process1.adminSalesV + process1.advPromV + process1.distributorV + process1.dealerV;
 						process1.withoutOverhead = process1.distributorV + process1.dealerV;
-						process1.interestMonth = process1.credit;
 						process1.discussedMRP = process1.suitableMRP;
 						process1.tier1 = process1.overhead;
 						process1.tier2 = process1.withoutOverhead;
-						process1.final = process1.tier2 * 53;
+						// process1.final = process1.tier2 * 53;
 
 						let process2 = { model: process1.model };
 						values = Object.keys(process1)
@@ -111,7 +110,7 @@ export class MyFormik extends Component {
 					post(this.props.Burl, values, this.props.Furl, this.props.history, this.successLogin, this.props.reload, this.props.navigation, actions, this.props.onSuccess, this.props.onError);
 				}}
 			>
-				{props => <View onSubmit={props.handleSubmit}>{this.props.children({ ...props, ...this.state })}</View>}
+				{props => <View style={{flex:1}} onSubmit={props.handleSubmit}>{this.props.children({ ...props, ...this.state })}</View>}
 			</Formik>
 		);
 	}
