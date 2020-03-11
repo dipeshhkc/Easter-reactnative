@@ -17,20 +17,11 @@ import LoginScreen from '../screens/Login/Login';
 //Create Screen
 import UserSetup from '../screens/User/addUser';
 
-const NavHead = (Name, Title) => {
+const NavHead = Name => {
 	return {
 		screen: Name,
 		navigationOptions: {
-			headerTitleAlign: 'center',
-			headerStyle: {
-				backgroundColor: '#a72331',
-			},
-			headerTintColor: '#fff',
-			headerTitleStyle: {
-				fontSize: 17,
-				fontWeight: 'bold',
-			},
-			headerTitle: Title,
+			headerTitle: '',
 		},
 	};
 };
@@ -41,8 +32,8 @@ const Routes = createStackNavigator({
 	ViewScreen: GeneralScreen,
 
 	//Setup Part
-	SetupModal: SetupModalScreen,
-	AddUser: UserSetup,
+	SetupModal: NavHead(SetupModalScreen),
+	AddUser: NavHead(UserSetup),
 });
 
 const loginSwitch = createSwitchNavigator({
