@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import { MaterialIcons, Feather } from '@expo/vector-icons';
+import { NepaliCurrency } from '../../components/utils/NepaliCurrency';
 
 class ModelTable extends Component {
 	state = {
@@ -25,7 +26,7 @@ class ModelTable extends Component {
 						<TouchableHighlight key={index} onPress={() => this.props.clicked(row)}>
 							<DataTable.Row>
 								<DataTable.Cell>{row.model}</DataTable.Cell>
-								<DataTable.Cell numeric>{row.inr}</DataTable.Cell>
+								<DataTable.Cell numeric>{NepaliCurrency(row.inr)}</DataTable.Cell>
 							</DataTable.Row>
 						</TouchableHighlight>
 					))}

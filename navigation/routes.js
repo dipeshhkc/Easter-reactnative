@@ -35,18 +35,18 @@ const NavHead = (Name, Title) => {
 };
 
 const Routes = createStackNavigator({
-	Home: NavHead(HomeScreen, 'Eastern'),
-	ModalCreate: NavHead(ModalSetup, 'Model Create'),
-	ViewScreen: NavHead(GeneralScreen, 'Search & View'),
+	Home: HomeScreen,
+	ModalCreate: ModalSetup,
+	ViewScreen: GeneralScreen,
 
 	//Setup Part
-	SetupModal: NavHead(SetupModalScreen, 'Modal Setup'),
-	AddUser: NavHead(UserSetup, 'Add User'),
+	SetupModal: SetupModalScreen,
+	AddUser: UserSetup
 });
 
 const loginSwitch = createSwitchNavigator({
 	CheckUser: CheckUser,
-	Login: NavHead(LoginScreen, 'Login Screen'),
+	Login: LoginScreen,
 	Home: Routes,
 });
 
