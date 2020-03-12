@@ -92,8 +92,8 @@ class General extends Component {
 		let credit = generalData && generalData['credit'];
 		let inr = generalData && generalData['inr'];
 		let interestInvestV = generalData && generalData['interestInvestV'];
-		let vat2V = generalData && generalData['priceBeforeVat'];
-		let overhead = generalData && generalData['adminSalesV'] + generalData['advPromV'];
+		let priceBeforeVat = generalData && generalData['priceBeforeVat'];
+		let overhead = generalData && Number(generalData['adminSalesV']) + Number(generalData['advPromV']);
 
 		this.setState({
 			generalData,
@@ -108,7 +108,7 @@ class General extends Component {
 			inr,
 			overhead,
 			interestInvestV,
-			vat2V,
+			priceBeforeVat,
 			originalValues: {
 				tier1val,
 				tier2val,
@@ -118,7 +118,7 @@ class General extends Component {
 				inr,
 				overhead,
 				interestInvestV,
-				vat2V,
+				priceBeforeVat,
 			},
 		});
 	};
@@ -198,7 +198,7 @@ class General extends Component {
 				tier1val: newData.tier1.toFixed(2),
 				tier2val: newData.tier2.toFixed(2),
 				interestInvestV: newData.interestInvestV.toFixed(2),
-				vat2V: newData.vat2V.toFixed(2),
+				priceBeforeVat: newData.priceBeforeVat.toFixed(2),
 				suitableMRP: newData.suitableMRP.toFixed(2),
 				discussedMRP: newData.suitableMRP.toFixed(2),
 				overhead: newData.overhead.toFixed(2),
@@ -209,7 +209,7 @@ class General extends Component {
 				tier1val: newData.tier1.toFixed(2),
 				tier2val: newData.tier2.toFixed(2),
 				interestInvestV: newData.interestInvestV.toFixed(2),
-				vat2V: newData.vat2V.toFixed(2),
+				priceBeforeVat: newData.priceBeforeVat.toFixed(2),
 				suitableMRP: newData.suitableMRP.toFixed(2),
 				discussedMRP: newData.suitableMRP.toFixed(2),
 				overhead: newData.overhead.toFixed(2),
@@ -218,7 +218,7 @@ class General extends Component {
 	};
 
 	render() {
-		const { generalData, discussedMRP, suitableMRP, discount, credit, inr, overhead, interestInvestV, vat2V, tier1val, tier2val, role, searchModelData, loading } = this.state;
+		const { generalData, discussedMRP, suitableMRP, discount, credit, inr, overhead, interestInvestV, priceBeforeVat, tier1val, tier2val, role, searchModelData, loading } = this.state;
 
 		return (
 			<View style={{ flex: 1 }}>
@@ -324,7 +324,7 @@ class General extends Component {
 															<Text>Price Before VAT :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{vat2V}</Text>
+															<Text>{priceBeforeVat}</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -479,7 +479,7 @@ class General extends Component {
 															<Text>Price Before VAT :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{vat2V}</Text>
+															<Text>{priceBeforeVat}</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
