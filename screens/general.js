@@ -92,8 +92,8 @@ class General extends Component {
 		let credit = generalData && generalData['credit'];
 		let inr = generalData && generalData['inr'];
 		let interestInvestV = generalData && generalData['interestInvestV'];
-		let vat2V = generalData && generalData['vat2V'];
-		let overhead = generalData && generalData['adminSales'] + generalData['advProm'];
+		let vat2V = generalData && generalData['priceBeforeVat'];
+		let overhead = generalData && generalData['adminSalesV'] + generalData['advPromV'];
 
 		this.setState({
 			generalData,
