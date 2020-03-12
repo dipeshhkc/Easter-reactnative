@@ -93,8 +93,8 @@ class General extends Component {
 		let inr = generalData && generalData['inr'];
 		let interestInvestV = generalData && generalData['interestInvestV'];
 		let priceBeforeVat = generalData && generalData['priceBeforeVat'];
-		let overhead = generalData && Number(generalData['adminSalesV']) + Number(generalData['advPromV']);
-
+		let valOver = generalData && Number(generalData['adminSalesV']) + Number(generalData['advPromV']);
+		let overhead = valOver.toFixed(2);
 		this.setState({
 			generalData,
 			busName: val,
