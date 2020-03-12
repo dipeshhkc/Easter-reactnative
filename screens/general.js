@@ -800,7 +800,7 @@ class General extends Component {
 																				: '400',
 																	}}
 																>
-																	{generalData[`(${m.i)d}V`] ? generalData[m.id] : m.id == 'exRate' ? generalData['exRate'] : ' '}
+																	{generalData[`(${m.id}V)`] ? generalData[m.id] : m.id == 'exRate' ? generalData['exRate'] : ' '}
 																</Text>
 															</View>
 															<View
@@ -870,7 +870,7 @@ class General extends Component {
 																		color: m.id == 'totalLandingCost' ? 'red' : m.id == 'priceBeforeVat' ? 'red' : '#000',
 																	}}
 																>
-																	{generalData[`(${m.i)d}V`] ? NepaliCurrency(generalData[`(${m.i)d}V`]) : m.id == 'exRate' ? NepaliCurrency(generalData['npr']) : NepaliCurrency(generalData[m.id])}
+																	{generalData[`(${m.id}V)`] ? NepaliCurrency(generalData[`(${m.id}V)`]) : m.id == 'exRate' ? NepaliCurrency(generalData['npr']) : NepaliCurrency(generalData[m.id])}
 																</Text>
 															</View>
 														</View>
