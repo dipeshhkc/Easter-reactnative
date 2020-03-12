@@ -321,7 +321,7 @@ class General extends Component {
 																value={credit || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
-																	this.handleINR('credit', text);
+																	this.handleCredit('credit', text);
 																}}
 															/>
 														</View>
