@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, StyleSheet, Text, TouchableHighlight } from 'react-native';
 import { DataTable } from 'react-native-paper';
 
 class UserTable extends Component {
@@ -16,13 +16,13 @@ class UserTable extends Component {
 			<View style={styles.screen}>
 				<DataTable>
 					<DataTable.Header>
-						<DataTable.Title>Username</DataTable.Title>
+						<DataTable.Title style={styles.text}>Username</DataTable.Title>
 					</DataTable.Header>
 
 					{this.props.data.map((row, index) => (
 						<TouchableHighlight key={index} onPress={() => this.props.clicked(row)}>
 							<DataTable.Row>
-								<DataTable.Cell>{row.name}</DataTable.Cell>
+								<DataTable.Cell style={styles.text1}>{row.name}</DataTable.Cell>
 							</DataTable.Row>
 						</TouchableHighlight>
 					))}
@@ -49,6 +49,15 @@ const styles = StyleSheet.create({
 	iconWrappper: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+	},
+	text: {
+		justifyContent: 'center',
+		fontSize: 18,
+		color: '#000',
+	},
+	text1: {
+		justifyContent: 'center',
+		fontSize: 12,
 	},
 });
 

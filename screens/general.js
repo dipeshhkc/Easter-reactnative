@@ -181,25 +181,25 @@ class General extends Component {
 												</View>
 											)}
 										</View>
-										<View style={styles.table}>
-											<View style={styles.thead}>
+										<View style={styles.table2}>
+											{/* <View style={styles.thead}>
 												<View style={styles.tr}>
-													<View style={styles.th}>
+													<View style={styles.th2}>
 														<Text>Details</Text>
 													</View>
-													<View style={styles.th}>
+													<View style={styles.th2}>
 														<Text>Amount</Text>
 													</View>
 												</View>
-											</View>
+											</View> */}
 											{role === 'admin' ? (
 												<View style={styles.tbody}>
 													{tablePatameter.map(m => (
 														<View style={styles.tr} key={m.id}>
-															<View style={styles.td}>
-																<Text>{m.name}</Text>
+															<View style={styles.td2}>
+																<Text>{m.name} :</Text>
 															</View>
-															<View style={styles.td}>
+															<View style={styles.td2}>
 																<Text>
 																	{m.id == 'tier1'
 																		? Math.sign(tier1val) == 1
@@ -216,26 +216,26 @@ class General extends Component {
 													))}
 
 													<View style={styles.tr}>
-														<View style={styles.td}>
+														<View style={styles.td2}>
 															<Text>IMPACT (Positive/Negative)</Text>
 														</View>
-														<View style={styles.td}>
+														<View style={styles.td2}>
 															<Text>{Math.sign(Impact) == 1 ? Impact : `(${Math.abs(Impact)})` || Impact}</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
-														<View
+														<Text
 															style={{
-																...styles.td,
+																...styles.td2,
 																fontWeight: 'bold',
 																textAlign: 'right',
 															}}
 														>
-															<Text>Discussed MRP :</Text>
-														</View>
+															Discussed MRP :
+														</Text>
 														<View
 															style={{
-																...styles.td,
+																...styles.td2,
 																paddingBottom: 0,
 																borderBottomWidth: 2,
 																borderBottomColor: '#000',
@@ -256,7 +256,7 @@ class General extends Component {
 													<View style={styles.tr}>
 														<Text
 															style={{
-																...styles.td,
+																...styles.td2,
 																fontWeight: 'bold',
 																textAlign: 'right',
 															}}
@@ -265,7 +265,7 @@ class General extends Component {
 														</Text>
 														<View
 															style={{
-																...styles.td,
+																...styles.td2,
 																paddingBottom: 0,
 																paddingTop: 4,
 																borderBottomWidth: 2,
@@ -288,16 +288,16 @@ class General extends Component {
 											) : (
 												<View style={styles.tbody}>
 													<View style={styles.tr}>
-														<Text style={styles.td}>Invoice value in INR</Text>
-														<Text style={styles.td}>{generalData['inr']}</Text>
+														<Text style={styles.td2}>Invoice value in INR</Text>
+														<Text style={styles.td2}>{generalData['inr']}</Text>
 													</View>
 													<View style={styles.tr}>
-														<Text style={styles.td}>Value in NPR</Text>
-														<Text style={styles.td}>{generalData['exRate']}</Text>
+														<Text style={styles.td2}>Value in NPR</Text>
+														<Text style={styles.td2}>{generalData['exRate']}</Text>
 													</View>
 													<View style={styles.tr}>
-														<Text style={styles.td}>TIER 2 (NP)</Text>
-														<Text style={styles.td}>{generalData['tier2']}</Text>
+														<Text style={styles.td2}>TIER 2 (NP)</Text>
+														<Text style={styles.td2}>{generalData['tier2']}</Text>
 													</View>
 												</View>
 											)}
@@ -630,6 +630,16 @@ const styles = StyleSheet.create({
 		borderTopColor: '#666',
 		borderRadius: 2,
 	},
+	table2: {
+		marginHorizontal: 10,
+		marginBottom: 10,
+		paddingTop: 5,
+		// borderLeftWidth: 0.5,
+		// borderLeftColor: '#666',
+		// borderTopWidth: 0.5,
+		// borderTopColor: '#666',
+		// borderRadius: 2,
+	},
 	thead: {
 		textAlign: 'left',
 	},
@@ -646,6 +656,16 @@ const styles = StyleSheet.create({
 		borderRightWidth: 0.5,
 		borderRightColor: '#666',
 	},
+	th2: {
+		fontWeight: 'bold',
+		width: '50%',
+		paddingVertical: 10,
+		paddingHorizontal: 10,
+		// borderBottomWidth: 0.5,
+		// borderBottomColor: '#666',
+		// borderRightWidth: 0.5,
+		// borderRightColor: '#666',
+	},
 	th1: {
 		width: Dimensions.get('window').width - 20,
 		margin: 10,
@@ -659,6 +679,16 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#666',
 		borderRightWidth: 0.5,
 		borderRightColor: '#666',
+	},
+	td2: {
+		textAlign: 'left',
+		width: '50%',
+		padding: 10,
+		fontSize: 14,
+		// borderBottomWidth: 0.5,
+		// borderBottomColor: '#666',
+		// borderRightWidth: 0.5,
+		// borderRightColor: '#666',
 	},
 	modalButton: {
 		backgroundColor: '#1D4CBC',

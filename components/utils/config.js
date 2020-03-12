@@ -315,6 +315,10 @@ export const tablePatameter = [
 	// { name: 'Indian Custom Clearence', id: 'IndcustomC' },
 	// { name: 'Stock Yard cost', id: 'stockYard' },
 	// { name: 'Stock Transfer & Local Logistic', id: 'stockTrans' },
+	{
+		name: 'Credit Period',
+		id: 'credit',
+	},
 	{ name: 'Interest on Investment', id: 'interestInvestV' },
 	{ name: 'Price Before VAT (less VAT paid)', id: 'vat2V' },
 	{ name: 'Suitable MRP', id: 'suitableMRP' },
