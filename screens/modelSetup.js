@@ -56,23 +56,22 @@ class ModalSetup extends Component {
 			}
 
 			return generateJSX(each.type, each.name, each.name, each.id, values, handleChange, each.icon, each.iconType, setFieldValue, each.id, ind);
-		});
-	};
+		})
+	}
 
 	valueSelected = async val => {
 		try {
 			this.setState({ optionVal: val, mainloading: true, modalVisible: false });
-
 			const { data: mainData } = await getModel(val);
 			this.setState({ mainData: mainData.data, mainloading: false });
 		} catch (err) {
 			this.setState({ errors: err });
 		}
-	};
+	}
 
 	onModalClick = () => {
 		this.setState(prevState => ({ modalVisible: !prevState.modalVisible }));
-	};
+	}
 
 	render() {
 		const { mainData, optionVal, modelData, loading, mainloading } = this.state;
@@ -195,15 +194,15 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	modelSelect: {
+	
 		position: 'absolute',
 		bottom: 10,
 		left: '10%',
 		width: '80%',
 	},
-
 	formikStyle: {
 		flex: 4,
-		marginBottom: 60,
+		marginBottom: 100,
 	},
 });
 
