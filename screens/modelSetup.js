@@ -90,7 +90,7 @@ class ModalSetup extends Component {
 						/>
 						<Text style={{ ...styles.title, width: '75%', fontSize: 15, textAlign: 'center', marginTop: 20 }}>{`${this.state.optionVal} Parameter`} :</Text>
 						<View style={{ height: 30, width: 30, borderRadius: 1, marginTop: 18 }}>
-							<Ionicons name="md-save" color="green" onPress={this.handleSubmit} size={35} />
+							<Ionicons name="md-save" color="green" onPress={handleSubmit} size={35} />
 						</View>
 					</View>
 					<KeyboardAvoidingView behavior="position">
