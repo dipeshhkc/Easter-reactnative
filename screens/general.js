@@ -201,7 +201,6 @@ class General extends Component {
 				priceBeforeVat: newData.priceBeforeVat.toFixed(2),
 				suitableMRP: newData.suitableMRP.toFixed(2),
 				discussedMRP: newData.suitableMRP.toFixed(2),
-				overhead: newData.overhead.toFixed(2),
 			});
 		} else {
 			this.setState({
@@ -212,7 +211,6 @@ class General extends Component {
 				priceBeforeVat: newData.priceBeforeVat.toFixed(2),
 				suitableMRP: newData.suitableMRP.toFixed(2),
 				discussedMRP: newData.suitableMRP.toFixed(2),
-				overhead: newData.overhead.toFixed(2),
 			});
 		}
 	};
