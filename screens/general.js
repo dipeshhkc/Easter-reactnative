@@ -204,6 +204,7 @@ class General extends Component {
 			suitableMRP: newData.suitableMRP.toFixed(2),
 			discussedMRP: newData.suitableMRP.toFixed(2),
 			overhead,
+			generalData: newData,
 		});
 	};
 
@@ -229,6 +230,7 @@ class General extends Component {
 			suitableMRP: newData.suitableMRP.toFixed(2),
 			discussedMRP: newData.suitableMRP.toFixed(2),
 			overhead,
+			generalData: newData,
 		});
 	};
 
