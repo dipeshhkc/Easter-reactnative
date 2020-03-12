@@ -307,27 +307,22 @@ export const parameterDetail = [
 	// { name: 'TIER 2 (NP)', id: 'tier2' },
 ];
 export const tablePatameter = [
-	{ name: 'Invoice value in INR', id: 'inr' },
-	{ name: 'Value in NPR', id: 'npr' },
-	// { name: 'Boarder-In Price', id: 'boarder' },
-	// { name: 'Free Servicing Coupon ', id: 'service' },
-	// { name: 'Provision for Good Will Warrenty', id: 'warrenty' },
-	// { name: 'Indian Custom Clearence', id: 'IndcustomC' },
-	// { name: 'Stock Yard cost', id: 'stockYard' },
-	// { name: 'Stock Transfer & Local Logistic', id: 'stockTrans' },
-	{
-		name: 'Credit Period',
-		id: 'credit',
-	},
+	// { name: 'CIF Price', id: 'inr' },
+	// { name: 'Credit Period', id: 'credit' },
+	// { name: 'Interest on Investment', id: 'interestInvestV' },
+	// { name: 'Price Before VAT', id: 'vat2V' },
+	// { name: 'Suitable MRP', id: 'suitableMRP' },
+	{ name: 'Gross Profit', id: 'tier1' },
+	{ name: 'Overhead Charged', id: 'overhead' },
+	{ name: 'Management GP', id: 'tier1' },
+	{ name: 'Net Profit', id: 'tier2' },
+	// { name: 'Value in NPR', id: 'npr' },
+];
+
+export const tablePatameters = [
 	{ name: 'Interest on Investment', id: 'interestInvestV' },
-	{ name: 'Price Before VAT (less VAT paid)', id: 'vat2V' },
+	{ name: 'Price Before VAT', id: 'vat2V' },
 	{ name: 'Suitable MRP', id: 'suitableMRP' },
-	// { name: 'With Overhead', id: 'overhead' },
-	// { name: 'Without Overhead (NET)', id: 'withoutOverhead' },
-	// { name: 'Interest Months', id: 'credit' },
-	// { name: 'TIER 1 (GP)', id: 'tier1' },
-	{ name: 'GGP', id: 'tier1' },
-	{ name: 'GP', id: 'tier2' },
 ];
 
 export const Images = [

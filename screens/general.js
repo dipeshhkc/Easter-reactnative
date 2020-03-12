@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableHighlight, TouchableOpacity, Dimensions, TextInput, ScrollView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { Input, Spinner, Icon, Toast, Label } from 'native-base';
 import { Platform, AsyncStorage } from 'react-native';
-import { parameter, modelCollection, tablePatameter, parameterDetail } from '../components/utils/config';
+import { parameterDetail } from '../components/utils/config';
 import { get } from '../components/services/api';
 import { CleaveCurrency, NepaliCurrency } from '../components/utils/NepaliCurrency';
 import { bURL } from '../components/app-config';
 import { getModel } from '../components/services/addModelService';
 import MyModel from '../components/utils/MyModel';
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import { calcMain } from '../components/utils/calculation';
 
 class General extends Component {
 	static navigationOptions = () => ({
@@ -27,6 +28,9 @@ class General extends Component {
 		discount: 0,
 		tier1val: 0,
 		tier2val: 0,
+		credit: 0,
+		inr: 0,
+		overhead: 0,
 		originalValues: {},
 		generalData: null,
 		loading: true,
@@ -85,6 +89,11 @@ class General extends Component {
 		let tier2val = generalData && generalData['withoutOverhead'];
 		let suitableMRP = generalData && generalData['suitableMRP'];
 		let discussedMRP = generalData && generalData['suitableMRP'];
+		let credit = generalData && generalData['credit'];
+		let inr = generalData && generalData['inr'];
+		let interestInvestV = generalData && generalData['interestInvestV'];
+		let vat2V = generalData && generalData['vat2V'];
+		let overhead = generalData && generalData['adminSales'] + generalData['advProm'];
 
 		this.setState({
 			generalData,
@@ -95,11 +104,21 @@ class General extends Component {
 			discussedMRP,
 			tier1val,
 			tier2val,
+			credit,
+			inr,
+			overhead,
+			interestInvestV,
+			vat2V,
 			originalValues: {
 				tier1val,
 				tier2val,
 				suitableMRP,
 				discussedMRP,
+				credit,
+				inr,
+				overhead,
+				interestInvestV,
+				vat2V,
 			},
 		});
 	};
@@ -163,8 +182,43 @@ class General extends Component {
 		});
 	};
 
+	handleINR = (name, val) => {
+		const { generalData, originalValues } = this.state;
+		let newData;
+		if (val) {
+			newData = calcMain(generalData, name, val);
+		} else {
+			newData = calcMain(generalData, name, 0);
+		}
+		console.log(newData, val);
+
+		if (name === 'inr') {
+			this.setState({
+				inr: val,
+				tier1val: newData.tier1.toFixed(2),
+				tier2val: newData.tier2.toFixed(2),
+				interestInvestV: newData.interestInvestV.toFixed(2),
+				vat2V: newData.vat2V.toFixed(2),
+				suitableMRP: newData.suitableMRP.toFixed(2),
+				discussedMRP: newData.suitableMRP.toFixed(2),
+				overhead: newData.overhead.toFixed(2),
+			});
+		} else {
+			this.setState({
+				credit: val,
+				tier1val: newData.tier1.toFixed(2),
+				tier2val: newData.tier2.toFixed(2),
+				interestInvestV: newData.interestInvestV.toFixed(2),
+				vat2V: newData.vat2V.toFixed(2),
+				suitableMRP: newData.suitableMRP.toFixed(2),
+				discussedMRP: newData.suitableMRP.toFixed(2),
+				overhead: newData.overhead.toFixed(2),
+			});
+		}
+	};
+
 	render() {
-		const { generalData, discussedMRP, discount, Impact, tier1val, tier2val, role, searchModelData, loading } = this.state;
+		const { generalData, discussedMRP, suitableMRP, discount, credit, inr, overhead, interestInvestV, vat2V, tier1val, tier2val, role, searchModelData, loading } = this.state;
 
 		return (
 			<View style={{ flex: 1 }}>
@@ -196,45 +250,35 @@ class General extends Component {
 											)}
 										</View>
 										<View style={styles.table2}>
-											{/* <View style={styles.thead}>
-												<View style={styles.tr}>
-													<View style={styles.th2}>
-														<Text>Details</Text>
-													</View>
-													<View style={styles.th2}>
-														<Text>Amount</Text>
-													</View>
-												</View>
-											</View> */}
 											{role === 'admin' ? (
 												<View style={styles.tbody}>
-													{tablePatameter.map(m => (
-														<View style={styles.tr} key={m.id}>
-															<View style={styles.td2}>
-																<Text>{m.name} :</Text>
-															</View>
-															<View style={styles.td2}>
-																<Text>
-																	{m.id == 'tier1'
-																		? Math.sign(tier1val) == 1
-																			? tier1val
-																			: `(${Math.abs(tier1val)})`
-																		: m.id == 'tier2'
-																		? Math.sign(tier2val) == 1
-																			? tier2val
-																			: `(${Math.abs(tier2val)})`
-																		: NepaliCurrency(generalData[m.id])}
-																</Text>
-															</View>
-														</View>
-													))}
-
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>IMPACT (Positive/Negative)</Text>
-														</View>
-														<View style={styles.td2}>
-															<Text>{Math.sign(Impact) == 1 ? Impact : `(${Math.abs(Impact)})` || Impact}</Text>
+														<Text
+															style={{
+																...styles.td2,
+																fontWeight: 'bold',
+															}}
+														>
+															CIF Price :
+														</Text>
+														<View
+															style={{
+																...styles.td2,
+																paddingBottom: 0,
+																borderBottomWidth: 2,
+																borderBottomColor: '#000',
+																paddingTop: 4,
+															}}
+														>
+															<TextInput
+																name={'final'}
+																style={styles.input}
+																value={inr || ''}
+																keyboardType="numeric"
+																onChangeText={text => {
+																	this.handleINR('inr', text);
+																}}
+															/>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -242,10 +286,63 @@ class General extends Component {
 															style={{
 																...styles.td2,
 																fontWeight: 'bold',
-																textAlign: 'right',
 															}}
 														>
-															Discussed MRP :
+															Credit Period :
+														</Text>
+														<View
+															style={{
+																...styles.td2,
+																paddingBottom: 0,
+																paddingTop: 4,
+																borderBottomWidth: 2,
+																borderBottomColor: '#000',
+															}}
+														>
+															<TextInput
+																name={'credit'}
+																style={styles.input}
+																// value={NepaliCurrency(discount) || 0}
+																value={credit || ''}
+																keyboardType="numeric"
+																onChangeText={text => {
+																	this.handleINR('credit', text);
+																}}
+															/>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<View style={styles.td2}>
+															<Text>Interest on Investment :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{interestInvestV}</Text>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<View style={styles.td2}>
+															<Text>Price Before VAT :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{vat2V}</Text>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<View style={styles.td2}>
+															<Text>Suitable MRP :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{suitableMRP}</Text>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<Text
+															style={{
+																...styles.td2,
+																fontWeight: 'bold',
+															}}
+														>
+															Proposed MRP :
 														</Text>
 														<View
 															style={{
@@ -272,10 +369,9 @@ class General extends Component {
 															style={{
 																...styles.td2,
 																fontWeight: 'bold',
-																textAlign: 'right',
 															}}
 														>
-															Discount :
+															Proposed Discount :
 														</Text>
 														<View
 															style={{
@@ -289,7 +385,6 @@ class General extends Component {
 															<TextInput
 																name={'discount'}
 																style={styles.input}
-																// value={NepaliCurrency(discount) || 0}
 																value={discount || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
@@ -298,20 +393,168 @@ class General extends Component {
 															/>
 														</View>
 													</View>
+													<View style={styles.tr}>
+														<View style={styles.td2}>
+															<Text>Gross Profit :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{tier1val}</Text>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<View style={styles.td2}>
+															<Text>Overhead Charged :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{overhead}</Text>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<View style={styles.td2}>
+															<Text>Management GP :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{tier1val}</Text>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<View style={styles.td2}>
+															<Text>Net Profit :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{tier2val}</Text>
+														</View>
+													</View>
 												</View>
 											) : (
 												<View style={styles.tbody}>
+																<View style={styles.tr}>
+																	<View style={styles.td2}>
+																		<Text>CIF Price :</Text>
+																	</View>
+																	<View style={styles.td2}>
+																		<Text>{inr}</Text>
+																	</View>
+																</View>
 													<View style={styles.tr}>
-														<Text style={styles.td2}>Invoice value in INR</Text>
-														<Text style={styles.td2}>{generalData['inr']}</Text>
+														<Text
+															style={{
+																...styles.td2,
+																fontWeight: 'bold',
+															}}
+														>
+															Credit Period :
+														</Text>
+														<View
+															style={{
+																...styles.td2,
+																paddingBottom: 0,
+																paddingTop: 4,
+																borderBottomWidth: 2,
+																borderBottomColor: '#000',
+															}}
+														>
+															<TextInput
+																name={'credit'}
+																style={styles.input}
+																// value={NepaliCurrency(discount) || 0}
+																value={credit || ''}
+																keyboardType="numeric"
+																onChangeText={text => {
+																	this.handleINR('credit', text);
+																}}
+															/>
+														</View>
 													</View>
 													<View style={styles.tr}>
-														<Text style={styles.td2}>Value in NPR</Text>
-														<Text style={styles.td2}>{generalData['exRate']}</Text>
+														<View style={styles.td2}>
+															<Text>Interest on Investment :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{interestInvestV}</Text>
+														</View>
 													</View>
 													<View style={styles.tr}>
-														<Text style={styles.td2}>TIER 2 (NP)</Text>
-														<Text style={styles.td2}>{generalData['tier2']}</Text>
+														<View style={styles.td2}>
+															<Text>Price Before VAT :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{vat2V}</Text>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<View style={styles.td2}>
+															<Text>Suitable MRP :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{suitableMRP}</Text>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<Text
+															style={{
+																...styles.td2,
+																fontWeight: 'bold',
+															}}
+														>
+															Proposed MRP :
+														</Text>
+														<View
+															style={{
+																...styles.td2,
+																paddingBottom: 0,
+																borderBottomWidth: 2,
+																borderBottomColor: '#000',
+																paddingTop: 4,
+															}}
+														>
+															<TextInput
+																name={'final'}
+																style={styles.input}
+																value={discussedMRP || ''}
+																keyboardType="numeric"
+																onChangeText={text => {
+																	this.handleDiscussed(text);
+																}}
+															/>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<Text
+															style={{
+																...styles.td2,
+																fontWeight: 'bold',
+															}}
+														>
+															Proposed Discount :
+														</Text>
+														<View
+															style={{
+																...styles.td2,
+																paddingBottom: 0,
+																paddingTop: 4,
+																borderBottomWidth: 2,
+																borderBottomColor: '#000',
+															}}
+														>
+															<TextInput
+																name={'discount'}
+																style={styles.input}
+																value={discount || ''}
+																keyboardType="numeric"
+																onChangeText={text => {
+																	this.handleDiscount(text);
+																}}
+															/>
+														</View>
+													</View>
+													<View style={styles.tr}>
+														<View style={styles.td2}>
+															<Text>Gross Profit :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{tier1val}</Text>
+														</View>
 													</View>
 												</View>
 											)}
