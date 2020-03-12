@@ -11,7 +11,7 @@ import { getModel } from '../components/services/addModelService';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import { bURL } from '../components/app-config';
 import MyModel from '../components/utils/MyModel';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 class ModalSetup extends Component {
 	constructor(props) {
@@ -56,8 +56,8 @@ class ModalSetup extends Component {
 			}
 
 			return generateJSX(each.type, each.name, each.name, each.id, values, handleChange, each.icon, each.iconType, setFieldValue, each.id, ind);
-		})
-	}
+		});
+	};
 
 	valueSelected = async val => {
 		try {
@@ -67,11 +67,11 @@ class ModalSetup extends Component {
 		} catch (err) {
 			this.setState({ errors: err });
 		}
-	}
+	};
 
 	onModalClick = () => {
 		this.setState(prevState => ({ modalVisible: !prevState.modalVisible }));
-	}
+	};
 
 	render() {
 		const { mainData, optionVal, modelData, loading, mainloading } = this.state;
@@ -79,10 +79,19 @@ class ModalSetup extends Component {
 		let ModelSetupFormComponent = props => {
 			const { handleChange, values, handleSubmit, setFieldValue, isSubmitting } = props.props;
 			return (
-				<View style={{ flex: 1, padding: 10, paddingBottom: 80 }}>
+				<View style={{ flex: 1, paddingVertical: 10, paddingHorizontal: 5, paddingBottom: 80 }}>
 					<View style={{ paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', flexDirection: 'row', alignItems: 'center' }}>
-						<AntDesign name="arrowleft" size={25} color={'#000'} style={{ justifyContent: 'flex-start', marginTop: 15, paddingRight: 10 }} onPress={() => this.props.navigation.goBack()} />
-						<Text style={{ ...styles.title, fontSize: 15, textAlign: 'center', marginTop: 20 }}>{`${this.state.optionVal} Parameter`} :</Text>
+						<AntDesign
+							name="arrowleft"
+							size={25}
+							color={'#000'}
+							style={{ width: '15%', justifyContent: 'flex-start', marginTop: 15, paddingRight: 10 }}
+							onPress={() => this.props.navigation.goBack()}
+						/>
+						<Text style={{ ...styles.title, width: '75%', fontSize: 15, textAlign: 'center', marginTop: 20 }}>{`${this.state.optionVal} Parameter`} :</Text>
+						<View style={{ height: 30, width: 30, borderRadius: 1, marginTop: 18 }}>
+							<Ionicons name="md-save" color="green" onPress={this.handleSubmit} size={35} />
+						</View>
 					</View>
 					<KeyboardAvoidingView behavior="position">
 						<ScrollView>
@@ -92,12 +101,6 @@ class ModalSetup extends Component {
 							</Form>
 						</ScrollView>
 					</KeyboardAvoidingView>
-
-					{/* shadow, touchable opacity */}
-					<View style={{ backgroundColor: 'green', justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: 20, right: 10, height: 70, width: 70, borderRadius: 70 }}>
-						<Icon onPress={handleSubmit} type="AntDesign" name="save" style={{ color: 'white' }} />
-						{/* <Button disabled={isSubmitting} type="submit" title="Submit" onPress={handleSubmit} style={{ fontWeight: 'bold' }} /> */}
-					</View>
 				</View>
 			);
 		};
@@ -194,7 +197,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	modelSelect: {
-	
 		position: 'absolute',
 		bottom: 10,
 		left: '10%',
