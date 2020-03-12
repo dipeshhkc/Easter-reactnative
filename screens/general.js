@@ -183,7 +183,7 @@ class General extends Component {
 	};
 
 	handleINR = (name, val) => {
-		const { generalData, originalValues } = this.state;
+		const { generalData } = this.state;
 		let newData;
 		if (val) {
 			newData = calcMain(generalData, name, val);
@@ -191,6 +191,9 @@ class General extends Component {
 			newData = calcMain(generalData, name, 0);
 		}
 		console.log(newData, val);
+
+		let valOver = generalData && Number(newData['adminSalesV']) + Number(newData['advPromV']);
+		let overhead = valOver.toFixed(2);
 
 		if (name === 'inr') {
 			this.setState({
@@ -201,6 +204,7 @@ class General extends Component {
 				priceBeforeVat: newData.priceBeforeVat.toFixed(2),
 				suitableMRP: newData.suitableMRP.toFixed(2),
 				discussedMRP: newData.suitableMRP.toFixed(2),
+				overhead,
 			});
 		} else {
 			this.setState({
@@ -211,6 +215,7 @@ class General extends Component {
 				priceBeforeVat: newData.priceBeforeVat.toFixed(2),
 				suitableMRP: newData.suitableMRP.toFixed(2),
 				discussedMRP: newData.suitableMRP.toFixed(2),
+				overhead,
 			});
 		}
 	};
@@ -426,14 +431,14 @@ class General extends Component {
 												</View>
 											) : (
 												<View style={styles.tbody}>
-																<View style={styles.tr}>
-																	<View style={styles.td2}>
-																		<Text>CIF Price :</Text>
-																	</View>
-																	<View style={styles.td2}>
-																		<Text>{inr}</Text>
-																	</View>
-																</View>
+													<View style={styles.tr}>
+														<View style={styles.td2}>
+															<Text>CIF Price :</Text>
+														</View>
+														<View style={styles.td2}>
+															<Text>{inr}</Text>
+														</View>
+													</View>
 													<View style={styles.tr}>
 														<Text
 															style={{
