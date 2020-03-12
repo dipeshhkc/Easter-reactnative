@@ -36,7 +36,7 @@ class General extends Component {
 		loading: true,
 		role: '',
 		selectedVal: '',
-		Burl: `(${bURL}ap)i/vehiclemodel`,
+		Burl: `${bURL}api/vehiclemodel`,
 	};
 
 	async componentDidMount() {
@@ -80,7 +80,7 @@ class General extends Component {
 
 	onSelected = async val => {
 		const { Burl } = this.state;
-		let Url = `(${Burl}/$){val}`;
+		let Url = `${Burl}/${val}`;
 		this.setState({ loading: true });
 		this.setState({ modalVisible: false });
 		const { data: generalData } = await get(Url);
