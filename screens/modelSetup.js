@@ -11,6 +11,7 @@ import { getModel } from '../components/services/addModelService';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import { bURL } from '../components/app-config';
 import MyModel from '../components/utils/MyModel';
+import { AntDesign } from '@expo/vector-icons';
 
 class ModalSetup extends Component {
 	constructor(props) {
@@ -26,9 +27,9 @@ class ModalSetup extends Component {
 		};
 	}
 
-	// static navigationOptions = () => ({
-	// 	headerTitle: this.state.optionVal || 'Model Parameters',
-	// });
+	static navigationOptions = () => ({
+		headerShown: false,
+	});
 
 	setStateFromOtherFile = (option, value) => {
 		this.setState({ [option]: value });
@@ -79,10 +80,12 @@ class ModalSetup extends Component {
 		let ModelSetupFormComponent = props => {
 			const { handleChange, values, handleSubmit, setFieldValue, isSubmitting } = props.props;
 			return (
-				<View style={{ flex: 1 }}>
-					<Text style={{ ...styles.title, paddingVertical: 10 }}>{`${this.state.optionVal} Parameter`} :</Text>
-					{/* click gareko input box and keyboard ko distance */}
-					<KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={80}>
+				<View style={{ flex: 1, padding: 10, paddingBottom: 80 }}>
+					<View style={{ paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', flexDirection: 'row', alignItems: 'center' }}>
+						<AntDesign name="arrowleft" size={25} color={'#000'} style={{ justifyContent: 'flex-start', marginTop: 15, paddingRight: 10 }} onPress={() => this.props.navigation.goBack()} />
+						<Text style={{ ...styles.title, fontSize: 15, textAlign: 'center', marginTop: 20 }}>{`${this.state.optionVal} Parameter`} :</Text>
+					</View>
+					<KeyboardAvoidingView behavior="position">
 						<ScrollView>
 							<Form>
 								<View style={{ flex: 1 }}>{this.generateForm(values, handleChange, setFieldValue)}</View>
@@ -120,8 +123,13 @@ class ModalSetup extends Component {
 							</View>
 						) : (
 							<View style={styles.NoDataStyle}>
-								<Icon style={{ fontSize: 100 }} name="gauge-empty" type="MaterialCommunityIcons" />
-								<Text style={styles.not_available_text}>Data Not Available! Please Select Another Model</Text>
+								<View style={{ width: '100%', top: 0, padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', flexDirection: 'row' }}>
+									<AntDesign name="arrowleft" size={25} color={'#000'} style={{ justifyContent: 'flex-start', marginTop: 25, paddingRight: 10 }} onPress={() => this.props.navigation.goBack()} />
+								</View>
+								<View style={styles.NoDataStyle}>
+									<Icon style={{ fontSize: 100 }} name="gauge-empty" type="MaterialCommunityIcons" />
+									<Text style={styles.not_available_text}>Data Not Available! Please Select Another Model</Text>
+								</View>
 							</View>
 						)}
 
@@ -143,8 +151,8 @@ class ModalSetup extends Component {
 const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
-		margin: 10,
-		padding: 5,
+		// margin: 10,
+		// padding: 5,
 	},
 	mainscreen: {
 		flex: 1,

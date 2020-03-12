@@ -81,7 +81,6 @@ class UserSetup extends Component {
             this.setState(prevState => ({ modalVisible: false, dataResponse: !prevState.dataResponse, loading: !prevState.loading }));
             Toast.show({
 							text: 'This User is deleted successfully.',
-							buttonText: 'Okay',
 							position: 'bottom',
 							duration: 3000,
 							type: 'success',
@@ -90,7 +89,6 @@ class UserSetup extends Component {
             if (ex.response && ex.response.status === 404)
                 Toast.show({
 									text: 'This User has already been deleted.',
-									buttonText: 'Okay',
 									position: 'bottom',
 									duration: 3000,
 									type: 'danger',
@@ -175,7 +173,6 @@ class UserSetup extends Component {
                                                     if (isEdit) {
                                                          Toast.show({
 																														text: 'Edited successfully!',
-																														buttonText: 'Okay',
 																														position: 'bottom',
 																														duration: 3000,
 																														type: 'success',
@@ -183,7 +180,6 @@ class UserSetup extends Component {
                                                     } else {
                                                          Toast.show({
 																														text: 'Added successfully!',
-																														buttonText: 'Okay',
 																														position: 'bottom',
 																														duration: 3000,
 																														type: 'success',
@@ -197,7 +193,6 @@ class UserSetup extends Component {
                                                 if (ex.response && ex.response.status === 404) {
                                                     Toast.show({
 																											text: 'Something went wrong.',
-																											buttonText: 'Okay',
 																											position: 'bottom',
 																											duration: 3000,
 																											type: 'danger',

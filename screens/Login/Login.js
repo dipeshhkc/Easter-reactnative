@@ -58,7 +58,6 @@ class LoginScreen extends Component {
 										else {
 											Toast.show({
 												text: 'Login successfully!',
-												buttonText: 'Okay',
 												position: 'bottom',
 												duration: 3000,
 												type: 'success',
@@ -73,7 +72,6 @@ class LoginScreen extends Component {
 										if (ex.response && ex.response.status === 404) {
 											Toast.show({
 												text: 'Something went wrong.',
-												buttonText: 'Okay',
 												position: 'bottom',
 												duration: 3000,
 												type: 'danger',
@@ -81,7 +79,6 @@ class LoginScreen extends Component {
 										} else {
 											Toast.show({
 												text: `${ex.response.data.error}`,
-												buttonText: 'Okay',
 												position: 'bottom',
 												duration: 3000,
 												type: 'danger',

@@ -54,7 +54,6 @@ class ViewScreen extends Component {
 			this.setState({ errors: err });
 			Toast.show({
 				text: 'Error',
-				buttonText: 'Okay',
 				position: 'bottom',
 				duration: 3000,
 				type: 'danger',

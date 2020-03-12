@@ -75,7 +75,6 @@ class ModelSetup extends Component {
 			this.setState(prevState => ({ modalVisible: false, dataResponse: !prevState.dataResponse, loading: !prevState.loading }));
 			Toast.show({
 				text: 'This Model deleted successfully.',
-				buttonText: 'Okay',
 				position: 'bottom',
 				duration: 3000,
 				type: 'success',
@@ -84,7 +83,6 @@ class ModelSetup extends Component {
 			if (ex.response && ex.response.status === 404)
 				Toast.show({
 					text: 'This Model has already been deleted..',
-					buttonText: 'Okay',
 					position: 'bottom',
 					duration: 3000,
 					type: 'danger',
@@ -168,7 +166,6 @@ class ModelSetup extends Component {
 												if (isEdit) {
 													Toast.show({
 														text: 'Edited successfully!',
-														buttonText: 'Okay',
 														position: 'bottom',
 														duration: 3000,
 														type: 'success',
@@ -176,7 +173,6 @@ class ModelSetup extends Component {
 												} else {
 													Toast.show({
 														text: 'Added successfully!',
-														buttonText: 'Okay',
 														position: 'bottom',
 														duration: 3000,
 														type: 'success',
@@ -190,7 +186,6 @@ class ModelSetup extends Component {
 											if (ex.response && ex.response.status === 404) {
 												Toast.show({
 													text: 'Something went wrong.',
-													buttonText: 'Okay',
 													position: 'bottom',
 													duration: 3000,
 													type: 'danger',

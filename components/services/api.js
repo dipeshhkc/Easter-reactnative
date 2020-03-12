@@ -18,7 +18,6 @@ export const post = async (url, body, Furl = null, history = null, successLogin 
 		if (!received.data.error) {
 			Toast.show({
 				text: 'Success',
-				buttonText: 'Okay',
 				position: 'bottom',
 				duration: 3000,
 				type: 'success',
@@ -33,7 +32,6 @@ export const post = async (url, body, Furl = null, history = null, successLogin 
 		} else {
 			Toast.show({
 				text: 'Error',
-				buttonText: 'Okay',
 				position: 'bottom',
 				duration: 3000,
 				type: 'danger',
@@ -44,7 +42,6 @@ export const post = async (url, body, Furl = null, history = null, successLogin 
 	} catch (err) {
 		Toast.show({
 			text: 'Error',
-			buttonText: 'Okay',
 			position: 'bottom',
 			duration: 3000,
 			type: 'danger',
@@ -62,7 +59,6 @@ export const put = async (url, body, Furl = null, history = null, reload = null)
 		} else {
 			Toast.show({
 				text: 'Error',
-				buttonText: 'Okay',
 				position: 'bottom',
 				duration: 3000,
 				type: 'danger',
@@ -71,7 +67,6 @@ export const put = async (url, body, Furl = null, history = null, reload = null)
 	} catch (err) {
 		Toast.show({
 			text: 'Error while submitting',
-			buttonText: 'Okay',
 			position: 'bottom',
 			duration: 3000,
 			type: 'danger',
@@ -90,7 +85,6 @@ export const deletee = async (url, showConfirm = true) => {
 				if (!received.data.error) {
 					Toast.show({
 						text: 'Success',
-						buttonText: 'Okay',
 						position: 'bottom',
 						duration: 3000,
 						type: 'success',
@@ -98,7 +92,6 @@ export const deletee = async (url, showConfirm = true) => {
 				} else {
 					Toast.show({
 						text: 'Error while submitting',
-						buttonText: 'Okay',
 						position: 'bottom',
 						duration: 3000,
 						type: 'danger',
@@ -107,7 +100,6 @@ export const deletee = async (url, showConfirm = true) => {
 			} catch (err) {
 				Toast.show({
 					text: 'Error while submitting',
-					buttonText: 'Okay',
 					position: 'bottom',
 					duration: 3000,
 					type: 'danger',

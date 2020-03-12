@@ -8,11 +8,11 @@ import { CleaveCurrency, NepaliCurrency } from '../components/utils/NepaliCurren
 import { bURL } from '../components/app-config';
 import { getModel } from '../components/services/addModelService';
 import MyModel from '../components/utils/MyModel';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
 class General extends Component {
 	static navigationOptions = () => ({
-		headerTitle: 'Search',
+		headerShown: false,
 	});
 	state = {
 		modalVisible: false,
@@ -45,7 +45,6 @@ class General extends Component {
 			this.setState({ errors: err });
 			Toast.show({
 				text: 'Error',
-				buttonText: 'Okay',
 				position: 'bottom',
 				duration: 3000,
 				type: 'danger',
@@ -162,56 +161,78 @@ class General extends Component {
 				) : (
 					<>
 						{generalData ? (
-							<KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={170}>
+							<KeyboardAvoidingView behavior="position">
 								<ScrollView>
-									<View style={{ flex: 1, paddingTop: 5 }}>
-										<Text style={{ textAlign: 'center', fontWeight: 'bold', color: '#1D4CBC', fontSize: 16, paddingVertical: 20 }}>{this.state.busName || 'Model Name'}</Text>
+									<View style={{ flex: 1, paddingTop: 10 }}>
+										<View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', flexDirection: 'row' }}>
+											<AntDesign
+												name="arrowleft"
+												size={25}
+												color={'#000'}
+												style={{ width: '15%', justifyContent: 'flex-start', marginTop: 20, paddingRight: 10 }}
+												onPress={() => this.props.navigation.goBack()}
+											/>
+											<Text style={{ textAlign: 'center', width: '75%', justifyContent: 'center', fontWeight: 'bold', color: '#1D4CBC', fontSize: 15, marginTop: 20 }}>
+												{this.state.busName || 'Model Name'}
+											</Text>
+											{role === 'admin' && (
+												<View style={{ height: 30, width: 30, borderRadius: 1, marginTop: 18 }}>
+													<MaterialCommunityIcons name="file-document-box-multiple" color="green" onPress={this.onDetailModal} size={30} />
+												</View>
+											)}
+										</View>
 										<View style={styles.table}>
 											<View style={styles.thead}>
 												<View style={styles.tr}>
-													<Text style={styles.th}>Details</Text>
-													<Text style={styles.th}>Amount</Text>
+													<View style={styles.th}>
+														<Text>Details</Text>
+													</View>
+													<View style={styles.th}>
+														<Text>Amount</Text>
+													</View>
 												</View>
 											</View>
 											{role === 'admin' ? (
 												<View style={styles.tbody}>
 													{tablePatameter.map(m => (
 														<View style={styles.tr} key={m.id}>
-															<Text style={styles.td}>{m.name}</Text>
-															<Text style={styles.td}>
-																{m.id == 'tier1'
-																	? // NepaliCurrency(
-																	  //   tier1val
-																	  Math.sign(tier1val) == 1
-																		? tier1val
-																		: `(${Math.abs(tier1val)})`
-																	: // )
-																	m.id == 'tier2'
-																	? // NepaliCurrency(
-																	  //   tier2val
-																	  Math.sign(tier2val) == 1
-																		? tier2val
-																		: `(${Math.abs(tier2val)})`
-																	: // )
-																	  NepaliCurrency(generalData[m.id])}
-															</Text>
+															<View style={styles.td}>
+																<Text>{m.name}</Text>
+															</View>
+															<View style={styles.td}>
+																<Text>
+																	{m.id == 'tier1'
+																		? Math.sign(tier1val) == 1
+																			? tier1val
+																			: `(${Math.abs(tier1val)})`
+																		: m.id == 'tier2'
+																		? Math.sign(tier2val) == 1
+																			? tier2val
+																			: `(${Math.abs(tier2val)})`
+																		: NepaliCurrency(generalData[m.id])}
+																</Text>
+															</View>
 														</View>
 													))}
 
 													<View style={styles.tr}>
-														<Text style={styles.td}>IMPACT (Positive/Negative)</Text>
-														<Text style={styles.td}>{Math.sign(Impact) == 1 ? Impact : `(${Math.abs(Impact)})` || Impact}</Text>
+														<View style={styles.td}>
+															<Text>IMPACT (Positive/Negative)</Text>
+														</View>
+														<View style={styles.td}>
+															<Text>{Math.sign(Impact) == 1 ? Impact : `(${Math.abs(Impact)})` || Impact}</Text>
+														</View>
 													</View>
 													<View style={styles.tr}>
-														<Text
+														<View
 															style={{
 																...styles.td,
 																fontWeight: 'bold',
 																textAlign: 'right',
 															}}
 														>
-															Discussed MRP :
-														</Text>
+															<Text>Discussed MRP :</Text>
+														</View>
 														<View
 															style={{
 																...styles.td,
@@ -283,17 +304,16 @@ class General extends Component {
 										</View>
 									</View>
 								</ScrollView>
-								{role === 'admin' && (
-									<View style={{ backgroundColor: 'green', justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: -20, left: 10, height: 70, width: 70, borderRadius: 70 }}>
-										{/* <Icon type="Octicons" onPress={this.onDetailModal} name="file-code" style={{ color: 'white' }} /> */}
-										<MaterialCommunityIcons name="file-document-box-multiple" color="white" onPress={this.onDetailModal} size={35} />
-									</View>
-								)}
 							</KeyboardAvoidingView>
 						) : (
 							<View style={styles.NoDataStyle}>
-								<Icon style={{ fontSize: 100 }} name="gauge-empty" type="MaterialCommunityIcons" />
-								<Text style={styles.not_available_text}>Data Not Available! Please Select Another Model</Text>
+								<View style={{ width: '100%', top: 0, padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', flexDirection: 'row' }}>
+									<AntDesign name="arrowleft" size={25} color={'#000'} style={{ justifyContent: 'flex-start', marginTop: 20, paddingRight: 10 }} onPress={() => this.props.navigation.goBack()} />
+								</View>
+								<View style={styles.NoDataStyle}>
+									<Icon style={{ fontSize: 100 }} name="gauge-empty" type="MaterialCommunityIcons" />
+									<Text style={styles.not_available_text}>Data Not Available! Please Select Another Model</Text>
+								</View>
 							</View>
 						)}
 
@@ -338,7 +358,7 @@ class General extends Component {
 											<View style={styles.table}>
 												<View style={styles.thead}>
 													<View style={styles.tr}>
-														<Text
+														<View
 															style={{
 																...styles.th,
 																width: '33.33%',
@@ -346,9 +366,9 @@ class General extends Component {
 																backgroundColor: '#ffc000',
 															}}
 														>
-															Details
-														</Text>
-														<Text
+															<Text>Details</Text>
+														</View>
+														<View
 															style={{
 																...styles.th,
 																width: '33.33%',
@@ -356,9 +376,9 @@ class General extends Component {
 																backgroundColor: '#ffc000',
 															}}
 														>
-															CUR / %
-														</Text>
-														<Text
+															<Text>CUR / %</Text>
+														</View>
+														<View
 															style={{
 																...styles.th,
 																width: '33.33%',
@@ -366,14 +386,14 @@ class General extends Component {
 																backgroundColor: '#00b0f0',
 															}}
 														>
-															{this.state.busName || 'Model Name'}
-														</Text>
+															<Text>{this.state.busName || 'Model Name'}</Text>
+														</View>
 													</View>
 												</View>
 												<View style={styles.tbody}>
 													{parameterDetail.map(m => (
 														<View style={styles.tr} key={m.id}>
-															<Text
+															<View
 																style={{
 																	...styles.td,
 																	width: '33.33%',
@@ -409,31 +429,36 @@ class General extends Component {
 																			: m.id == 'totalLandingCost'
 																			? '#f2f2f2'
 																			: '',
-																	fontWeight:
-																		m.id == 'inr'
-																			? '700'
-																			: m.id == 'exRate'
-																			? '700'
-																			: m.id == 'boarderInPrice'
-																			? '700'
-																			: m.id == 'costTillDealer'
-																			? '700'
-																			: m.id == 'totalLandingCost'
-																			? '700'
-																			: m.id == 'priceBeforeVat'
-																			? '700'
-																			: m.id == 'overhead'
-																			? '700'
-																			: m.id == 'withoutOverhead'
-																			? '700'
-																			: m.id == 'credit'
-																			? '700'
-																			: '400',
 																}}
 															>
-																{m.name}
-															</Text>
-															<Text
+																<Text
+																	style={{
+																		fontWeight:
+																			m.id == 'inr'
+																				? '700'
+																				: m.id == 'exRate'
+																				? '700'
+																				: m.id == 'boarderInPrice'
+																				? '700'
+																				: m.id == 'costTillDealer'
+																				? '700'
+																				: m.id == 'totalLandingCost'
+																				? '700'
+																				: m.id == 'priceBeforeVat'
+																				? '700'
+																				: m.id == 'overhead'
+																				? '700'
+																				: m.id == 'withoutOverhead'
+																				? '700'
+																				: m.id == 'credit'
+																				? '700'
+																				: '400',
+																	}}
+																>
+																	{m.name}
+																</Text>
+															</View>
+															<View
 																style={{
 																	...styles.td,
 																	width: '33.33%',
@@ -469,33 +494,38 @@ class General extends Component {
 																			: m.id == 'totalLandingCost'
 																			? '#f2f2f2'
 																			: '',
-																	fontWeight:
-																		m.id == 'inr'
-																			? '700'
-																			: m.id == 'exRate'
-																			? '700'
-																			: m.id == 'boarderInPrice'
-																			? '700'
-																			: m.id == 'costTillDealer'
-																			? '700'
-																			: m.id == 'totalLandingCost'
-																			? '700'
-																			: m.id == 'priceBeforeVat'
-																			? '700'
-																			: m.id == 'suitableMRP'
-																			? '700'
-																			: m.id == 'overhead'
-																			? '700'
-																			: m.id == 'withoutOverhead'
-																			? '700'
-																			: m.id == 'credit'
-																			? '700'
-																			: '400',
 																}}
 															>
-																{generalData[`${m.id}V`] ? generalData[m.id] : m.id == 'exRate' ? generalData['exRate'] : ' '}
-															</Text>
-															<Text
+																<Text
+																	style={{
+																		fontWeight:
+																			m.id == 'inr'
+																				? '700'
+																				: m.id == 'exRate'
+																				? '700'
+																				: m.id == 'boarderInPrice'
+																				? '700'
+																				: m.id == 'costTillDealer'
+																				? '700'
+																				: m.id == 'totalLandingCost'
+																				? '700'
+																				: m.id == 'priceBeforeVat'
+																				? '700'
+																				: m.id == 'suitableMRP'
+																				? '700'
+																				: m.id == 'overhead'
+																				? '700'
+																				: m.id == 'withoutOverhead'
+																				? '700'
+																				: m.id == 'credit'
+																				? '700'
+																				: '400',
+																	}}
+																>
+																	{generalData[`${m.id}V`] ? generalData[m.id] : m.id == 'exRate' ? generalData['exRate'] : ' '}
+																</Text>
+															</View>
+															<View
 																style={{
 																	...styles.td,
 																	width: '33.33%',
@@ -533,33 +563,38 @@ class General extends Component {
 																			: m.id == 'totalLandingCost'
 																			? '#f2f2f2'
 																			: '',
-																	fontWeight:
-																		m.id == 'inr'
-																			? '700'
-																			: m.id == 'exRate'
-																			? '700'
-																			: m.id == 'boarderInPrice'
-																			? '700'
-																			: m.id == 'costTillDealer'
-																			? '700'
-																			: m.id == 'totalLandingCost'
-																			? '700'
-																			: m.id == 'priceBeforeVat'
-																			? '700'
-																			: m.id == 'suitableMRP'
-																			? '700'
-																			: m.id == 'overhead'
-																			? '700'
-																			: m.id == 'withoutOverhead'
-																			? '700'
-																			: m.id == 'credit'
-																			? '700'
-																			: '400',
-																	color: m.id == 'totalLandingCost' ? 'red' : m.id == 'priceBeforeVat' ? 'red' : '#000',
 																}}
 															>
-																{generalData[`${m.id}V`] ? NepaliCurrency(generalData[`${m.id}V`]) : m.id == 'exRate' ? NepaliCurrency(generalData['npr']) : NepaliCurrency(generalData[m.id])}
-															</Text>
+																<Text
+																	style={{
+																		fontWeight:
+																			m.id == 'inr'
+																				? '700'
+																				: m.id == 'exRate'
+																				? '700'
+																				: m.id == 'boarderInPrice'
+																				? '700'
+																				: m.id == 'costTillDealer'
+																				? '700'
+																				: m.id == 'totalLandingCost'
+																				? '700'
+																				: m.id == 'priceBeforeVat'
+																				? '700'
+																				: m.id == 'suitableMRP'
+																				? '700'
+																				: m.id == 'overhead'
+																				? '700'
+																				: m.id == 'withoutOverhead'
+																				? '700'
+																				: m.id == 'credit'
+																				? '700'
+																				: '400',
+																		color: m.id == 'totalLandingCost' ? 'red' : m.id == 'priceBeforeVat' ? 'red' : '#000',
+																	}}
+																>
+																	{generalData[`${m.id}V`] ? NepaliCurrency(generalData[`${m.id}V`]) : m.id == 'exRate' ? NepaliCurrency(generalData['npr']) : NepaliCurrency(generalData[m.id])}
+																</Text>
+															</View>
 														</View>
 													))}
 												</View>
@@ -588,6 +623,7 @@ const styles = StyleSheet.create({
 	table: {
 		marginHorizontal: 10,
 		marginBottom: 10,
+		paddingTop: 5,
 		borderLeftWidth: 0.5,
 		borderLeftColor: '#666',
 		borderTopWidth: 0.5,
