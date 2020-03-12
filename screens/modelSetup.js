@@ -19,6 +19,7 @@ class ModalSetup extends Component {
 		this.state = {
 			optionVal: '',
 			modelData: null,
+			searchModelData: null,
 			mainData: null,
 			errors: {},
 			mainloading: false,
@@ -38,7 +39,7 @@ class ModalSetup extends Component {
 	componentDidMount = async () => {
 		try {
 			const { data: modelData } = await getModel();
-			this.setState({ modelData: modelData.data, loading: false });
+			this.setState({ modelData: modelData.data, searchModelData: modelData.data, loading: false });
 		} catch (err) {
 			this.setState({ errors: err });
 		}
@@ -69,12 +70,25 @@ class ModalSetup extends Component {
 		}
 	};
 
+	handleSearch = val => {
+		const { modelData } = this.state;
+		let newVal = val.toLowerCase();
+		if (val) {
+			data = modelData.filter(data => {
+				return data.model.toLowerCase().indexOf(newVal) != -1;
+			});
+			this.setState({ searchModelData: data });
+		} else {
+			this.setState({ searchModelData: modelData });
+		}
+	};
+
 	onModalClick = () => {
 		this.setState(prevState => ({ modalVisible: !prevState.modalVisible }));
 	};
 
 	render() {
-		const { mainData, optionVal, modelData, loading, mainloading } = this.state;
+		const { mainData, optionVal, searchModelData, modelData, loading, mainloading } = this.state;
 
 		let ModelSetupFormComponent = props => {
 			const { handleChange, values, handleSubmit, setFieldValue, isSubmitting } = props.props;
@@ -135,12 +149,12 @@ class ModalSetup extends Component {
 							</View>
 						)}
 
-						{modelData && (
+						{modelData && searchModelData && (
 							<View style={styles.modelSelect}>
 								<TouchableOpacity onPress={this.onModalClick}>
 									<Text style={styles.modalButton}>Select Model</Text>
 								</TouchableOpacity>
-								<MyModel onSelected={this.valueSelected} modelData={modelData} modalVisible={this.state.modalVisible} onModelClick={this.onModalClick} />
+								<MyModel onSelected={this.valueSelected} modelData={searchModelData} modalVisible={this.state.modalVisible} handleChange={this.handleSearch} onModelClick={this.onModalClick} />
 							</View>
 						)}
 					</>

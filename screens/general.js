@@ -19,6 +19,7 @@ class General extends Component {
 		detailModal: false,
 		busName: '',
 		modelData: null,
+		searchModelData: null,
 		errors: {},
 		discussedMRP: 0,
 		suitableMRP: 0,
@@ -39,7 +40,7 @@ class General extends Component {
 			const { data: modelData } = await getModel();
 			const value = await AsyncStorage.getItem('user');
 			if (value != null) {
-				this.setState({ role: JSON.parse(value).role, modelData: modelData.data, loading: false });
+				this.setState({ role: JSON.parse(value).role, modelData: modelData.data, searchModelData: modelData.data, loading: false });
 			}
 		} catch (err) {
 			this.setState({ errors: err });
@@ -58,6 +59,19 @@ class General extends Component {
 
 	onDetailModal = () => {
 		this.setState(prevState => ({ detailModal: !prevState.detailModal }));
+	};
+
+	handleSearch = val => {
+		const { modelData } = this.state;
+		let newVal = val.toLowerCase();
+		if (val) {
+			data = modelData.filter(data => {
+				return data.model.toLowerCase().indexOf(newVal) != -1;
+			});
+			this.setState({ searchModelData: data });
+		} else {
+			this.setState({ searchModelData: modelData });
+		}
 	};
 
 	onSelected = async val => {
@@ -150,7 +164,7 @@ class General extends Component {
 	};
 
 	render() {
-		const { generalData, discussedMRP, discount, Impact, tier1val, tier2val, role, modelData, loading } = this.state;
+		const { generalData, discussedMRP, discount, Impact, tier1val, tier2val, role, searchModelData, loading } = this.state;
 
 		return (
 			<View style={{ flex: 1 }}>
@@ -323,7 +337,13 @@ class General extends Component {
 							<TouchableOpacity onPress={this.onModalClick}>
 								<Text style={styles.modalButton}>Select Model</Text>
 							</TouchableOpacity>
-							<MyModel onSelected={this.onSelected} modelData={modelData && this.state.modelData} modalVisible={this.state.modalVisible} onModelClick={this.onModalClick} />
+							<MyModel
+								onSelected={this.onSelected}
+								modelData={searchModelData && this.state.searchModelData}
+								handleChange={this.handleSearch}
+								modalVisible={this.state.modalVisible}
+								onModelClick={this.onModalClick}
+							/>
 						</View>
 
 						{role === 'admin' && (

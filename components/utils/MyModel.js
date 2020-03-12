@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Text,Modal,TouchableOpacity,ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Modal, TouchableOpacity, ScrollView } from 'react-native';
+import { Item, Input, Icon } from 'native-base';
 
 const MyModel = props => {
 	return (
@@ -8,27 +9,40 @@ const MyModel = props => {
 			transparent={false}
 			visible={props.modalVisible}
 			onRequestClose={() => {
-				props.onModelClick()
+				props.onModelClick();
 			}}
 		>
 			<View style={styles.modalWrapper}>
 				<View style={styles.modalContainer}>
 					<TouchableOpacity
 						onPress={() => {
-							props.onModelClick()
+							props.onModelClick();
 						}}
 					>
 						<Text
 							style={{
 								...styles.modalButton,
 								backgroundColor: 'red',
-								width: '20%',
 								marginBottom: 10,
+								marginRight: 30,
 							}}
 						>
 							Close
 						</Text>
 					</TouchableOpacity>
+					<View style={styles.inputSearch}>
+						<Item rounded style={styles.SearchWrap}>
+							<Input
+								placeholder="Search"
+								placeholderStyle={{ fontSize: 13 }}
+								style={styles.Search}
+								onChangeText={text => {
+									props.handleChange(text);
+								}}
+							/>
+							<Icon active name="search" />
+						</Item>
+					</View>
 				</View>
 
 				<ScrollView>
@@ -76,7 +90,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 	},
 	modalDetail: {
-        paddingTop: 10,
+		paddingTop: 10,
 		paddingBottom: 70,
 	},
 	modalDetailWrap: {
@@ -85,10 +99,22 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderBottomColor: '#ECECEC',
 	},
-	
+
 	modalContainer: {
 		borderBottomWidth: 1,
 		borderBottomColor: '#000',
+		flexDirection: 'row',
+	},
+	inputSearch: {
+		width: '75%',
+	},
+	SearchWrap: {
+		paddingHorizontal: 10,
+	},
+	Search: {
+		height: 40,
+		fontSize: 13,
+		textDecorationLine: 'none',
 	},
 });
 
