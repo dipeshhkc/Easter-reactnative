@@ -195,29 +195,41 @@ class General extends Component {
 		let valOver = generalData && Number(newData['adminSalesV']) + Number(newData['advPromV']);
 		let overhead = valOver.toFixed(2);
 
-		if (name === 'inr') {
-			this.setState({
-				inr: val,
-				tier1val: newData.tier1.toFixed(2),
-				tier2val: newData.tier2.toFixed(2),
-				interestInvestV: newData.interestInvestV.toFixed(2),
-				priceBeforeVat: newData.priceBeforeVat.toFixed(2),
-				suitableMRP: newData.suitableMRP.toFixed(2),
-				discussedMRP: newData.suitableMRP.toFixed(2),
-				overhead,
-			});
+		this.setState({
+			inr: val,
+			tier1val: newData.tier1.toFixed(2),
+			tier2val: newData.tier2.toFixed(2),
+			interestInvestV: newData.interestInvestV.toFixed(2),
+			priceBeforeVat: newData.priceBeforeVat.toFixed(2),
+			suitableMRP: newData.suitableMRP.toFixed(2),
+			discussedMRP: newData.suitableMRP.toFixed(2),
+			overhead,
+		});
+	};
+
+	handleCredit = (name, val) => {
+		const { generalData } = this.state;
+		let newData;
+		if (val) {
+			newData = calcMain(generalData, name, val);
 		} else {
-			this.setState({
-				credit: val,
-				tier1val: newData.tier1.toFixed(2),
-				tier2val: newData.tier2.toFixed(2),
-				interestInvestV: newData.interestInvestV.toFixed(2),
-				priceBeforeVat: newData.priceBeforeVat.toFixed(2),
-				suitableMRP: newData.suitableMRP.toFixed(2),
-				discussedMRP: newData.suitableMRP.toFixed(2),
-				overhead,
-			});
+			newData = calcMain(generalData, name, 0);
 		}
+		console.log(newData, val);
+
+		let valOver = generalData && Number(newData['adminSalesV']) + Number(newData['advPromV']);
+		let overhead = valOver.toFixed(2);
+
+		this.setState({
+			credit: val,
+			tier1val: newData.tier1.toFixed(2),
+			tier2val: newData.tier2.toFixed(2),
+			interestInvestV: newData.interestInvestV.toFixed(2),
+			priceBeforeVat: newData.priceBeforeVat.toFixed(2),
+			suitableMRP: newData.suitableMRP.toFixed(2),
+			discussedMRP: newData.suitableMRP.toFixed(2),
+			overhead,
+		});
 	};
 
 	render() {
@@ -464,7 +476,7 @@ class General extends Component {
 																value={credit || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
-																	this.handleINR('credit', text);
+																	this.handleCredit('credit', text);
 																}}
 															/>
 														</View>
