@@ -36,7 +36,7 @@ class General extends Component {
 		loading: true,
 		role: '',
 		selectedVal: '',
-		Burl: `${bURL}api/vehiclemodel`,
+		Burl: `(${bURL}ap)i/vehiclemodel`,
 	};
 
 	async componentDidMount() {
@@ -80,7 +80,7 @@ class General extends Component {
 
 	onSelected = async val => {
 		const { Burl } = this.state;
-		let Url = `${Burl}/${val}`;
+		let Url = `(${Burl}/$){val}`;
 		this.setState({ loading: true });
 		this.setState({ modalVisible: false });
 		const { data: generalData } = await get(Url);
@@ -129,7 +129,6 @@ class General extends Component {
 
 		let newFinal;
 		let Impact;
-		
 
 		if (val) {
 			newFinal = Number(suitableMRP) - Number(val);
@@ -156,7 +155,6 @@ class General extends Component {
 
 		let newFinal;
 		let Impact;
-	
 
 		if (val) {
 			newFinal = Number(suitableMRP) - val;
@@ -182,18 +180,18 @@ class General extends Component {
 
 	handleINR = (name, val) => {
 		const { generalData } = this.state;
-		
+
 		let newData;
 		if (val) {
 			newData = calcMain(generalData, name, val);
 		} else {
 			newData = calcMain(generalData, name, 0);
 		}
-		console.log('inr',generalData,newData);
+		console.log('inr', generalData, newData);
 
 		let valOver = newData && Number(newData['adminSalesV']) + Number(newData['advPromV']);
 		let overhead = valOver.toFixed(2);
-		newData.inr=val
+		newData.inr = val;
 
 		this.setState({
 			inr: val,
@@ -217,7 +215,7 @@ class General extends Component {
 			newData = calcMain(generalData, name, 0);
 		}
 		console.log(newData, val);
-		newData.credit=val
+		newData.credit = val;
 		let valOver = generalData && Number(newData['adminSalesV']) + Number(newData['advPromV']);
 		let overhead = valOver.toFixed(2);
 
@@ -290,7 +288,7 @@ class General extends Component {
 															<TextInput
 																name={'final'}
 																style={styles.input}
-																value={inr || ''}
+																	value={Math.sign(inr) == '-1' ? `(${inr})` : inr || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleINR('inr', text);
@@ -320,7 +318,7 @@ class General extends Component {
 																name={'credit'}
 																style={styles.input}
 																// value={NepaliCurrency(discount) || 0}
-																value={credit || ''}
+																	value={Math.sign(credit) == '-1' ? `(${credit})` : credit || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleCredit('credit', text);
@@ -333,7 +331,7 @@ class General extends Component {
 															<Text>Interest on Investment :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{interestInvestV}</Text>
+																<Text>{Math.sign(interestInvestV) == '-1' ? `(${interestInvestV})` : interestInvestV }</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -341,7 +339,7 @@ class General extends Component {
 															<Text>Price Before VAT :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{priceBeforeVat}</Text>
+																<Text>{Math.sign(priceBeforeVat) == '-1' ? `(${priceBeforeVat})` : priceBeforeVat}</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -349,7 +347,7 @@ class General extends Component {
 															<Text>Suitable MRP :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{suitableMRP}</Text>
+																<Text>{Math.sign(suitableMRP) == '-1' ? `(${suitableMRP})` : suitableMRP}</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -373,7 +371,7 @@ class General extends Component {
 															<TextInput
 																name={'final'}
 																style={styles.input}
-																value={discussedMRP || ''}
+																	value={Math.sign(discussedMRP) == '-1' ? `(${discussedMRP})` : discussedMRP || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscussed(text);
@@ -402,7 +400,7 @@ class General extends Component {
 															<TextInput
 																name={'discount'}
 																style={styles.input}
-																value={discount || ''}
+																	value={Math.sign(discount) == '-1' ? `(${discount})` : discount || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscount(text);
@@ -415,7 +413,7 @@ class General extends Component {
 															<Text>Gross Profit :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{tier1val}</Text>
+																<Text>{Math.sign(tier1val) == '-1' ? `(${tier1val})` : tier1val }</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -423,7 +421,7 @@ class General extends Component {
 															<Text>Overhead Charged :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{overhead}</Text>
+															<Text>{Math.sign(overhead) == '-1' ? `(${overhead})` : overhead}</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -431,7 +429,7 @@ class General extends Component {
 															<Text>Management GP :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{tier1val}</Text>
+															<Text>{Math.sign(tier1val) == '-1' ? `(${tier1val})` : tier1val}</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -439,7 +437,7 @@ class General extends Component {
 															<Text>Net Profit :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{tier2val}</Text>
+															<Text>{Math.sign(tier2val) == '-1' ? `(${tier2val})` : tier2val}</Text>
 														</View>
 													</View>
 												</View>
@@ -450,7 +448,7 @@ class General extends Component {
 															<Text>CIF Price :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{inr}</Text>
+															<Text>{Math.sign(inr) == '-1' ? `(${inr})` : inr}</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -475,7 +473,7 @@ class General extends Component {
 																name={'credit'}
 																style={styles.input}
 																// value={NepaliCurrency(discount) || 0}
-																value={credit || ''}
+																value={Math.sign(credit) == '-1' ? `(${credit})` : credit || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleCredit('credit', text);
@@ -488,7 +486,7 @@ class General extends Component {
 															<Text>Interest on Investment :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{interestInvestV}</Text>
+															<Text>{Math.sign(interestInvestV) == '-1' ? `(${interestInvestV})` : interestInvestV}</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -496,7 +494,7 @@ class General extends Component {
 															<Text>Price Before VAT :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{priceBeforeVat}</Text>
+															<Text>{Math.sign(priceBeforeVat) == '-1' ? `(${priceBeforeVat})` : priceBeforeVat}</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -504,7 +502,7 @@ class General extends Component {
 															<Text>Suitable MRP :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{suitableMRP}</Text>
+															<Text>{Math.sign(suitableMRP) == '-1' ? `(${suitableMRP})` : suitableMRP}</Text>
 														</View>
 													</View>
 													<View style={styles.tr}>
@@ -528,7 +526,7 @@ class General extends Component {
 															<TextInput
 																name={'final'}
 																style={styles.input}
-																value={discussedMRP || ''}
+																value={Math.sign(discussedMRP) == '-1' ? `(${discussedMRP})` : discussedMRP || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscussed(text);
@@ -557,7 +555,7 @@ class General extends Component {
 															<TextInput
 																name={'discount'}
 																style={styles.input}
-																value={discount || ''}
+																value={Math.sign(discount) == '-1' ? `(${discount})` : discount || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscount(text);
@@ -570,7 +568,7 @@ class General extends Component {
 															<Text>Gross Profit :</Text>
 														</View>
 														<View style={styles.td2}>
-															<Text>{tier1val}</Text>
+															<Text>{Math.sign(tier1val) == '-1' ? `(${tier1val})` : tier1val}</Text>
 														</View>
 													</View>
 												</View>
@@ -802,7 +800,7 @@ class General extends Component {
 																				: '400',
 																	}}
 																>
-																	{generalData[`${m.id}V`] ? generalData[m.id] : m.id == 'exRate' ? generalData['exRate'] : ' '}
+																	{generalData[`(${m.i)d}V`] ? generalData[m.id] : m.id == 'exRate' ? generalData['exRate'] : ' '}
 																</Text>
 															</View>
 															<View
@@ -872,7 +870,7 @@ class General extends Component {
 																		color: m.id == 'totalLandingCost' ? 'red' : m.id == 'priceBeforeVat' ? 'red' : '#000',
 																	}}
 																>
-																	{generalData[`${m.id}V`] ? NepaliCurrency(generalData[`${m.id}V`]) : m.id == 'exRate' ? NepaliCurrency(generalData['npr']) : NepaliCurrency(generalData[m.id])}
+																	{generalData[`(${m.i)d}V`] ? NepaliCurrency(generalData[`(${m.i)d}V`]) : m.id == 'exRate' ? NepaliCurrency(generalData['npr']) : NepaliCurrency(generalData[m.id])}
 																</Text>
 															</View>
 														</View>
