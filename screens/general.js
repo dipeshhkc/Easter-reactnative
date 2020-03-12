@@ -124,23 +124,23 @@ class General extends Component {
 	};
 
 	handleDiscount = val => {
-		const { suitableMRP, discussedMRP, tier1val, tier2val } = this.state.originalValues;
+		let { suitableMRP, tier1, tier2 } = this.state.generalData;
+		// const { suitableMRP, discussedMRP, tier1, tier2 } = this.state.originalValues;
 
 		let newFinal;
 		let Impact;
-		let tier1;
-		let tier2;
+		
 
 		if (val) {
 			newFinal = Number(suitableMRP) - Number(val);
 			Impact = Number(newFinal) - Number(suitableMRP);
-			tier1 = Number(tier1val) + Number(Impact);
-			tier2 = Number(tier2val) + Number(Impact);
+			tier1 = Number(tier1) + Number(Impact);
+			tier2 = Number(tier2) + Number(Impact);
 		} else {
-			newFinal = Number(discussedMRP);
+			newFinal = Number(suitableMRP);
 			Impact = 0;
-			tier1 = Number(tier1val);
-			tier2 = Number(tier2val);
+			tier1 = Number(tier1);
+			tier2 = Number(tier2);
 		}
 		this.setState({
 			discussedMRP: newFinal.toFixed(2).toString(),
@@ -152,26 +152,24 @@ class General extends Component {
 	};
 
 	handleDiscussed = val => {
-		const { suitableMRP, discussedMRP, tier1val, tier2val } = this.state.originalValues;
+		let { suitableMRP, tier1, tier2 } = this.state.generalData;
 
 		let newFinal;
 		let Impact;
-		let tier1;
-		let tier2;
-		let discussed;
+	
 
 		if (val) {
 			newFinal = Number(suitableMRP) - val;
 			Impact = Number(val) - Number(suitableMRP);
-			tier1 = Number(tier1val) + Number(Impact);
-			tier2 = Number(tier2val) + Number(Impact);
+			tier1 = Number(tier1) + Number(Impact);
+			tier2 = Number(tier2) + Number(Impact);
 			discussed = val;
 		} else {
 			newFinal = 0;
 			Impact = 0;
-			tier1 = Number(tier1val);
-			tier2 = Number(tier2val);
-			discussed = Number(discussedMRP);
+			tier1 = Number(tier1);
+			tier2 = Number(tier2);
+			discussed = Number(suitableMRP);
 		}
 		this.setState({
 			discussedMRP: val.toString(),
@@ -184,16 +182,18 @@ class General extends Component {
 
 	handleINR = (name, val) => {
 		const { generalData } = this.state;
+		
 		let newData;
 		if (val) {
 			newData = calcMain(generalData, name, val);
 		} else {
 			newData = calcMain(generalData, name, 0);
 		}
-		console.log(newData, val);
+		console.log('inr',generalData,newData);
 
-		let valOver = generalData && Number(newData['adminSalesV']) + Number(newData['advPromV']);
+		let valOver = newData && Number(newData['adminSalesV']) + Number(newData['advPromV']);
 		let overhead = valOver.toFixed(2);
+		newData.inr=val
 
 		this.setState({
 			inr: val,
@@ -217,7 +217,7 @@ class General extends Component {
 			newData = calcMain(generalData, name, 0);
 		}
 		console.log(newData, val);
-
+		newData.credit=val
 		let valOver = generalData && Number(newData['adminSalesV']) + Number(newData['advPromV']);
 		let overhead = valOver.toFixed(2);
 

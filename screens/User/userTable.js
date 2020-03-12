@@ -51,12 +51,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 	},
 	text: {
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		fontSize: 18,
 		color: '#000',
 	},
 	text1: {
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		fontSize: 12,
 	},
 });
