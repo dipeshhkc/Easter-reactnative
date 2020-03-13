@@ -1,7 +1,10 @@
 export const NepaliCurrency = value => {
+	console.log('bef',value)
 	const [nepaliNumber, floatingPoint] = String(value).split('.');
 	const commaConverted = InternalNepaliCurrencyCalculation(nepaliNumber);
-	return String(value).indexOf('.') != '-1' ? commaConverted + '.' + (floatingPoint || '') : commaConverted;
+	let returnValue= String(value).indexOf('.') != '-1' ? commaConverted + '.' + (floatingPoint || '') : commaConverted;
+	console.log('aft',returnValue)
+	return returnValue
 };
 
 export const InternalNepaliCurrencyCalculation = value => {
@@ -40,12 +43,12 @@ export const InternalNepaliCurrencyCalculation = value => {
 		}
 		return sign + res;
 	} else {
-		return '0';
+		return '';
 	}
 };
 
 export const removeCommas = val => {
 	var num = val;
 	num = num.replace(/,/g, '');
-	return num;
+	return (num);
 };

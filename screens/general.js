@@ -140,9 +140,9 @@ class General extends Component {
 	handleDiscount = val => {
 		let { suitableMRP, tier1, tier2 } = this.state.generalData;
 
-		suitableMRP = removeCommas(suitableMRP);
-		tier1 = removeCommas(tier1);
-		tier2 = removeCommas(tier2);
+		suitableMRP = removeCommas(String(suitableMRP));
+		tier1 = removeCommas(String(tier1));
+		tier2 = removeCommas(String(tier2));
 		val = removeCommas(val);
 
 		let newFinal;
@@ -177,9 +177,9 @@ class General extends Component {
 	handleDiscussed = val => {
 		let { suitableMRP, tier1, tier2 } = this.state.generalData;
 
-		suitableMRP = removeCommas(suitableMRP);
-		tier1 = removeCommas(tier1);
-		tier2 = removeCommas(tier2);
+		suitableMRP = removeCommas(String(suitableMRP));
+		tier1 = removeCommas(String(tier1));
+		tier2 = removeCommas(String(tier2));
 		val = removeCommas(val);
 
 		let newFinal;
@@ -292,7 +292,8 @@ class General extends Component {
 				) : (
 					<>
 						{generalData ? (
-							<KeyboardAvoidingView behavior="position">
+							<KeyboardAvoidingView behavior="padding">
+							{/* <KeyboardAvoidingView behavior="position"> */}
 								<ScrollView>
 									<View style={{ flex: 1, paddingTop: 10 }}>
 										<View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', flexDirection: 'row' }}>
