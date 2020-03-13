@@ -27,7 +27,7 @@ class LoginScreen extends Component {
 
 	render() {
 		return (
-			<KeyboardAvoidingView behavior={'padding'} style={styles.screen}>
+			<KeyboardAvoidingView behavior={'position'} style={styles.screen}>
 				<ScrollView>
 					<View>
 						{this.state.LoginErrors && this.state.LoginErrors.message && (
