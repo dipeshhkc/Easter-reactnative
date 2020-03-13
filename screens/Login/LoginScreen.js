@@ -37,6 +37,9 @@ class LoginScreen extends Component {
 						)}
 						<View>
 							<View style={styles.imageWrap}>
+								<Text style={{ ...styles.textMain, paddingTop: 15, fontSize: 25, letterSpacing: 2, textTransform: 'uppercase' }}>Batas InterPrises</Text>
+							</View>
+							<View style={styles.imageWrap}>
 								<Text style={{ ...styles.textMain, paddingTop: 15, fontSize: 25, letterSpacing: 2 }}>Welcome</Text>
 							</View>
 						</View>
@@ -134,9 +137,6 @@ class LoginScreen extends Component {
 								)}
 							</Formik>
 						</View>
-						<View>
-							<Text style={styles.textVersion}>Version 1.0</Text>
-						</View>
 					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
@@ -146,7 +146,7 @@ class LoginScreen extends Component {
 const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
-		paddingTop: 100,
+		paddingTop: 30,
 		// paddingHorizontal: 10,
 		backgroundColor: '#fff',
 	},

@@ -95,7 +95,17 @@ class General extends Component {
 		let interestInvestV = generalData && generalData['interestInvestV'];
 		let priceBeforeVat = generalData && generalData['priceBeforeVat'];
 		let valOver = generalData && Number(generalData['adminSalesV']) + Number(generalData['advPromV']);
+
 		let overhead = valOver.toFixed(2);
+		tier1val = Number(tier1val).toFixed(2);
+		tier2val = Number(tier2val).toFixed(2);
+		suitableMRP = Number(suitableMRP).toFixed(2);
+		discussedMRP = Number(discussedMRP).toFixed(2);
+		credit = Number(credit).toFixed(2);
+		inr = Number(inr).toFixed(2);
+		interestInvestV = Number(interestInvestV).toFixed(2);
+		priceBeforeVat = Number(priceBeforeVat).toFixed(2);
+		valOver = Number(valOver).toFixed(2);
 
 		tier1val = NepaliCurrency(tier1val);
 		tier2val = NepaliCurrency(tier2val);
@@ -140,9 +150,9 @@ class General extends Component {
 	handleDiscount = val => {
 		let { suitableMRP, tier1, tier2 } = this.state.generalData;
 
-		suitableMRP = removeCommas(String(suitableMRP));
-		tier1 = removeCommas(String(tier1));
-		tier2 = removeCommas(String(tier2));
+		suitableMRP = removeCommas(suitableMRP);
+		tier1 = removeCommas(tier1);
+		tier2 = removeCommas(tier2);
 		val = removeCommas(val);
 
 		let newFinal;
@@ -169,17 +179,17 @@ class General extends Component {
 				discussedMRP: NepaliCurrency(discussedMRP),
 				discount: NepaliCurrency(discount),
 				Impact: NepaliCurrency(Impact),
-				tier1val: NepaliCurrency(tier1),
-				tier2val: NepaliCurrency(tier2),
+				tier1val: NepaliCurrency(tier1val),
+				tier2val: NepaliCurrency(tier2val),
 			});
 	};
 
 	handleDiscussed = val => {
 		let { suitableMRP, tier1, tier2 } = this.state.generalData;
 
-		suitableMRP = removeCommas(String(suitableMRP));
-		tier1 = removeCommas(String(tier1));
-		tier2 = removeCommas(String(tier2));
+		suitableMRP = removeCommas(suitableMRP);
+		tier1 = removeCommas(tier1);
+		tier2 = removeCommas(tier2);
 		val = removeCommas(val);
 
 		let newFinal;
@@ -208,8 +218,8 @@ class General extends Component {
 				discussedMRP: NepaliCurrency(discussedMRP),
 				discount: NepaliCurrency(discount),
 				Impact: NepaliCurrency(Impact),
-				tier1val: NepaliCurrency(tier1),
-				tier2val: NepaliCurrency(tier2),
+				tier1val: NepaliCurrency(tier1val),
+				tier2val: NepaliCurrency(tier1val),
 			});
 	};
 
@@ -292,10 +302,9 @@ class General extends Component {
 				) : (
 					<>
 						{generalData ? (
-							<KeyboardAvoidingView behavior="padding">
-							{/* <KeyboardAvoidingView behavior="position"> */}
+							<KeyboardAvoidingView behavior="position">
 								<ScrollView>
-									<View style={{ flex: 1, paddingTop: 10 }}>
+									<View style={{ flex: 1, paddingTop: 10, paddingBottom: 30 }}>
 										<View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', flexDirection: 'row' }}>
 											<AntDesign
 												name="arrowleft"
@@ -337,7 +346,7 @@ class General extends Component {
 															<TextInput
 																name={'final'}
 																style={styles.input}
-																value={Math.sign(inr) == '-1' ? `(${Math.abs(inr)})` : inr || ''}
+																value={inr || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleINR('inr', text);
@@ -367,7 +376,7 @@ class General extends Component {
 																name={'credit'}
 																style={styles.input}
 																// value={NepaliCurrency(discount) || 0}
-																value={Math.sign(credit) == '-1' ? `(${Math.abs(credit)})` : credit || ''}
+																value={credit || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleCredit('credit', text);
@@ -377,15 +386,21 @@ class General extends Component {
 													</View>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>Interest on Investment :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(interestInvestV) == '-1' ? `(${Math.abs(interestInvestV)})` : interestInvestV}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>
+															{Math.sign(removeCommas(String(interestInvestV))) == '-1' ? `(${NepaliCurrency(Math.abs(removeCommas(String(interestInvestV))))})` : interestInvestV}
+														</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>Price Before VAT :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(priceBeforeVat) == '-1' ? `(${Math.abs(priceBeforeVat)})` : priceBeforeVat}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>
+															{Math.sign(removeCommas(String(priceBeforeVat))) == '-1' ? `(${NepaliCurrency(Math.abs(removeCommas(String(priceBeforeVat))))})` : priceBeforeVat}
+														</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>Suitable MRP :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(suitableMRP) == '-1' ? `(${Math.abs(suitableMRP)})` : suitableMRP}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>
+															{Math.sign(removeCommas(String(suitableMRP))) == '-1' ? `(${NepaliCurrency(Math.abs(removeCommas(String(suitableMRP))))})` : suitableMRP}
+														</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text
@@ -408,7 +423,7 @@ class General extends Component {
 															<TextInput
 																name={'final'}
 																style={styles.input}
-																value={Math.sign(discussedMRP) == '-1' ? `(${Math.abs(discussedMRP)})` : discussedMRP || ''}
+																value={discussedMRP || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscussed(text);
@@ -437,7 +452,7 @@ class General extends Component {
 															<TextInput
 																name={'discount'}
 																style={styles.input}
-																value={Math.sign(discount) == '-1' ? `(${Math.abs(discount)})` : discount || ''}
+																value={discount || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscount(text);
@@ -447,26 +462,34 @@ class General extends Component {
 													</View>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>Gross Profit :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(tier1val) == '-1' ? `(${Math.abs(tier1val)})` : tier1val}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>
+															{Math.sign(removeCommas(String(tier1val))) == '-1' ? `(${NepaliCurrency(Math.abs(removeCommas(String(tier1val))))})` : tier1val}
+														</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>Overhead Charged :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(overhead) == '-1' ? `(${Math.abs(overhead)})` : overhead}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>
+															{Math.sign(removeCommas(String(overhead))) == '-1' ? `(${NepaliCurrency(Math.abs(removeCommas(String(overhead))))})` : overhead}
+														</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>Management GP :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(tier1val) == '-1' ? `(${Math.abs(tier1val)})` : tier1val}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>
+															{Math.sign(removeCommas(String(tier1val))) == '-1' ? `(${NepaliCurrency(Math.abs(removeCommas(String(tier1val))))})` : tier1val}
+														</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>Net Profit :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(tier2val) == '-1' ? `(${Math.abs(tier2val)})` : tier2val}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>
+															{Math.sign(removeCommas(String(tier2val))) == '-1' ? `(${NepaliCurrency(Math.abs(removeCommas(String(tier2val))))})` : tier2val}
+														</Text>
 													</View>
 												</View>
 											) : (
 												<View style={styles.tbody}>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>CIF Price :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(inr) == '-1' ? `(${Math.abs(inr)})` : inr}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(removeCommas(String(inr))) == '-1' ? `(${NepaliCurrency(Math.abs(removeCommas(String(inr))))})` : inr}</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text
@@ -490,7 +513,7 @@ class General extends Component {
 																name={'credit'}
 																style={styles.input}
 																// value={NepaliCurrency(discount) || 0}
-																value={Math.sign(credit) == '-1' ? `(${Math.abs(credit)})` : credit || ''}
+																value={credit || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleCredit('credit', text);
@@ -500,15 +523,21 @@ class General extends Component {
 													</View>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>Interest on Investment :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(interestInvestV) == '-1' ? `(${Math.abs(interestInvestV)})` : interestInvestV}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>
+															{Math.sign(removeCommas(String(interestInvestV))) == '-1' ? `(${NepaliCurrency(Math.abs(removeCommas(String(interestInvestV))))})` : interestInvestV}
+														</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>Price Before VAT :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(priceBeforeVat) == '-1' ? `(${Math.abs(priceBeforeVat)})` : priceBeforeVat}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>
+															{Math.sign(removeCommas(String(priceBeforeVat))) == '-1' ? `(${NepaliCurrency(Math.abs(removeCommas(String(priceBeforeVat))))})` : priceBeforeVat}
+														</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>Suitable MRP :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(suitableMRP) == '-1' ? `(${Math.abs(suitableMRP)})` : suitableMRP}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>
+															{Math.sign(removeCommas(String(suitableMRP))) == '-1' ? `(${NepaliCurrency(Math.abs(removeCommas(String(suitableMRP))))})` : suitableMRP}
+														</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text
@@ -531,7 +560,7 @@ class General extends Component {
 															<TextInput
 																name={'final'}
 																style={styles.input}
-																value={Math.sign(discussedMRP) == '-1' ? `(${Math.abs(discussedMRP)})` : discussedMRP || ''}
+																value={discussedMRP || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscussed(text);
@@ -560,7 +589,7 @@ class General extends Component {
 															<TextInput
 																name={'discount'}
 																style={styles.input}
-																value={Math.sign(discount) == '-1' ? `(${Math.abs(discount)})` : discount || ''}
+																value={discount || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscount(text);
@@ -570,7 +599,9 @@ class General extends Component {
 													</View>
 													<View style={styles.tr}>
 														<Text style={styles.td2}>Gross Profit :</Text>
-														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(tier1val) == '-1' ? `(${Math.abs(tier1val)})` : tier1val}</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>
+															{Math.sign(removeCommas(String(tier1val))) == '-1' ? `${NepaliCurrency(Math.abs(removeCommas(String(tier1val))))}` : tier1val}
+														</Text>
 													</View>
 												</View>
 											)}
