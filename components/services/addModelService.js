@@ -14,11 +14,16 @@ export function addModel(value, isEdit) {
 	return axios.post(`${apiEndpoint}`, value);
 }
 
-export function getModel(val) {
-	if (val) {
-		return axios.get(`${apiEndpoint}/${val}`);
-	}
+export function getModelPaginate(id) {
+	return axios.get(`${apiEndpoint}`, { params: { page: id, paginate: true } });
+}
+
+export function getModel() {
 	return axios.get(`${apiEndpoint}`);
+}
+
+export function getValModel(val) {
+	return axios.get(`${apiEndpoint}/${val}`);
 }
 
 export function deleteModel(name) {

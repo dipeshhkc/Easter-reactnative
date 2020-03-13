@@ -11,6 +11,12 @@ class ModelTable extends Component {
 
 	onPageChange = val => {
 		this.setState({ currentPage: val });
+		console.log('currentPage', val);
+	};
+
+	maxPage = () => {
+		const { currentPage } = this.state;
+		return currentPage > this.props.data.length / 10 ? true : false;
 	};
 
 	render() {
@@ -30,16 +36,6 @@ class ModelTable extends Component {
 							</DataTable.Row>
 						</TouchableHighlight>
 					))}
-
-					{/* <DataTable.Pagination
-						page={this.state.currentPage}
-						rows={10}
-						numberOfPages={this.props.data.length / 10}
-						onPageChange={page => {
-							this.onPageChange(page);
-						}}
-						label={`${this.state.currentPage} of 3`}
-					/> */}
 				</DataTable>
 			</View>
 		);

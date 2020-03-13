@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlig
 import { Formik } from 'formik';
 import { Input, Label, Form, Item, Spinner, Toast } from 'native-base';
 import ModelTable from './modelTable';
-import { addModel, getModel, deleteModel } from '../../components/services/addModelService';
+import { addModel, deleteModel, getModelPaginate } from '../../components/services/addModelService';
 
 class ModelSetup extends Component {
 	state = {
@@ -14,6 +14,8 @@ class ModelSetup extends Component {
 		},
 		ModelData: [],
 		errors: {},
+		currentPage: 1,
+		PaginateLoading: false,
 		modalVisible: false,
 		loading: true,
 		isEdit: false,
@@ -22,8 +24,8 @@ class ModelSetup extends Component {
 
 	async componentDidMount() {
 		try {
-			const { data: ModelData } = await getModel();
-			this.setState(prevState => ({ ModelData: ModelData.data, loading: !prevState.loading }));
+			const { data: ModelData } = await getModelPaginate(this.state.currentPage);
+			this.setState(prevState => ({ ModelData: ModelData.data.data, loading: !prevState.loading }));
 		} catch (err) {
 			this.setState({ errors: err });
 		}
@@ -31,8 +33,8 @@ class ModelSetup extends Component {
 
 	async componentDidUpdate(prevProps, prevState) {
 		if (this.state.dataResponse !== prevState.dataResponse) {
-			const { data: ModelData } = await getModel();
-			this.setState({ ModelData: ModelData.data, loading: false });
+			const { data: ModelData } = await getModelPaginate(this.state.currentPage);
+			this.setState({ ModelData: ModelData.data.data, loading: false });
 		}
 	}
 
@@ -47,6 +49,16 @@ class ModelSetup extends Component {
 			isEdit: false,
 			dataResponse: !prevState.dataResponse,
 		}));
+	};
+
+	onDataLoad = async () => {
+		this.setState({ PaginateLoading: true });
+		let { currentPage } = this.state;
+		currentPage = currentPage + 1;
+		const { data: ModelData } = await getModelPaginate(currentPage);
+		let newdatas = ModelData.data.data;
+		let newData = [...this.state.ModelData, ...newdatas];
+		this.setState({ currentPage, ModelData: newData, PaginateLoading: false });
 	};
 
 	handleEdit = object => {
@@ -92,7 +104,7 @@ class ModelSetup extends Component {
 	};
 
 	render() {
-		const { loading, ModelData, isEdit } = this.state;
+		const { loading, ModelData, isEdit, PaginateLoading } = this.state;
 		return (
 			<View style={styles.screen}>
 				{loading ? (
@@ -258,6 +270,16 @@ class ModelSetup extends Component {
 							</View>
 						</Modal>
 						<ModelTable data={ModelData} clicked={row => this.handleEdit(row)} />
+						<TouchableHighlight
+							onPress={() => {
+								this.onDataLoad();
+							}}
+						>
+							<View style={styles.modalButton1}>
+								{PaginateLoading && <Spinner color="#fff" size="small" />}
+								<Text style={{ fontWeight: 'bold', color: '#fff', paddingLeft: 20 }}>Load More</Text>
+							</View>
+						</TouchableHighlight>
 					</ScrollView>
 				)}
 			</View>
@@ -316,6 +338,16 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		letterSpacing: 1,
 		fontWeight: 'bold',
+	},
+	modalButton1: {
+		backgroundColor: '#0c4ca3',
+		flexDirection: 'row',
+		borderRadius: 5,
+		padding: 0,
+		justifyContent: 'center',
+		alignItems: 'center',
+		letterSpacing: 1,
+		height: 50,
 	},
 });
 

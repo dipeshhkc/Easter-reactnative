@@ -7,7 +7,7 @@ import { dropdownFormat } from '../components/utils/generals';
 import { modelCollection, parameter } from '../components/utils/config';
 import MyFormik from '../components/myFormik';
 import ModelDropdown from './Setup/modelDropdown';
-import { getModel } from '../components/services/addModelService';
+import { getModel, getValModel } from '../components/services/addModelService';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import { bURL } from '../components/app-config';
 import MyModel from '../components/utils/MyModel';
@@ -63,7 +63,7 @@ class ModalSetup extends Component {
 	valueSelected = async val => {
 		try {
 			this.setState({ optionVal: val, mainloading: true, modalVisible: false });
-			const { data: mainData } = await getModel(val);
+			const { data: mainData } = await getValModel(val);
 			this.setState({ mainData: mainData.data, mainloading: false });
 		} catch (err) {
 			this.setState({ errors: err });

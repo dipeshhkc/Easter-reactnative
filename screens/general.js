@@ -4,7 +4,7 @@ import { Input, Spinner, Icon, Toast, Label } from 'native-base';
 import { Platform, AsyncStorage } from 'react-native';
 import { parameterDetail } from '../components/utils/config';
 import { get } from '../components/services/api';
-import { CleaveCurrency, NepaliCurrency } from '../components/utils/NepaliCurrency';
+import { CleaveCurrency, NepaliCurrency, removeCommas } from '../components/utils/NepaliCurrency';
 import { bURL } from '../components/app-config';
 import { getModel } from '../components/services/addModelService';
 import MyModel from '../components/utils/MyModel';
@@ -33,6 +33,7 @@ class General extends Component {
 		overhead: 0,
 		originalValues: {},
 		generalData: null,
+		mainData: null,
 		loading: true,
 		role: '',
 		selectedVal: '',
@@ -95,8 +96,21 @@ class General extends Component {
 		let priceBeforeVat = generalData && generalData['priceBeforeVat'];
 		let valOver = generalData && Number(generalData['adminSalesV']) + Number(generalData['advPromV']);
 		let overhead = valOver.toFixed(2);
+
+		tier1val = NepaliCurrency(tier1val);
+		tier2val = NepaliCurrency(tier2val);
+		suitableMRP = NepaliCurrency(suitableMRP);
+		discussedMRP = NepaliCurrency(discussedMRP);
+		credit = NepaliCurrency(credit);
+		inr = NepaliCurrency(inr);
+		interestInvestV = NepaliCurrency(interestInvestV);
+		priceBeforeVat = NepaliCurrency(priceBeforeVat);
+		valOver = NepaliCurrency(valOver);
+		overhead = NepaliCurrency(overhead);
+
 		this.setState({
 			generalData,
+			mainData: generalData,
 			busName: val,
 			modalVisible: false,
 			loading: false,
@@ -125,7 +139,13 @@ class General extends Component {
 
 	handleDiscount = val => {
 		let { suitableMRP, tier1, tier2 } = this.state.generalData;
-		// const { suitableMRP, discussedMRP, tier1, tier2 } = this.state.originalValues;
+		console.log('firdt', val);
+
+		suitableMRP = removeCommas(suitableMRP);
+		tier1 = removeCommas(tier1);
+		tier2 = removeCommas(tier2);
+		val = removeCommas(val);
+		console.log('firdtdddd', val);
 
 		let newFinal;
 		let Impact;
@@ -141,17 +161,28 @@ class General extends Component {
 			tier1 = Number(tier1);
 			tier2 = Number(tier2);
 		}
-		this.setState({
-			discussedMRP: newFinal.toFixed(2).toString(),
-			discount: val.toString(),
-			Impact: Impact.toFixed(2),
-			tier1val: tier1.toFixed(2),
-			tier2val: tier2.toFixed(2),
-		});
+
+		(discussedMRP = newFinal.toFixed(2).toString()),
+			(Impact = Impact.toFixed(2)),
+			(tier1val = tier1.toFixed(2)),
+			(tier2val = tier2.toFixed(2)),
+			(discount = val.toString()),
+			this.setState({
+				discussedMRP: NepaliCurrency(discussedMRP),
+				discount: NepaliCurrency(discount),
+				Impact: NepaliCurrency(Impact),
+				tier1val: NepaliCurrency(tier1),
+				tier2val: NepaliCurrency(tier2),
+			});
 	};
 
 	handleDiscussed = val => {
 		let { suitableMRP, tier1, tier2 } = this.state.generalData;
+
+		suitableMRP = removeCommas(suitableMRP);
+		tier1 = removeCommas(tier1);
+		tier2 = removeCommas(tier2);
+		val = removeCommas(val);
 
 		let newFinal;
 		let Impact;
@@ -169,17 +200,24 @@ class General extends Component {
 			tier2 = Number(tier2);
 			discussed = Number(suitableMRP);
 		}
-		this.setState({
-			discussedMRP: val.toString(),
-			discount: newFinal.toFixed(2).toString(),
-			Impact: Impact.toFixed(2),
-			tier1val: tier1.toFixed(2),
-			tier2val: tier2.toFixed(2),
-		});
+
+		(discount = newFinal.toFixed(2).toString()),
+			(Impact = Impact.toFixed(2)),
+			(tier1val = tier1.toFixed(2)),
+			(tier2val = tier2.toFixed(2)),
+			(discussedMRP = val.toString()),
+			this.setState({
+				discussedMRP: NepaliCurrency(discussedMRP),
+				discount: NepaliCurrency(discount),
+				Impact: NepaliCurrency(Impact),
+				tier1val: NepaliCurrency(tier1),
+				tier2val: NepaliCurrency(tier2),
+			});
 	};
 
 	handleINR = (name, val) => {
 		const { generalData } = this.state;
+		val = removeCommas(val);
 
 		let newData;
 		if (val) {
@@ -187,53 +225,65 @@ class General extends Component {
 		} else {
 			newData = calcMain(generalData, name, 0);
 		}
-		console.log('inr', generalData, newData);
 
 		let valOver = newData && Number(newData['adminSalesV']) + Number(newData['advPromV']);
 		let overhead = valOver.toFixed(2);
 		newData.inr = val;
 
-		this.setState({
-			inr: val,
-			tier1val: newData.tier1.toFixed(2),
-			tier2val: newData.tier2.toFixed(2),
-			interestInvestV: newData.interestInvestV.toFixed(2),
-			priceBeforeVat: newData.priceBeforeVat.toFixed(2),
-			suitableMRP: newData.suitableMRP.toFixed(2),
-			discussedMRP: newData.suitableMRP.toFixed(2),
-			overhead,
-			generalData: newData,
-		});
+		(tier1val = newData.tier1.toFixed(2)),
+			(tier2val = newData.tier2.toFixed(2)),
+			(interestInvestV = newData.interestInvestV.toFixed(2)),
+			(priceBeforeVat = newData.priceBeforeVat.toFixed(2)),
+			(suitableMRP = newData.suitableMRP.toFixed(2)),
+			(discussedMRP = newData.suitableMRP.toFixed(2)),
+			this.setState({
+				inr: NepaliCurrency(val),
+				tier1val: NepaliCurrency(tier1val),
+				tier2val: NepaliCurrency(tier2val),
+				interestInvestV: NepaliCurrency(interestInvestV),
+				priceBeforeVat: NepaliCurrency(priceBeforeVat),
+				suitableMRP: NepaliCurrency(suitableMRP),
+				discussedMRP: NepaliCurrency(discussedMRP),
+				overhead: NepaliCurrency(overhead),
+				generalData: newData,
+			});
 	};
 
 	handleCredit = (name, val) => {
 		const { generalData } = this.state;
+		val = removeCommas(val);
+
 		let newData;
 		if (val) {
 			newData = calcMain(generalData, name, val);
 		} else {
 			newData = calcMain(generalData, name, 0);
 		}
-		console.log(newData, val);
 		newData.credit = val;
 		let valOver = generalData && Number(newData['adminSalesV']) + Number(newData['advPromV']);
 		let overhead = valOver.toFixed(2);
 
-		this.setState({
-			credit: val,
-			tier1val: newData.tier1.toFixed(2),
-			tier2val: newData.tier2.toFixed(2),
-			interestInvestV: newData.interestInvestV.toFixed(2),
-			priceBeforeVat: newData.priceBeforeVat.toFixed(2),
-			suitableMRP: newData.suitableMRP.toFixed(2),
-			discussedMRP: newData.suitableMRP.toFixed(2),
-			overhead,
-			generalData: newData,
-		});
+		(tier1val = newData.tier1.toFixed(2)),
+			(tier2val = newData.tier2.toFixed(2)),
+			(interestInvestV = newData.interestInvestV.toFixed(2)),
+			(priceBeforeVat = newData.priceBeforeVat.toFixed(2)),
+			(suitableMRP = newData.suitableMRP.toFixed(2)),
+			(discussedMRP = newData.suitableMRP.toFixed(2)),
+			this.setState({
+				credit: NepaliCurrency(val),
+				tier1val: NepaliCurrency(tier1val),
+				tier2val: NepaliCurrency(tier2val),
+				interestInvestV: NepaliCurrency(interestInvestV),
+				priceBeforeVat: NepaliCurrency(priceBeforeVat),
+				suitableMRP: NepaliCurrency(suitableMRP),
+				discussedMRP: NepaliCurrency(discussedMRP),
+				overhead: NepaliCurrency(overhead),
+				generalData: newData,
+			});
 	};
 
 	render() {
-		const { generalData, discussedMRP, suitableMRP, discount, credit, inr, overhead, interestInvestV, priceBeforeVat, tier1val, tier2val, role, searchModelData, loading } = this.state;
+		const { generalData, mainData, discussedMRP, suitableMRP, discount, credit, inr, overhead, interestInvestV, priceBeforeVat, tier1val, tier2val, role, searchModelData, loading } = this.state;
 
 		return (
 			<View style={{ flex: 1 }}>
@@ -288,7 +338,7 @@ class General extends Component {
 															<TextInput
 																name={'final'}
 																style={styles.input}
-																	value={Math.sign(inr) == '-1' ? `(${inr})` : inr || ''}
+																value={Math.sign(inr) == '-1' ? `(${Math.abs(inr)})` : inr || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleINR('inr', text);
@@ -318,7 +368,7 @@ class General extends Component {
 																name={'credit'}
 																style={styles.input}
 																// value={NepaliCurrency(discount) || 0}
-																	value={Math.sign(credit) == '-1' ? `(${credit})` : credit || ''}
+																value={Math.sign(credit) == '-1' ? `(${Math.abs(credit)})` : credit || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleCredit('credit', text);
@@ -327,28 +377,16 @@ class General extends Component {
 														</View>
 													</View>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>Interest on Investment :</Text>
-														</View>
-														<View style={styles.td2}>
-																<Text>{Math.sign(interestInvestV) == '-1' ? `(${interestInvestV})` : interestInvestV }</Text>
-														</View>
+														<Text style={styles.td2}>Interest on Investment :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(interestInvestV) == '-1' ? `(${Math.abs(interestInvestV)})` : interestInvestV}</Text>
 													</View>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>Price Before VAT :</Text>
-														</View>
-														<View style={styles.td2}>
-																<Text>{Math.sign(priceBeforeVat) == '-1' ? `(${priceBeforeVat})` : priceBeforeVat}</Text>
-														</View>
+														<Text style={styles.td2}>Price Before VAT :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(priceBeforeVat) == '-1' ? `(${Math.abs(priceBeforeVat)})` : priceBeforeVat}</Text>
 													</View>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>Suitable MRP :</Text>
-														</View>
-														<View style={styles.td2}>
-																<Text>{Math.sign(suitableMRP) == '-1' ? `(${suitableMRP})` : suitableMRP}</Text>
-														</View>
+														<Text style={styles.td2}>Suitable MRP :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(suitableMRP) == '-1' ? `(${Math.abs(suitableMRP)})` : suitableMRP}</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text
@@ -371,7 +409,7 @@ class General extends Component {
 															<TextInput
 																name={'final'}
 																style={styles.input}
-																	value={Math.sign(discussedMRP) == '-1' ? `(${discussedMRP})` : discussedMRP || ''}
+																value={Math.sign(discussedMRP) == '-1' ? `(${Math.abs(discussedMRP)})` : discussedMRP || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscussed(text);
@@ -400,7 +438,7 @@ class General extends Component {
 															<TextInput
 																name={'discount'}
 																style={styles.input}
-																	value={Math.sign(discount) == '-1' ? `(${discount})` : discount || ''}
+																value={Math.sign(discount) == '-1' ? `(${Math.abs(discount)})` : discount || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscount(text);
@@ -409,47 +447,27 @@ class General extends Component {
 														</View>
 													</View>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>Gross Profit :</Text>
-														</View>
-														<View style={styles.td2}>
-																<Text>{Math.sign(tier1val) == '-1' ? `(${tier1val})` : tier1val }</Text>
-														</View>
+														<Text style={styles.td2}>Gross Profit :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(tier1val) == '-1' ? `(${Math.abs(tier1val)})` : tier1val}</Text>
 													</View>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>Overhead Charged :</Text>
-														</View>
-														<View style={styles.td2}>
-															<Text>{Math.sign(overhead) == '-1' ? `(${overhead})` : overhead}</Text>
-														</View>
+														<Text style={styles.td2}>Overhead Charged :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(overhead) == '-1' ? `(${Math.abs(overhead)})` : overhead}</Text>
 													</View>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>Management GP :</Text>
-														</View>
-														<View style={styles.td2}>
-															<Text>{Math.sign(tier1val) == '-1' ? `(${tier1val})` : tier1val}</Text>
-														</View>
+														<Text style={styles.td2}>Management GP :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(tier1val) == '-1' ? `(${Math.abs(tier1val)})` : tier1val}</Text>
 													</View>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>Net Profit :</Text>
-														</View>
-														<View style={styles.td2}>
-															<Text>{Math.sign(tier2val) == '-1' ? `(${tier2val})` : tier2val}</Text>
-														</View>
+														<Text style={styles.td2}>Net Profit :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(tier2val) == '-1' ? `(${Math.abs(tier2val)})` : tier2val}</Text>
 													</View>
 												</View>
 											) : (
 												<View style={styles.tbody}>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>CIF Price :</Text>
-														</View>
-														<View style={styles.td2}>
-															<Text>{Math.sign(inr) == '-1' ? `(${inr})` : inr}</Text>
-														</View>
+														<Text style={styles.td2}>CIF Price :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(inr) == '-1' ? `(${Math.abs(inr)})` : inr}</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text
@@ -473,7 +491,7 @@ class General extends Component {
 																name={'credit'}
 																style={styles.input}
 																// value={NepaliCurrency(discount) || 0}
-																value={Math.sign(credit) == '-1' ? `(${credit})` : credit || ''}
+																value={Math.sign(credit) == '-1' ? `(${Math.abs(credit)})` : credit || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleCredit('credit', text);
@@ -482,28 +500,16 @@ class General extends Component {
 														</View>
 													</View>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>Interest on Investment :</Text>
-														</View>
-														<View style={styles.td2}>
-															<Text>{Math.sign(interestInvestV) == '-1' ? `(${interestInvestV})` : interestInvestV}</Text>
-														</View>
+														<Text style={styles.td2}>Interest on Investment :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(interestInvestV) == '-1' ? `(${Math.abs(interestInvestV)})` : interestInvestV}</Text>
 													</View>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>Price Before VAT :</Text>
-														</View>
-														<View style={styles.td2}>
-															<Text>{Math.sign(priceBeforeVat) == '-1' ? `(${priceBeforeVat})` : priceBeforeVat}</Text>
-														</View>
+														<Text style={styles.td2}>Price Before VAT :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(priceBeforeVat) == '-1' ? `(${Math.abs(priceBeforeVat)})` : priceBeforeVat}</Text>
 													</View>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>Suitable MRP :</Text>
-														</View>
-														<View style={styles.td2}>
-															<Text>{Math.sign(suitableMRP) == '-1' ? `(${suitableMRP})` : suitableMRP}</Text>
-														</View>
+														<Text style={styles.td2}>Suitable MRP :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(suitableMRP) == '-1' ? `(${Math.abs(suitableMRP)})` : suitableMRP}</Text>
 													</View>
 													<View style={styles.tr}>
 														<Text
@@ -526,7 +532,7 @@ class General extends Component {
 															<TextInput
 																name={'final'}
 																style={styles.input}
-																value={Math.sign(discussedMRP) == '-1' ? `(${discussedMRP})` : discussedMRP || ''}
+																value={Math.sign(discussedMRP) == '-1' ? `(${Math.abs(discussedMRP)})` : discussedMRP || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscussed(text);
@@ -555,7 +561,7 @@ class General extends Component {
 															<TextInput
 																name={'discount'}
 																style={styles.input}
-																value={Math.sign(discount) == '-1' ? `(${discount})` : discount || ''}
+																value={Math.sign(discount) == '-1' ? `(${Math.abs(discount)})` : discount || ''}
 																keyboardType="numeric"
 																onChangeText={text => {
 																	this.handleDiscount(text);
@@ -564,12 +570,8 @@ class General extends Component {
 														</View>
 													</View>
 													<View style={styles.tr}>
-														<View style={styles.td2}>
-															<Text>Gross Profit :</Text>
-														</View>
-														<View style={styles.td2}>
-															<Text>{Math.sign(tier1val) == '-1' ? `(${tier1val})` : tier1val}</Text>
-														</View>
+														<Text style={styles.td2}>Gross Profit :</Text>
+														<Text style={{ ...styles.td2, textAlign: 'left' }}>{Math.sign(tier1val) == '-1' ? `(${Math.abs(tier1val)})` : tier1val}</Text>
 													</View>
 												</View>
 											)}
@@ -632,7 +634,7 @@ class General extends Component {
 												Close
 											</Text>
 										</TouchableHighlight>
-										{generalData && (
+										{mainData && (
 											<View style={styles.table}>
 												<View style={styles.thead}>
 													<View style={styles.tr}>
@@ -800,7 +802,7 @@ class General extends Component {
 																				: '400',
 																	}}
 																>
-																	{generalData[`(${m.id}V)`] ? generalData[m.id] : m.id == 'exRate' ? generalData['exRate'] : ' '}
+																	{mainData[`(${m.id}V)`] ? mainData[m.id] : m.id == 'exRate' ? mainData['exRate'] : ' '}
 																</Text>
 															</View>
 															<View
@@ -870,7 +872,7 @@ class General extends Component {
 																		color: m.id == 'totalLandingCost' ? 'red' : m.id == 'priceBeforeVat' ? 'red' : '#000',
 																	}}
 																>
-																	{generalData[`(${m.id}V)`] ? NepaliCurrency(generalData[`(${m.id}V)`]) : m.id == 'exRate' ? NepaliCurrency(generalData['npr']) : NepaliCurrency(generalData[m.id])}
+																	{mainData[`(${m.id}V)`] ? NepaliCurrency(mainData[`(${m.id}V)`]) : m.id == 'exRate' ? NepaliCurrency(mainData['npr']) : NepaliCurrency(mainData[m.id])}
 																</Text>
 															</View>
 														</View>
@@ -939,6 +941,7 @@ const styles = StyleSheet.create({
 		width: '50%',
 		paddingVertical: 10,
 		paddingHorizontal: 10,
+		fontSize: 16,
 		// borderBottomWidth: 0.5,
 		// borderBottomColor: '#666',
 		// borderRightWidth: 0.5,
@@ -959,10 +962,10 @@ const styles = StyleSheet.create({
 		borderRightColor: '#666',
 	},
 	td2: {
-		textAlign: 'left',
+		textAlign: 'right',
 		width: '50%',
 		padding: 10,
-		fontSize: 14,
+		fontSize: 16,
 		// borderBottomWidth: 0.5,
 		// borderBottomColor: '#666',
 		// borderRightWidth: 0.5,
