@@ -16,8 +16,10 @@
         "axios": "^0.19.0",
         "cleave.js": "^1.5.4",
         "expo": "~35.0.0",
+        "expo-linear-gradient": "~7.0.0",
         "formik": "^2.1.1",
         "native-base": "^2.13.8",
+        "nepali-calendar-js": "^1.0.4",
         "react": "~16.9.0",
         "react-dom": "~16.9.0",
         "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
@@ -31,8 +33,7 @@
         "react-native-web": "~0.11.7",
         "react-navigation": "^4.2.2",
         "react-navigation-stack": "^2.2.2",
-        "yup": "^0.28.0",
-        "expo-linear-gradient": "~7.0.0"
+        "yup": "^0.28.0"
     },
     "devDependencies": {
         "babel-preset-expo": "~8.0.0",

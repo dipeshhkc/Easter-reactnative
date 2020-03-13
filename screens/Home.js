@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions, TouchableHighlight, TouchableOpacit
 import { MaterialCommunityIcons, Feather, AntDesign, Entypo } from '@expo/vector-icons';
 import { logout } from '../components/services/api';
 import { LinearGradient } from 'expo-linear-gradient';
+import { getCurrentDate } from '../components/utils/dateUtils';
 const logo = require('../assets/easter.png');
 
 class Home extends Component {
@@ -52,7 +53,25 @@ class Home extends Component {
 						<Image style={styles.upperPartTwoImg} source={logo} resizeMode={'contain'} />
 						<View style={styles.upperPartTwoText}>
 							<Text style={{ textAlign: 'center', fontSize: 17, fontWeight: 'bold', fontFamily: 'NotoSerif', marginBottom: 30, color: '#1D4CBC' }}>
-								एक एक रुपैया को अर्थ छ,मेरो कम्पनी र मेरो परिवारको लागि।{' '}
+								एक एक रुपैया को अर्थ छ,
+								<Text>{'\n'}</Text>
+								मेरो कम्पनी र मेरो परिवारको लागि।{' '}
+							</Text>
+							<Text
+								style={{
+									textAlign: 'left',
+									paddingRight: 10,
+									// fontStyle: 'italic',
+									fontSize: 15,
+									fontWeight: 'bold',
+									fontFamily: 'NotoSerif',
+									position: 'absolute',
+									bottom: 10,
+									left: 5,
+									color: '#F24639',
+								}}
+							>
+								{getCurrentDate()}
 							</Text>
 							<Text
 								style={{
@@ -67,7 +86,9 @@ class Home extends Component {
 									right: 5,
 									color: '#F24639',
 								}}
-							>{`${this.month[new Date().getMonth() + 1]} ${new Date().getDate()}, ${new Date().getFullYear()}`}</Text>
+							>
+								{`${this.month[new Date().getMonth()]} ${new Date().getDate()}, ${new Date().getFullYear()}`}
+							</Text>
 						</View>
 					</View>
 				</View>
