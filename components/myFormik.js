@@ -24,12 +24,10 @@ export class MyFormik extends Component {
 				validationSchema={this.props.validation}
 				onSubmit={(values, actions) => {
 					
-					console.log('called')
 					
 
 					if (this.props.process) {
 						//level1
-						console.log('eta', this.props.model, values);
 						let process1 = { model: this.props.model };
 						values = Object.keys(values)
 							.filter(each => each != 'model')

@@ -33,7 +33,6 @@ export default class App extends Component {
 					startAsync={this._cacheResourcesAsync}
 					onError={handleLoadingError}
 					onFinish={() => {
-						console.log('finished');
 						// this.setState({ isSplashReady: true });
 					}}
 					autoHideSplash={false}
@@ -70,6 +69,5 @@ async function loadResourcesAsync() {
 function handleLoadingError(error) {
 	// In this case, you might want to report the error to your error reporting
 	// service, for example Sentry
-	console.log('eta chiro');
 	console.warn(error);
 }

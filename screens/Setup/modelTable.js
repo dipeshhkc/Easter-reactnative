@@ -11,7 +11,6 @@ class ModelTable extends Component {
 
 	onPageChange = val => {
 		this.setState({ currentPage: val });
-		console.log('currentPage', val);
 	};
 
 	maxPage = () => {

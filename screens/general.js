@@ -139,16 +139,15 @@ class General extends Component {
 
 	handleDiscount = val => {
 		let { suitableMRP, tier1, tier2 } = this.state.generalData;
-		
 
 		suitableMRP = removeCommas(suitableMRP);
 		tier1 = removeCommas(tier1);
 		tier2 = removeCommas(tier2);
 		val = removeCommas(val);
-		
+
 		let newFinal;
 		let Impact;
-		
+
 		if (val) {
 			newFinal = Number(suitableMRP) - Number(val);
 			Impact = Number(newFinal) - Number(suitableMRP);
@@ -160,14 +159,12 @@ class General extends Component {
 			tier1 = Number(tier1);
 			tier2 = Number(tier2);
 		}
-		
-		
+
 		(discussedMRP = newFinal.toFixed(2).toString()),
-		(Impact = Impact.toFixed(2)),
-		(tier1val = tier1.toFixed(2)),
-		(tier2val = tier2.toFixed(2)),
-		(discount = val.toString()),
-		console.log('general',NepaliCurrency(discount))
+			(Impact = Impact.toFixed(2)),
+			(tier1val = tier1.toFixed(2)),
+			(tier2val = tier2.toFixed(2)),
+			(discount = val.toString()),
 			this.setState({
 				discussedMRP: NepaliCurrency(discussedMRP),
 				discount: NepaliCurrency(discount),
@@ -803,7 +800,7 @@ class General extends Component {
 																				: '400',
 																	}}
 																>
-																	{mainData[`(${m.id}V)`] ? mainData[m.id] : m.id == 'exRate' ? mainData['exRate'] : ' '}
+																	{mainData[`${m.id}V`] ? mainData[m.id] : m.id == 'exRate' ? mainData['exRate'] : ' '}
 																</Text>
 															</View>
 															<View
@@ -873,7 +870,7 @@ class General extends Component {
 																		color: m.id == 'totalLandingCost' ? 'red' : m.id == 'priceBeforeVat' ? 'red' : '#000',
 																	}}
 																>
-																	{mainData[`(${m.id}V)`] ? NepaliCurrency(mainData[`(${m.id}V)`]) : m.id == 'exRate' ? NepaliCurrency(mainData['npr']) : NepaliCurrency(mainData[m.id])}
+																	{mainData[`${m.id}V`] ? NepaliCurrency(mainData[`${m.id}V`]) : m.id == 'exRate' ? NepaliCurrency(mainData['npr']) : NepaliCurrency(mainData[m.id])}
 																</Text>
 															</View>
 														</View>
@@ -963,7 +960,7 @@ const styles = StyleSheet.create({
 		borderRightColor: '#666',
 	},
 	td2: {
-		textAlign: 'right',
+		textAlign: 'left',
 		width: '50%',
 		padding: 10,
 		fontSize: 16,

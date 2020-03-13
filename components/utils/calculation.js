@@ -51,6 +51,5 @@ export const calcMain = (process1, name, val) => {
 	process1.discussedMRP = process1.suitableMRP;
 	process1.tier1 = process1.overhead;
 	process1.tier2 = process1.withoutOverhead;
-	console.log('check', process1);
 	return process1;
 };

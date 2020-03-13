@@ -43,7 +43,6 @@
 // 				<MyFormik onSuccess={this.success} Burl={this.Burl} onError={this.Error}>
 
 // 					{props =>{
-// 						console.log('props',props)
 // 						return (
 // 						<Form>
 // 							<View style={{ alignItems: 'center', padding: 20 }}>
