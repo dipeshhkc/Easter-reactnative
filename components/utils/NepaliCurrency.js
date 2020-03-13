@@ -40,12 +40,12 @@ export const InternalNepaliCurrencyCalculation = value => {
 		}
 		return sign + res;
 	} else {
-		return '0';
+		return '';
 	}
 };
 
 export const removeCommas = val => {
 	var num = val;
 	num = num.replace(/,/g, '');
-	return num;
+	return parseFloat(num);
 };
