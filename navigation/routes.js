@@ -12,7 +12,7 @@ import ModalSetup from '../screens/modelSetup';
 //Setup Screen
 import SetupModalScreen from '../screens/Setup/modelSetup';
 // import LoginScreen from '../screens/Login/LoginScreen';
-import LoginScreen from '../screens/Login/Login';
+import LoginScreen from '../screens/Login/LoginScreen';
 
 //Create Screen
 import UserSetup from '../screens/User/addUser';

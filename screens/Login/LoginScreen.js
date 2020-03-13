@@ -1,112 +1,233 @@
-// import React, { Component } from 'react';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Dimensions, KeyboardAvoidingView, AsyncStorage, ScrollView } from 'react-native';
+import { Form, Item, Button, Icon, Input, Spinner, Toast } from 'native-base';
+import { Formik } from 'formik';
+import Logo from '../../assets/logo1.png';
+import { AddLogin } from '../../components/services/loginService';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 
-// import { Text, Button, Form, View, Spinner } from 'native-base';
-// import { StyleSheet, KeyboardAvoidingView, Image, Platform, AsyncStorage } from 'react-native';
-// import MyFormik from '../../components/myFormik';
-// import { inputView } from '../../components/utils/ViewConfig';
-// import { getCurrentUser } from '../../components/services/api';
-// import { bURL } from '../../components/app-config';
-// const logo = require('../../assets/easter.png');
+class LoginScreen extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			data: {
+				email: '',
+				password: '',
+			},
+			showToast: false,
+			LoginErrors: {},
+		};
+	}
 
-// class LoginScreen extends Component {
-// 	static navigationOptions = () => ({
-// 		header: null,
-// 	});
+	successLogin = async user => {
+		if (user) {
+			await AsyncStorage.setItem('user', JSON.stringify(user));
+		}
+	};
 
-// 	constructor(props) {
-// 		super(props);
-// 		this.state = {
-// 			loading: false,
-// 			notlogged: true,
-// 		};
-// 	}
+	render() {
+		return (
+			<KeyboardAvoidingView behavior={'padding'} style={styles.screen}>
+				<ScrollView>
+					<View>
+						{this.state.LoginErrors && this.state.LoginErrors.message && (
+							<View>
+								<Text style={{ textAlign: 'center', fontWeight: 'bold' }}>{this.state.LoginErrors.message}</Text>
+							</View>
+						)}
+						<View>
+							<View style={styles.imageWrap}>
+								<Text style={{ ...styles.textMain, paddingTop: 15, fontSize: 25, letterSpacing: 2 }}>Welcome</Text>
+							</View>
+						</View>
+						<View style={styles.formWrap}>
+							<Formik
+								initialValues={this.state.data}
+								enableReinitialize={true}
+								onSubmit={async (values, actions) => {
+									actions.setSubmitting(true);
 
-// 	handleClick = () => {
-// 		this.setState({ loading: true });
-// 	};
+									try {
+										const response = await AddLogin(values);
+										if (response.data.error) throw new Error(response.data.error);
+										else {
+											Toast.show({
+												text: 'Login successfully!',
+												position: 'bottom',
+												duration: 3000,
+												type: 'success',
+											});
+											this.successLogin(response.data.data);
+											this.setState({ LoginErrors: {} });
+										}
+										actions.resetForm();
+										actions.setSubmitting(false);
+										this.props.navigation.navigate('Home');
+									} catch (ex) {
+										if (ex.response && ex.response.status === 404) {
+											Toast.show({
+												text: 'Something went wrong.',
+												position: 'bottom',
+												duration: 3000,
+												type: 'danger',
+											});
+										} else {
+											Toast.show({
+												text: `${ex.response.data.error}`,
+												position: 'bottom',
+												duration: 3000,
+												type: 'danger',
+											});
+										}
+										actions.setSubmitting(false);
+									}
+								}}
+							>
+								{({ isSubmitting, handleSubmit, setFieldValue }) => (
+									<Form>
+										<View style={styles.LoginWrapper}>
+											<View style={styles.IconCircle}>
+												<View style={styles.Circle}>
+													<AntDesign name="user" size={25} color={'#fff'} />
+												</View>
+											</View>
+											<View style={styles.LoginWrapperMain}>
+												<Item style={{ backgroundColor: '#fff', paddingHorizontal: 20, marginBottom: 10, borderRadius: 50 }}>
+													<FontAwesome name="user" size={25} style={styles.Icons} />
+													<Input
+														name="email"
+														placeholder="Email Address"
+														onChangeText={text => {
+															setFieldValue('email', text);
+														}}
+														keyboardType="email-address"
+														placeholderTextColor={'#000'}
+														style={styles.Input}
+													/>
+												</Item>
+												<Item style={{ backgroundColor: '#fff', paddingHorizontal: 20, borderRadius: 50 }}>
+													<FontAwesome name="lock" size={25} style={styles.Icons} />
+													<Input
+														name="password"
+														placeholder="Password"
+														onChangeText={text => {
+															setFieldValue('password', text);
+														}}
+														secureTextEntry={true}
+														placeholderTextColor={'#000'}
+														style={styles.Input}
+													/>
+												</Item>
+											</View>
+										</View>
+										<View
+											style={{
+												paddingTop: 30,
+											}}
+										>
+											<Button disabled={isSubmitting} type="submit" onPress={handleSubmit} style={{ justifyContent: 'center', borderRadius: 100, marginHorizontal: 20, backgroundColor: '#09164a' }}>
+												{isSubmitting && <Spinner color="white" size="small" />}
+												<Text style={{ textAlign: 'center', paddingLeft: 10, color: '#fff', fontWeight: 'bold' }}>Login</Text>
+											</Button>
+										</View>
+									</Form>
+								)}
+							</Formik>
+						</View>
+						<View>
+							<Text style={styles.textVersion}>Version 1.0</Text>
+						</View>
+					</View>
+				</ScrollView>
+			</KeyboardAvoidingView>
+		);
+	}
+}
+const styles = StyleSheet.create({
+	screen: {
+		flex: 1,
+		paddingTop: 100,
+		// paddingHorizontal: 10,
+		backgroundColor: '#fff',
+	},
+	titlewrap: {
+		flexDirection: 'row',
+	},
+	text: {
+		color: '#000',
+		fontSize: 11,
+		fontWeight: '400',
+	},
+	textMain: {
+		paddingRight: 5,
+		fontWeight: '700',
+		color: '#000',
+		fontSize: 12,
+		textTransform: 'uppercase',
+	},
+	imageWrap: {
+		alignItems: 'center',
+		paddingTop: 80,
+	},
+	image: {
+		height: 100,
+		width: 105,
+		backgroundColor: '#fff',
+	},
+	formWrap: {
+		paddingVertical: 50,
+		paddingHorizontal: 10,
+	},
+	textVersion: {
+		paddingTop: 40,
+		alignItems: 'center',
+		textAlign: 'center',
+		color: '#000',
+	},
+	Icons: {
+		color: '#921415',
+		paddingRight: 10,
+	},
+	Input: {
+		color: '#000',
+		fontSize: 13,
+		width: '50%',
+		backgroundColor: '#fff',
+	},
+	LoginWrapper: {
+		paddingHorizontal: 5,
+		flexDirection: 'row',
+		width: '30%',
+	},
+	IconCircle: {
+		height: 130,
+		width: 130,
+		transform: [{ translateX: -30 }],
+		backgroundColor: '#fff',
+		borderRadius: 100,
+		justifyContent: 'center',
+		alignItems: 'center',
+		zIndex: 1,
+	},
+	Circle: {
+		height: 70,
+		width: 70,
+		backgroundColor: '#070c2a',
+		borderRadius: 100,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	LoginWrapperMain: {
+		width: Dimensions.get('window').width - 35,
+		position: 'absolute',
+		left: 15,
+		height: 130,
+		borderRadius: 100,
+		backgroundColor: '#a61615',
+		paddingLeft: 80,
+		paddingRight: 30,
+		justifyContent: 'center',
+	},
+});
 
-// 	// whhen success
-// 	success = () => {
-// 		this.setState({ loading: false });
-// 		this.props.navigation.navigate('Home');
-// 	};
-
-// 	Error = () => {
-// 		this.setState({ loading: false });
-// 	};
-// 	Burl=  `${bURL}api/login`
-
-// 	render() {
-
-// 		return (
-// 			<KeyboardAvoidingView behavior={'padding'} style={styles.container}>
-// 				<MyFormik onSuccess={this.success} Burl={this.Burl} onError={this.Error}>
-
-// 					{props =>{
-// 						return (
-// 						<Form>
-// 							<View style={{ alignItems: 'center', padding: 20 }}>
-// 								<Image source={logo} resizeMode={'contain'} />
-// 							</View>
-
-// 							<Text style={{ textAlign: 'center', fontSize: 25, fontWeight: 'bold', fontFamily: 'NotoSerif', textDecorationLine: 'underline', marginBottom: 100 }}> Eastern Motor</Text>
-
-// 							<Text style={styles.app_header}>LOGIN</Text>
-
-// 							{inputView([
-// 								{
-// 									name: 'email',
-// 									title: 'Email',
-// 									props,
-// 									keyboardType: 'email-address',
-// 								},
-// 								{
-// 									name: 'password',
-// 									title: 'Password',
-// 									props,
-// 									secureTextEntry: true,
-// 								},
-// 							])}
-
-// 							<View>
-// 								<Button
-// 									onPress={() => {
-// 										this.handleClick();
-// 										props.handleSubmit();
-// 									}}
-// 									primary
-// 									iconLeft
-// 									style={{ paddingLeft: 10, marginTop: 20, justifyContent: 'center' }}
-// 									disabled={this.state.loading}
-// 								>
-// 									{this.state.loading && <Spinner color="white" size="small" />}
-// 									<Text style={{ textAlign: 'center' }}>Login</Text>
-// 								</Button>
-// 							</View>
-// 						</Form>
-// 					)}}
-// 				</MyFormik>
-// 			</KeyboardAvoidingView>
-// 		);
-// 	}
-// }
-
-// export default LoginScreen;
-
-// const styles = StyleSheet.create({
-// 	container: {
-// 		flex: 1,
-// 		justifyContent: 'space-around',
-// 		paddingLeft: 20,
-// 		paddingRight: 20,
-// 		backgroundColor: 'white',
-// 	},
-// 	loginbtn: {
-// 		marginTop: 20,
-// 	},
-// 	app_header: {
-// 		textAlign: 'center',
-// 		fontSize: 25,
-// 		marginTop: 20,
-// 	},
-// });
+export default LoginScreen;
