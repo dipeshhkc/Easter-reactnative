@@ -143,7 +143,7 @@ class General extends Component {
 		suitableMRP = removeCommas(String(suitableMRP));
 		tier1 = removeCommas(String(tier1));
 		tier2 = removeCommas(String(tier2));
-		val = removeCommas(String(val));
+		val = removeCommas(val);
 
 		let newFinal;
 		let Impact;
@@ -180,7 +180,7 @@ class General extends Component {
 		suitableMRP = removeCommas(String(suitableMRP));
 		tier1 = removeCommas(String(tier1));
 		tier2 = removeCommas(String(tier2));
-		val = removeCommas(String(val));
+		val = removeCommas(val);
 
 		let newFinal;
 		let Impact;
