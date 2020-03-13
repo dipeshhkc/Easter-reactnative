@@ -37,7 +37,8 @@ class LoginScreen extends Component {
 						)}
 						<View>
 							<View style={styles.imageWrap}>
-								<Text style={{ ...styles.textMain, paddingTop: 15, fontSize: 25, letterSpacing: 2, textTransform: 'uppercase' }}>Batas InterPrises</Text>
+								<Text style={{ ...styles.textMain,color:'#0C4CA3', paddingTop: 15, fontSize: 20,textAlign:'center', letterSpacing: 2, textTransform: 'uppercase' }}>Eastern Agencies Pvt.Ltd.</Text>
+								<Text style={{ ...styles.textMain,color:'#58B849', paddingTop: 5, fontSize: 18,textAlign:'center', letterSpacing: 2 }}>(an enterprise of BATAS)</Text>
 							</View>
 							<View style={styles.imageWrap}>
 								<Text style={{ ...styles.textMain, paddingTop: 15, fontSize: 25, letterSpacing: 2 }}>Welcome</Text>
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
 		fontWeight: '700',
 		color: '#000',
 		fontSize: 12,
-		textTransform: 'uppercase',
+		// textTransform: 'uppercase',
 	},
 	imageWrap: {
 		alignItems: 'center',
