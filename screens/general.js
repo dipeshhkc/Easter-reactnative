@@ -302,7 +302,7 @@ class General extends Component {
 				) : (
 					<>
 						{generalData ? (
-							<KeyboardAvoidingView behavior="position">
+							<KeyboardAvoidingView behavior="padding">
 								<ScrollView>
 									<View style={{ flex: 1, paddingTop: 10, paddingBottom: 30 }}>
 										<View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', flexDirection: 'row' }}>
