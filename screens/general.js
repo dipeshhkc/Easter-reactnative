@@ -139,17 +139,16 @@ class General extends Component {
 
 	handleDiscount = val => {
 		let { suitableMRP, tier1, tier2 } = this.state.generalData;
-		console.log('firdt', val);
+		
 
 		suitableMRP = removeCommas(suitableMRP);
 		tier1 = removeCommas(tier1);
 		tier2 = removeCommas(tier2);
 		val = removeCommas(val);
-		console.log('firdtdddd', val);
-
+		
 		let newFinal;
 		let Impact;
-
+		
 		if (val) {
 			newFinal = Number(suitableMRP) - Number(val);
 			Impact = Number(newFinal) - Number(suitableMRP);
@@ -161,12 +160,14 @@ class General extends Component {
 			tier1 = Number(tier1);
 			tier2 = Number(tier2);
 		}
-
+		
+		
 		(discussedMRP = newFinal.toFixed(2).toString()),
-			(Impact = Impact.toFixed(2)),
-			(tier1val = tier1.toFixed(2)),
-			(tier2val = tier2.toFixed(2)),
-			(discount = val.toString()),
+		(Impact = Impact.toFixed(2)),
+		(tier1val = tier1.toFixed(2)),
+		(tier2val = tier2.toFixed(2)),
+		(discount = val.toString()),
+		console.log('general',NepaliCurrency(discount))
 			this.setState({
 				discussedMRP: NepaliCurrency(discussedMRP),
 				discount: NepaliCurrency(discount),

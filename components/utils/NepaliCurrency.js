@@ -1,4 +1,10 @@
-export const NepaliCurrency = value => {
+export const NepaliCurrency=value=>{
+	const [ nepaliNumber, floatingPoint ]=String(value).split('.')
+	const commaConverted = InternalNepaliCurrencyCalculation(nepaliNumber);
+	return String(value).indexOf('.')!='-1'? commaConverted+"."+(floatingPoint||""):commaConverted;
+}
+
+export const InternalNepaliCurrencyCalculation = value => {
 	const numb = Number(value);
 	if (numb) {
 		let num = numb.toFixed(2).toString();
@@ -40,10 +46,9 @@ export const NepaliCurrency = value => {
 
 export const removeCommas = val => {
 	var num = val;
-	console.log('first', val);
-
+	console.log('before', val);
 	num = num.replace(/,/g, '');
-	console.log('firda', val);
+	console.log('after', val);
 
 	return num;
 };
