@@ -3,10 +3,12 @@ const per = value => {
 };
 
 export const calcMain = (process1, name, val) => {
-	let inr, credit;
-	inr = name === 'credit' ? process1.inr : Number(val);
-	credit = name === 'credit' ? Number(val) : process1.credit;
-
+	let inr, discountcredit;
+	inr = name === 'discountcredit' ? process1.inr : Number(val);
+	discountcredit = name === 'discountcredit' ? Number(val) : process1.discountcredit;
+	//required for next calculation
+	process1.discountcredit = name === 'discountcredit' ? Number(val) : process1.discountcredit;
+	
 	let process = Object.keys(process1).map(each => ({ [each]: Number(process1[each]) }));
 
 	process1 = {};
@@ -36,7 +38,9 @@ export const calcMain = (process1, name, val) => {
 		process1.stockTrans +
 		process1.stockYard +
 		process1.financeCom;
-	process1.interestInvestV = ((cal * per(process1.interestInvest)) / 12) * credit;
+	process1.interestInvestV = ((cal * per(process1.interestInvest)) / 12) * process1.credit;
+	//calculating discount interest
+	process1.discountinterest= ((cal * per(process1.interestInvest)) / 12) * discountcredit;
 	process1.costTillDealer = cal + process1.interestInvestV;
 	process1.adminSalesV = process1.costTillDealer * per(process1.adminSales);
 	process1.advPromV = process1.costTillDealer * per(process1.advProm);
