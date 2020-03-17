@@ -3,6 +3,7 @@ const per = value => {
 };
 
 export const calcMain = (process1, name, val) => {
+	console.log('check',process1)
 	let inr, discountcredit;
 	inr = name === 'discountcredit' ? process1.inr : Number(val);
 	discountcredit = name === 'discountcredit' ? Number(val) : process1.discountcredit;

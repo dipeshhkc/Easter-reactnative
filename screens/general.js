@@ -143,10 +143,11 @@ class General extends Component {
 	handleDiscount = (val, discountbool) => {
 		let { suitableMRP, tier1, tier2 } = this.state.generalData;
 		let {discount,discountinterest} = this.state
-		console.log('ahilelko',val)
 		suitableMRP = removeCommas(String(suitableMRP));
 		tier1 = removeCommas(String(tier1));
 		tier2 = removeCommas(String(tier2));
+		discount = removeCommas(String(discount));
+		discountinterest = removeCommas(String(discountinterest));
 		val = removeCommas(val);
 		let newFinal;
 		let Impact;
@@ -278,16 +279,13 @@ class General extends Component {
 	handleCredit = (name, val) => {
 		const { generalData } = this.state;
 		val = removeCommas(val);
-		console.log('herrr',val)
-		
 		let newData;
 		if (val) {
 			newData = calcMain(generalData, name, val);
 			//false denotes it is not input cash discount
-			this.handleDiscount(String(newData.discountinterest), false);
 			this.setState({discountinterest:newData.discountinterest.toFixed(2),generalData: newData,discountcredit:NepaliCurrency(val.toString())})
+			this.handleDiscount(String(newData.discountinterest), false);
 		} else {
-		
 			//false denotes it is not input cash discount
 			this.handleDiscount(String(0), false);
 			this.setState({discountinterest:0,discountcredit:0})
